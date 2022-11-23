@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% block style %}
+input[type=text], select {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+input[type=password], select {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+input[type=submit] {
+  width: 20%;
+  background-color: #4CAF50;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+input[type=submit]:hover {
+  background-color: #45a049;
+}
+
+div {
+  border-radius: 5px;
+  background-color: #f2f2f2;
+  padding: 20px;
+  width: 70%;
+  margin: auto;
+}
+{% endblock style %}
+{% block content %}
+
+<h3 style="text-align: center;">Add User</h3>
+
+<div>
+  <form action="" method="POST">
+    {% csrf_token %}
+   
+
+
+    <label for="country">User</label>
+    <select id="country" name="user">
+      <option selected>Select Users</option>
+      {% for user in users %}
+      <option value="{{user.id}}">{{user.name}}</option>
+      {% endfor %}
+                   
+    </select>
+    <label for="country">Position</label>
+    <select id="country" name="position">
+      <option selected>Select Position</option>
+                    <option value="Director">Director</option>
+                    <option value="Associate Director">Associate Director</option>
+                    <option value="Tech Director">Tech Director</option>
+                    <option value="GH/DH">GH/DH</option>
+                    <option value="Employee">Employee</option>
+    </select>
+    <label for="country">Department</label>
+    <select id="country" name="department">
+      <option selected>Select Department</option>
+            {% for department in departments %}
+            <option value="{{department.id}}">{{department.name}}</option>
+            {% endfor %}
+                  
+    </select>
+
+    
+    <label for="lname">DateTime</label>
+    <input type="datetime-local" id="lname" name="date" placeholder="">
+    <label for="lname">Description</label>
+    <input type="text" id="lname" name="description" placeholder="">
+  
+    <input type="submit" value="Submit">
+  </form>
+</div>
+
+
+{% endblock content %}

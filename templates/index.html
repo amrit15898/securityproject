@@ -1,0 +1,233 @@
+{% extends 'base.html' %}
+{% block style %}
+*{
+    box-sizing: border-box;
+}
+html, body {
+    overflow-x: hidden;
+    height: 100%;
+}
+body {
+  font-family: 'Varela Round', sans-serif;
+    background: #fff;
+    padding: 0;
+    margin: 0;
+}
+h1{
+    text-align: center;
+    padding-top: 30px;
+}
+.header {
+    background-color: #eb4d4b;
+    width: 100%;
+    height: 60px;
+    position: fixed;
+    z-index: 10;
+}
+
+#sidebarMenu {
+    height: 100%;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 250px;
+    margin-top: 60px;
+    transform: translateX(-250px);
+    transition: transform 250ms ease-in-out;
+    background: #2e86de;
+}
+.menu{
+  list-style: none; 
+    margin:0;
+    padding:0;
+}
+.menu li{
+    border-bottom: 1px solid rgba(255, 255, 255, 0.10);
+}
+.menu li a{
+    color: #fff;
+    display: block;
+    padding: 20px;
+    text-transform: uppercase;
+    font-weight: bold;
+    text-decoration: none;
+}
+#openSidebarMenu:checked ~ #sidebarMenu {
+    transform: translateX(0);
+}
+
+input#openSidebarMenu{
+    display: none;
+}
+.sidebarIconToggle {
+  height: 22px;
+    width: 22px;
+    position: absolute;
+    z-index: 99;
+    top: 22px;
+    left: 15px;
+    transition: all 0.3s;
+    cursor: pointer; 
+}
+.spinner {
+    height: 3px;
+    background-color: #fff;
+    transition: all 0.3s;
+}
+.spinner.middle ,
+.spinner.bottom{
+    margin-top: 3px;
+}
+#openSidebarMenu:checked ~ .sidebarIconToggle > .spinner.middle {
+    opacity: 0;
+}
+#openSidebarMenu:checked ~ .sidebarIconToggle > .spinner.top {
+    transform: rotate(135deg);
+    margin-top: 8px;
+}
+#openSidebarMenu:checked ~ .sidebarIconToggle > .spinner.bottom {
+    transform: rotate(-135deg);
+    margin-top: -9px;
+}
+#thtable {
+    font-family: Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    margin-left : auto;
+    margin-right : auto;
+  
+    width: 50%;
+    margin : 50px;
+  
+  }
+  
+  #thtable td, #thtable th {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+  
+  #thtable tr:nth-child(even){background-color: #f2f2f2;}
+  
+  #thtable tr:hover {background-color: #ddd;}
+  
+  #thtable th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+  
+    color: black;
+  } 
+  * {
+    box-sizing: border-box;
+  }
+  
+  .row {
+    margin-left:-5px;
+    margin-right:-5px;
+  }
+    
+  .column {
+    float: left;
+    width: 50%;
+    padding: 5px;
+  }
+  
+  /* Clearfix (clear floats) */
+  .row::after {
+    content: "";
+    clear: both;
+    display: table;
+  }
+  
+  table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    width: 100%;
+    border: 1px solid #ddd;
+    margin-bottom: 20px;
+  }
+  
+  th, td {
+    text-align: left;
+    padding: 16px;
+  }
+  
+  tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+  .addbtn{
+    padding:10px;
+    background-color: green;
+    color: black;
+    margin: 7px;
+    text-decoration : none;
+    border-radius: 10px;
+  }
+{% endblock style %}
+{% block content %}
+
+<div class="header"></div>
+    <input type="checkbox" id="openSidebarMenu">
+    <label for="openSidebarMenu" class="sidebarIconToggle">
+        <div class="spinner top"></div>
+        <div class="spinner middle"></div>
+        <div class="spinner bottom"></div>
+    </label>
+    <div id="sidebarMenu">
+        <ul class="menu">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Users</a></li>
+            <li><a href="#">Department</a></li>
+        
+        </ul>
+    </div>
+   
+    <div style="margin: 20px;" class="row">
+        <div class="column">
+            <h1 style="margin-top: 50px;">Users</h1>
+          <table>
+            <tr>
+              <th>Name</th>
+              <th>Position</th>
+              <th>Actions</th>
+            </tr>
+            {% for user in users %}
+
+            <tr>
+              <td>{{user.name}}</td>
+              <td>{{user.position}}</td>
+              <td><a href="{% url 'deleteuser' user.id %}" class="addbtn" style="background-color: rgb(204, 69, 69);">Delete</a> <a href="{% url 'updateuser' user.id %}" class="addbtn">Update</a></td>
+            </tr>
+          {% endfor %}
+          </table>
+          <a href="{% url 'adduser' %}" class="addbtn">Add User</a>
+        </div>
+        <div class="column">
+            <h1 style="margin-top: 50px;">Department</h1>
+          <table>
+            <tr>
+              <th>Department Name</th>
+              <th>Actions</th>
+         
+            </tr>
+            {% for department in departments %}
+
+            <tr>
+              <td>{{department.name}}</td>
+              <td>Smith</td>
+              
+            </tr>
+            {% endfor %}
+          </table>
+          <a href="{% url 'adddep' %}" class="addbtn">Add Department</a>
+        </div>
+      </div>
+      
+    
+    </div>
+
+    
+
+{% endblock content %}
+
+
+{% block cotent %}{% endblock cotent %}

@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% block style %}
+input[type=text], select {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+input[type=password], select {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+input[type=submit] {
+  width: 20%;
+  background-color: #4CAF50;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+input[type=submit]:hover {
+  background-color: #45a049;
+}
+
+div {
+  border-radius: 5px;
+  background-color: #f2f2f2;
+  padding: 20px;
+  width: 70%;
+  margin: auto;
+}
+{% endblock style %}
+{% block content %}
+
+<h3 style="text-align: center;">Add User</h3>
+
+<div>
+  <form action="" method="POST">
+    {% csrf_token %}
+    <label for="fname">Name</label>
+    <input type="text" id="fname" value="{{user.name}}" name="name" placeholder="">
+
+
+    <label for="country">Country</label>
+    <select id="country" name="position">
+      <option selected>{{user.position}}</option>
+                    <option value="Director">Director</option>
+                    <option value="Associate Director">Associate Director</option>
+                    <option value="Tech Director">Tech Director</option>
+                    <option value="GH/DH">GH/DH</option>
+                    <option value="Employee">Employee</option>
+    </select>
+
+    
+    <label for="lname">Password</label>
+    <input type="password" id="lname" name="password" placeholder="">
+  
+    <input type="submit" value="Submit">
+  </form>
+</div>
+
+
+{% endblock content %}

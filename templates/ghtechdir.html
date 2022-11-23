@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block style %}
+
+#thtable {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  margin-left : auto;
+  margin-right : auto;
+  color: black;
+
+  width: 100%;
+  
+
+
+}
+
+#thtable td, #thtable th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+#thtable tr:nth-child(even){background-color: #f2f2f2;}
+
+#thtable tr:hover {background-color: #ddd;}
+
+#thtable th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+
+  color: black;
+}
+.maindiv{
+  margin: 100px;
+}
+        
+{% endblock style %}
+{% block content %}
+<div class="maindiv">
+    <table id="thtable">
+      
+          <tr>
+      
+            <th>User</th>
+            <th>Department</th>
+            <th>Description</th>
+            <th>Date</th>
+            <th>GH/DH Clearance</th>
+            <th>Action</th>
+          </tr>
+ 
+        <tbody>
+          {% for obj in objs %}
+
+          <tr>
+            <th >{{obj.r_user}}</th>
+            <td>{{obj.department.name}}</td>
+            <td>{{obj.description}}</td>
+
+            <td>{{obj.date}}</td>
+            <td>{{obj.dh_gh_clr}}</td>
+            <td><div >
+              <form action="" method="post">
+                {% csrf_token %}
+                <button name="napproved" class="btn" style="padding: 5px; background-color: red; border-radius: 5px;" value="{{obj.id}}"  type="submit">Not Approved</button>
+              </form>
+              <form method="POST">
+                {% csrf_token %}
+                <button name="approved" class="btn" style="padding: 5px; background-color: green; border-radius: 5px;" value="{{obj.id}}" class="btnstyle" type="submit">Approved</button>
+              </form>
+            </div></td>
+      
+ 
+          </tr>
+          {% endfor %}
+      
+        </tbody>
+      </table>
+
+</div>
+
+
+{% endblock content %}
