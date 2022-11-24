@@ -6,6 +6,7 @@ urlpatterns = [
 
     path("post-app", post_appointment, name="appointment"),
     path("show-request", show_request, name="showrequest"),
+    path("show-emp-request", employee_request, name="employeerequest")
 
 
 ]

@@ -59,7 +59,7 @@ h3{
             <th>TechDirector Clearanec</th>
             <th>Associate Director</th>
             <th>Director</th>
-            <th>Action</th>
+          
           </tr>
  
         <tbody>
@@ -75,24 +75,7 @@ h3{
             <td>{{obj.tech_dir_clr}}</td>
             <td>{{obj.ass_dir_clr}}</td>
             <td>{{obj.dir_clr}}</td>
-            {% if request.user.position == "GH/DH"  and obj.dh_gh_clr == "Pending" or request.user.position == "Tech Director" and obj.tech_dir_clr == "Pending" and obj.dh_gh_clr != "Pending" or request.user.position == "Associate Director" and obj.ass_dir_clr == "Pending" or request.user.position == "Director" and obj.dir_clr == "Pending" %}
-            <td><div>
-              
-              <form action="" method="post" class="form">
-                {% csrf_token %}
-                <button name="napproved" class="btn" style="padding: 5px; background-color: red; border-radius: 5px; display: inline; width:100px;" value="{{obj.id}}"  type="submit">Not Approved</button>
-              </form>
-              <form method="POST" class="form">
-                {% csrf_token %}
-                <button name="approved" class="btn" style="padding: 5px; background-color: green; border-radius: 5px; display: inline;  width:100px; margin:5px;" value="{{obj.id}}" class="btnstyle" type="submit">Approved</button>
-              </form>
-      
-            </div></td>
-            
-            
-            
-            {% endif %}
-      
+        
  
           </tr>
           {% endfor %}

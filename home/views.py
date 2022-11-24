@@ -5,9 +5,17 @@ from .models import postions
 from django.contrib.auth.decorators import login_required
 @login_required
 def post_appointment(request):
+    # try:
+    #     gh_dh = User.objects.using("default").filter(position = "GH/DH")
+    #     tech_dir = User.objects.using("default").filter(position = "Tech Director")
+    # except Exception as e:
+    #     print(e)
+    # try:
+    #     
+    # except Exception as e:
+    #     print(e)
     gh_dh = User.objects.filter(position = "GH/DH")
     tech_dir = User.objects.filter(position = "Tech Director")
-
     departments = Department.objects.all()
    
     context = {}
@@ -27,45 +35,40 @@ def post_appointment(request):
 
         final_gh_dh = User.objects.get(id=gh_dh)
         final_tech_dir = User.objects.get(id=tdir)
-
-
         dep = Department.objects.get(id=department)
         obj = Appointment(gh_dh= final_gh_dh, tech_dir =final_tech_dir, description=description, department=dep, date=date)
-        obj.r_user = request.user
-        # try:
-        #     obj.save(using ="default")
-        # except Exception as e:
-        #     print(e)
-        obj.save(using="new")
+        obj.r_user = request.user    
         obj.save(using="default")
+        obj.save(using="new")
+
+        return redirect("/home/show-emp-request")
       
     return render(request, "clearance.html", context)
 
+
+@login_required
 def show_request(request):
 
     user = request.user   
     context = {}
   
     if request.user.position == postions[3][1]:
-        print('error')
-        objs = Appointment.objects.filter(gh_dh__name=request.user)
+   
+        objs = Appointment.objects.using("default").filter(gh_dh__name=request.user)
 
     
     elif request.user.position == postions[2][1]:
-        objs = Appointment.objects.filter(tech_dir__name = request.user)
+        objs = Appointment.objects.using("default").filter(tech_dir__name = request.user)
 
 
-    elif request.user.position ==postions[0][1]:
+    elif request.user.position == postions[0][1]:
         objs = Appointment.objects.all()
-    elif request.user.position ==postions[1][1]:
+    elif request.user.position == postions[1][1]:
         objs = Appointment.objects.all()    
-    
-
 
     context["objs"] = objs
     if 'approved' in request.POST:
         value = request.POST.get("approved")
-      
         obj = Appointment.objects.get(id=value)
         print(obj)
         position = request.user.position
@@ -105,14 +108,16 @@ def show_request(request):
             obj.save()
         if position == postions[1][1]:
             obj.ass_dir_clr = "Not Approved"
-            obj.save()
-            
-   
-      
+            obj.save     
    
     return render(request, "ghtechdir.html",context)
 
 
 
+
+def employee_request(request):
+    objs = Appointment.objects.filter(r_user = request.user)
+    context = {"objs": objs}
+    return render(request, "emprequest.html",context)
 
     

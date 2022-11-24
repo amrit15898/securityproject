@@ -14,9 +14,10 @@ class Department(models.Model):
     name = models.CharField(max_length=50)
 
 class User(AbstractBaseUser, PermissionsMixin):
-    department = models.ForeignKey(Department, on_delete= models.CASCADE, null=True, blank=True)
+
     position = models.CharField(max_length = 40, choices=postions)
     name = models.CharField(max_length=150, unique=True)
+    user_id = models.CharField(max_length=20, null=True, blank=True)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
    
