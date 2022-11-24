@@ -51,6 +51,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'security.urls'
+LOGIN_URL = "/adminpanel/login"
 
 TEMPLATES = [
     {
@@ -76,7 +77,7 @@ WSGI_APPLICATION = 'security.wsgi.application'
 
 DATABASES = {
     'default': {
-         'ENGINE': 'django.db.backends.mysql',  
+        'ENGINE': 'django.db.backends.mysql',  
         'NAME': 'new1',  
         'USER': 'root',  
         'PASSWORD': '',  
@@ -85,7 +86,7 @@ DATABASES = {
         
     },
     'new': {
-         'ENGINE': 'django.db.backends.mysql',  
+        'ENGINE': 'django.db.backends.mysql',  
         'NAME': 'new2',  
         'USER': 'root',  
         'PASSWORD': '',  

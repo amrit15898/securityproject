@@ -9,6 +9,15 @@ input[type=text], select {
   border-radius: 4px;
   box-sizing: border-box;
 }
+input[type=datetime-local], select {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
 input[type=password], select {
   width: 100%;
   padding: 12px 20px;
@@ -44,7 +53,7 @@ div {
 {% endblock style %}
 {% block content %}
 
-<h3 style="text-align: center;">Add User</h3>
+<h3 style="text-align: center;">Add Appointment</h3>
 
 <div>
   <form action="" method="POST">
@@ -52,23 +61,23 @@ div {
    
 
 
-    <label for="country">User</label>
-    <select id="country" name="user">
+    <label for="country">GH DH</label>
+    <select id="country" name="gh_dh">
       <option selected>Select Users</option>
-      {% for user in users %}
-      <option value="{{user.id}}">{{user.name}}</option>
+      {% for i in gh_dh %}
+      <option value="{{i.id}}">{{i.name}}</option>
       {% endfor %}
                    
     </select>
-    <label for="country">Position</label>
-    <select id="country" name="position">
-      <option selected>Select Position</option>
-                    <option value="Director">Director</option>
-                    <option value="Associate Director">Associate Director</option>
-                    <option value="Tech Director">Tech Director</option>
-                    <option value="GH/DH">GH/DH</option>
-                    <option value="Employee">Employee</option>
+    <label for="country">Tech Dir</label>
+    <select id="country" name="tdir">
+      <option selected>Select Users</option>
+      {% for dir in tech_dir %}
+      <option value="{{dir.id}}">{{dir.name}}</option>
+      {% endfor %}
+                   
     </select>
+   
     <label for="country">Department</label>
     <select id="country" name="department">
       <option selected>Select Department</option>

@@ -16,9 +16,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from home.views import *
+from adminapp.views import *
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("",include("home.urls")),
+    path("home/",include("home.urls")),
+    path("", login_front_page), 
     path("adminpanel/", include("adminapp.urls"))
 
 ]

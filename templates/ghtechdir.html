@@ -3,7 +3,7 @@
 {% block style %}
 
 #thtable {
-  font-family: Arial, Helvetica, sans-serif;
+
   border-collapse: collapse;
   margin-left : auto;
   margin-right : auto;
@@ -34,10 +34,16 @@
 .maindiv{
   margin: 100px;
 }
-        
+h3{
+  text-align: center;
+}    
+.form{
+  display: inline;
+} 
 {% endblock style %}
 {% block content %}
 <div class="maindiv">
+    <h3> Welcome {{request.user}}<h3>
     <table id="thtable">
       
           <tr>
@@ -47,6 +53,9 @@
             <th>Description</th>
             <th>Date</th>
             <th>GH/DH Clearance</th>
+            <th>TechDirector Clearanec</th>
+            <th>Associate Director</th>
+            <th>Director</th>
             <th>Action</th>
           </tr>
  
@@ -60,15 +69,20 @@
 
             <td>{{obj.date}}</td>
             <td>{{obj.dh_gh_clr}}</td>
-            <td><div >
-              <form action="" method="post">
+            <td>{{obj.tech_dir_clr}}</td>
+            <td>{{obj.ass_dir_clr}}</td>
+            <td>{{obj.dir_clr}}</td>
+            <td><div>
+              
+              <form action="" method="post" class="form">
                 {% csrf_token %}
-                <button name="napproved" class="btn" style="padding: 5px; background-color: red; border-radius: 5px;" value="{{obj.id}}"  type="submit">Not Approved</button>
+                <button name="napproved" class="btn" style="padding: 5px; background-color: red; border-radius: 5px; display: inline;" value="{{obj.id}}"  type="submit">Not Approved</button>
               </form>
-              <form method="POST">
+              <form method="POST" class="form">
                 {% csrf_token %}
-                <button name="approved" class="btn" style="padding: 5px; background-color: green; border-radius: 5px;" value="{{obj.id}}" class="btnstyle" type="submit">Approved</button>
+                <button name="approved" class="btn" style="padding: 5px; background-color: green; border-radius: 5px; display: inline;" value="{{obj.id}}" class="btnstyle" type="submit">Approved</button>
               </form>
+      
             </div></td>
       
  
@@ -77,6 +91,7 @@
       
         </tbody>
       </table>
+      <a href="{% url 'logout' %}" style="float: right; background-color: rgb(255, 7, 7); padding: 5px; margin-top: 5px; color: white; border-radius: 5px; text-decoration: unset;">Logout</a>
 
 </div>
 
