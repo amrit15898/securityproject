@@ -56,6 +56,13 @@ div {
 <h3 style="text-align: center;">Add Appointment</h3>
 
 <div>
+  {% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
   <form action="" method="POST">
     {% csrf_token %}
    
@@ -63,7 +70,7 @@ div {
 
     <label for="country">GH DH</label>
     <select id="country" name="gh_dh">
-      <option selected>Select Users</option>
+      <option selected value="SelectGH">Select Users</option>
       {% for i in gh_dh %}
       <option value="{{i.id}}">{{i.name}}</option>
       {% endfor %}
@@ -71,16 +78,16 @@ div {
     </select>
     <label for="country">Tech Dir</label>
     <select id="country" name="tdir">
-      <option selected>Select Users</option>
+      <option selected value="SelectTD">Select Users</option>
       {% for dir in tech_dir %}
       <option value="{{dir.id}}">{{dir.name}}</option>
       {% endfor %}
                    
     </select>
    
-    <label for="country">Department</label>
+    <label for="country" >Department</label>
     <select id="country" name="department">
-      <option selected>Select Department</option>
+      <option selected value="SelectDep">Select Department</option>
             {% for department in departments %}
             <option value="{{department.id}}">{{department.name}}</option>
             {% endfor %}

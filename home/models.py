@@ -17,7 +17,8 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     position = models.CharField(max_length = 40, choices=postions)
     name = models.CharField(max_length=150, unique=True)
-    user_id = models.CharField(max_length=20, null=True, blank=True)
+    user_id = models.CharField(max_length=20, null=True, blank=True, unique=True)
+   
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
    

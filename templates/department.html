@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block style %}
+#department {
+    font-family: Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  #department td, #department th {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+  
+  #department tr:nth-child(even){background-color: #f2f2f2;}
+  
+  #department tr:hover {background-color: #ddd;}
+  
+  #department th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #04AA6D;
+    color: white;
+  }
+  .btn{
+    width: 100px;
+    background-color: red;
+  }
+
+{% endblock style %}
+{% block content %}
+<h1>
+  All Departments
+</h1>
+
+<table id="department">
+ 
+
+  <tr>
+    <td>Name</td>
+    <td>Action's</td>
+
+  </tr>
+  {% for department in departments %}
+  <tr>
+    <td>{{department.name}}</td>
+    <td><a href="" class="btn">Delete</a>
+      <a href="" class="btn">Update</a>
+    </td>
+    
+    {% endfor %}
+  </tr>
+</table>
+
+
+
+{% endblock content %}

@@ -2,18 +2,11 @@ from django.shortcuts import render, redirect
 from .models import *
 from .models import postions
 # Create your views here.
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 @login_required
 def post_appointment(request):
-    # try:
-    #     gh_dh = User.objects.using("default").filter(position = "GH/DH")
-    #     tech_dir = User.objects.using("default").filter(position = "Tech Director")
-    # except Exception as e:
-    #     print(e)
-    # try:
-    #     
-    # except Exception as e:
-    #     print(e)
+
     gh_dh = User.objects.filter(position = "GH/DH")
     tech_dir = User.objects.filter(position = "Tech Director")
     departments = Department.objects.all()
@@ -32,6 +25,18 @@ def post_appointment(request):
         tech_dir_clr = request.POST.get("tech_dir_clr")
         ass_dir_clr = request.POST.get("ass_dir_clr")
         dir_clr = request.POST.get("dir_clr")
+        
+        if gh_dh == "SelectGH":
+            messages.warning(request, "Please select Gh")
+            return redirect("/home/post-app")
+        
+        if tdir == "SelectTD":
+            messages.warning(request, "Please select tdir")
+            return redirect("/home/post-app")
+
+        if department == "SelectDep":
+            messages.warning(request, "Please the select the department")
+            return redirect("/home/post-app")
 
         final_gh_dh = User.objects.get(id=gh_dh)
         final_tech_dir = User.objects.get(id=tdir)
@@ -39,7 +44,7 @@ def post_appointment(request):
         obj = Appointment(gh_dh= final_gh_dh, tech_dir =final_tech_dir, description=description, department=dep, date=date)
         obj.r_user = request.user    
         obj.save(using="default")
-        obj.save(using="new")
+        obj.save(using="new", force_insert=True)
 
         return redirect("/home/show-emp-request")
       

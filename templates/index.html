@@ -187,6 +187,7 @@ input#openSidebarMenu{
           <table>
             <tr>
               <th>Name</th>
+              <th>Id</th>
               <th>Position</th>
               <th>Actions</th>
             </tr>
@@ -194,6 +195,7 @@ input#openSidebarMenu{
 
             <tr>
               <td>{{user.name}}</td>
+              <td>{{user.user_id}}</td>
               <td>{{user.position}}</td>
               <td><a href="{% url 'deleteuser' user.id %}" class="addbtn" style="background-color: rgb(204, 69, 69);">Delete</a> <a href="{% url 'updateuser' user.id %}" class="addbtn">Update</a></td>
             </tr>

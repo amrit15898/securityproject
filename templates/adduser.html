@@ -47,13 +47,22 @@ div {
 <h2 style="text-align: center;">Add User</h2>
 
 <div>
+  {% if messages %}
+<ul>
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
   <form action="" method="POST">
     {% csrf_token %}
     <label for="fname">Name</label>
     <input type="text" id="fname" name="name" placeholder="">
+    <label for="fname">Id</label>
+    <input type="text" id="fname" name="userid" placeholder="">
 
 
-    <label for="country">Country</label>
+    <label for="country">Position</label>
     <select id="country" name="position">
       <option selected>Select Position</option>
                     <option value="Director">Director</option>
