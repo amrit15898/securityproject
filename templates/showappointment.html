@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+
+{% block style %}
+
+#thtable {
+
+  border-collapse: collapse;
+  margin-left : auto;
+  margin-right : auto;
+  color: black;
+
+  width: 100%;
+  
+
+
+}
+
+#thtable td, #thtable th {
+  border: 3px solid #ddd;
+  padding: 8px;
+}
+
+#thtable tr:nth-child(even){background-color: #f2f2f2;}
+
+
+
+#thtable th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+
+  color: black;
+}
+.maindiv{
+  margin: 100px;
+}
+h3{
+  text-align: center;
+}    
+.form{
+  display: inline;
+} 
+#thtable tr:hover {
+  background-color: #fff;
+}
+{% endblock style %}
+{% block content %}
+<div class="maindiv">
+    <h3> Welcome {{request.user}}  <br> Position ==> {{request.user.position}}<h3>
+    <table id="thtable">
+      
+          <tr>
+      
+            <th>User</th>
+            <th>Department</th>
+            <th>Description</th>
+            <th>Date</th>
+            <th>GH/DH Clearance</th>
+            <th>TechDirector Clearanec</th>
+            <th>Associate Director</th>
+            <th>Director</th>
+      
+          </tr>
+ 
+        <tbody>
+          {% for obj in objs %}
+
+          <tr>
+            <th >{{obj.r_user}}</th>
+            <td>{{obj.department.name}}</td>
+            <td>{{obj.description}}</td>
+
+            <td>{{obj.date}}</td>
+            <td>{{obj.dh_gh_clr}}</td>
+            <td>{{obj.tech_dir_clr}}</td>
+            <td>{{obj.ass_dir_clr}}</td>
+            <td>{{obj.dir_clr}}</td>
+          
+ 
+          </tr>
+          {% endfor %}
+      
+        </tbody>
+      </table>
+      <a href="{% url 'logout' %}" style="float: right; background-color: rgb(255, 7, 7); padding: 5px; margin-top: 5px; color: white; border-radius: 5px; text-decoration: unset;">Logout</a>
+
+</div>
+
+
+{% endblock content %}

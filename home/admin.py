@@ -4,6 +4,8 @@ from .models import *
 @admin.register(User)
 class user_admin_register(admin.ModelAdmin):
     list_display = ["name", "position"]
+    
+    
 admin.site.register(Department)
 @admin.register(Appointment)
 class Appointment_Register(admin.ModelAdmin):

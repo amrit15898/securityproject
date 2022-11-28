@@ -87,7 +87,7 @@ h3{
       
       <a href="{% url 'logout' %}" style="float: right; background-color: rgb(255, 7, 7); padding: 5px; margin-top: 5px; color: white; border-radius: 5px; text-decoration: unset;">Logout</a>
     
-      <div>
+      <div style="margin-top: 25px; float: left;">
         <span>
             {% if users.has_previous %}
             <a href="/adminpanel/show-users?page={{users.previous_page_number}}" class="addbtn">Previous</a>

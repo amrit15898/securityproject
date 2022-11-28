@@ -202,6 +202,7 @@ input#openSidebarMenu{
           {% endfor %}
           </table>
           <a href="{% url 'adduser' %}" class="addbtn">Add User</a>
+          <a href="{% url 'showusers' %}" class="addbtn">Show User</a>
         </div>
         <div class="column">
             <h1 style="margin-top: 50px;">Department</h1>
@@ -215,12 +216,14 @@ input#openSidebarMenu{
 
             <tr>
               <td>{{department.name}}</td>
-              <td>Smith</td>
+              <td><a href="" class="addbtn">Delete</a>
+              <a class="addbtn" style="background-color: red;">Update</a></td>
               
             </tr>
             {% endfor %}
           </table>
           <a href="{% url 'adddep' %}" class="addbtn">Add Department</a>
+          <a href="{% url 'showdepartment' %}" class="addbtn">Show Department</a>
         </div>
       </div>
 

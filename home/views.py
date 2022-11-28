@@ -75,7 +75,7 @@ def show_request(request):
     if 'approved' in request.POST:
         value = request.POST.get("approved")
         obj = Appointment.objects.get(id=value)
-        print(obj)
+  
         position = request.user.position
        
         if (position == postions[3][1]):
@@ -98,20 +98,24 @@ def show_request(request):
       
         obj = Appointment.objects.get(id=value)
         print(obj)
+        print("eh chlya")
         position = request.user.position
        
         if (position == postions[3][1]):
+            print("gh called")
             obj.dh_gh_clr = "Not Approved"
             obj.save()
                     
         if position == postions[2][1]:
+            print("gh called")
             obj.tech_dir_clr = "Not Approved"
             obj.save()
         if position == postions[0][1]:
-            
+            print("Associate director")
             obj.dir_clr = "Not Approved"
             obj.save()
         if position == postions[1][1]:
+            print("director")
             obj.ass_dir_clr = "Not Approved"
             obj.save     
    
@@ -124,5 +128,8 @@ def employee_request(request):
     objs = Appointment.objects.filter(r_user = request.user)
     context = {"objs": objs}
     return render(request, "emprequest.html",context)
+
+
+
 
     

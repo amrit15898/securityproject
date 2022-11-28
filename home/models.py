@@ -12,18 +12,22 @@ postions = (("Director", "Director"),
 ("Employee", "Employee"))
 class Department(models.Model):
     name = models.CharField(max_length=50)
+    
+    def __str__(self) -> str:
+        return self.name
 
 class User(AbstractBaseUser, PermissionsMixin):
-
     position = models.CharField(max_length = 40, choices=postions)
-    name = models.CharField(max_length=150, unique=True)
-    user_id = models.CharField(max_length=20, null=True, blank=True, unique=True)
-   
+    name = models.CharField(max_length=150)
+    user_id = models.CharField(max_length=20, null=True, blank=True, unique=True)   
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
    
     objects = UserManager()
-    USERNAME_FIELD = 'name'
+    USERNAME_FIELD = 'user_id'
+    
+    def __str__(self) -> str:
+        return self.name
     # REQUIRED_FIELDS = ['department', 'position']
 status = (("Approved", "Approved"),("Not Approved", "Not Approved"), ("Pending", "Pending"))
 class Appointment(models.Model):
@@ -37,6 +41,9 @@ class Appointment(models.Model):
     tech_dir_clr = models.CharField(max_length=50, choices=status , null=True, blank=True, default="Pending")
     ass_dir_clr = models.CharField(max_length=50, choices=status , null=True, blank=True, default="Pending")
     dir_clr = models.CharField(max_length=50, choices=status , null=True, blank=True, default="Pending")
+    
+    def __str__(self) -> str:
+        return self.r_user.name
 
 
 

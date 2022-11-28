@@ -93,28 +93,35 @@ def add_user(request):
 
 def add_department(request):
     if request.method == "POST":
-        name = request.POST.get("name")
-        obj = Department(name=name)
-        obj = Department.objects.filter(name=name)
-        if obj:
-            messages.warning(request, "Depeartment already exits")
+        try:
+            name = request.POST.get("name")
+            print(name)
+            obj = Department.objects.filter(name=name)
+            if obj:
+                messages.warning(request, "Depeartment already exits")
 
-            return redirect("/")
-        obj.save(using="default")
-        obj.save(using="new", force_insert=True)   
+                return redirect("/")
+            obj = Department(name=name)
+            obj.save(using= "default")
+            obj.save(using="new", force_insert=True)   
+            
+        except Exception as e:
+            messages.warning("something went wrong", + str(e))
+            
+            return redirect("/adminpanel")
         return redirect("/adminpanel")
     return render(request, "adddepartment.html")
 
 def login_front_page(request):
     if request.method=="POST":
-        name = request.POST.get("name")
+        user_id = request.POST.get("id")
         password = request.POST.get("password")
-        obj = User.objects.filter(name=name).first()
+        obj = User.objects.filter(user_id=user_id).first()
         if not obj:
-            messages.info(request, "This user is not exit ")
+            messages.info(request, "This user_id is not exit ")
             return redirect("/")
-        print(name, password)
-        user = authenticate(request, name=name, password = password)
+      
+        user = authenticate(request, user_id=user_id, password = password)
         if user is not None:
             try:
                 login(request, user)
@@ -148,9 +155,10 @@ def show_full_department(request):
     return render(request, "department.html", context )
 
 
-def delete_departmetn(request,id):
+def delete_department(request,id):
     obj = Department.objects.get(id=id)
-    obj.delete()
+    obj.delete(using="default")
+    obj.delete(using="new")
     messages.success(request, "Department Deleted Successfully")
 
     return redirect("/")
@@ -159,14 +167,16 @@ def delete_departmetn(request,id):
 def show_users(request):
     users = User.objects.all().order_by('id')
     paginator = Paginator(users, 3)
-
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
- 
     context = {"users": page_obj}
     return render(request, "showalluser.html",context)
 
 
+def show_all_appointments(request):
+    objs = Appointment.objects.all()
+    context = {"objs": objs}
+    return render(request, "showappointment.html",context)
     
 
     
