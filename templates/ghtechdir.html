@@ -46,6 +46,13 @@ h3{
 {% endblock style %}
 {% block content %}
 <div class="maindiv">
+  {% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
     <h3> Welcome {{request.user}}  <br> Position ==> {{request.user.position}}<h3>
     <table id="thtable">
       
@@ -72,7 +79,7 @@ h3{
           <tr>
             <th >{{obj.r_user}}</th>
             <td>{{obj.department.name}}</td>
-            <td>{{obj.description|truncatechars:50 }} <a href="{% url 'showfull' %}">Read more</a></td>
+            <td>{{obj.description|truncatechars:50 }} <a href="{% url 'showfull' obj.id %}">Read more</a></td>
 
             <td>{{obj.date}}</td>
             <td>{{obj.dh_gh_clr}}</td>

@@ -42,17 +42,21 @@ def delete_user(request,id):
     
         user1.delete()
         user2.delete()
+        messages.success("user deleted successfully")
+
         return redirect("/adminpanel")
 
     except User.DoesNotExist:
+        messages.warning(request, "something went wrong user not deleted")
         return redirect("/adminpanel")
 
 def update_user(request,id):
-    user1 = User.objects.using("default").get(id=id)
-    user2 = User.objects.using("new").get(id=id)
-    context = {"user": user1}
 
     try:
+        user1 = User.objects.using("default").get(id=id)
+        user2 = User.objects.using("new").get(id=id)
+        context = {"user": user1}
+        
         if request.method =="POST":
             name = request.POST.get("name")
             position = request.POST.get("position")
@@ -178,7 +182,7 @@ def login_front_page(request):
                 if request.user.position == postions[5][1]:
                     return redirect("/home/security-panel")
                 else:
-                    return redirect("/home/show-request")
+                    return redirect("/home/shsfsdfow-readfafquest")
                 
             except Exception as e:
                 print("something went wrong")
@@ -237,8 +241,12 @@ def show_users(request):
 
 
 def show_all_appointments(request):
-    objs = Appointment.objects.all()
-    context = {"objs": objs}
+    appointments = Appointment.objects.all()
+    paginator = Paginator(appointments, 3)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+    
+    context = {"objs": page_obj}
     return render(request, "showappointment.html",context)
     
 

@@ -50,8 +50,8 @@ class Appointment(models.Model):
     
     
     
-    def __str__(self) -> str:
-        return self.r_user.name
+    # def __str__(self) -> str:
+    #     return self.r_user.name
 
 
 
