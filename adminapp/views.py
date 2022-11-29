@@ -7,12 +7,17 @@ from django.contrib.auth.decorators import login_required
 # Create your views here.\
 from django.http import HttpResponse
 from django.contrib import messages
+from django.http import HttpResponseRedirect
 
 @login_required
 def admin_panel(request):
     
     if request.user.is_staff == True:
         users = User.objects.all()
+        usercount = User.objects.all().count()
+        departmentcount = Department.objects.all().count()
+        appcount = Appointment.objects.all().count()
+
         
         paginator = Paginator(users, 4)
         page_no = request.GET.get("page")
@@ -21,6 +26,9 @@ def admin_panel(request):
         context = {}
         context["users"] = userDataFinal
         context["departments"] = departments
+        context["usercount"] = usercount
+        context["departmentcount"] = departmentcount
+        context["appcount"] = appcount
         return render(request, "index.html",context)
 
     return HttpResponse("this is page not visible for you")
@@ -44,37 +52,51 @@ def update_user(request,id):
     user2 = User.objects.using("new").get(id=id)
     context = {"user": user1}
 
-    if request.method =="POST":
-        name = request.POST.get("name")
-        position = request.POST.get("position")
-        password = request.POST.get("password")
-        user1.name = name 
-        user1.position = position
-        user1.password = password 
-        user2.name = name 
-        user2.position = position
-        user2.password = password 
-        user2.save(using="default")
-        user2.save(using="new")
-        return redirect("/adminpanel")
+    try:
+        if request.method =="POST":
+            name = request.POST.get("name")
+            position = request.POST.get("position")
+            password = request.POST.get("password")
+            user1.name = name 
+            user1.position = position
+            user1.password = password 
+            user2.name = name 
+            user2.position = position
+            user2.password = password 
+            user2.save(using="default")
+            user2.save(using="new")
+            return redirect("/adminpanel")
+    except Exception as e:
+        print(e)
+        messages.info("something went wrong")
+        return HttpResponseRedirect(request.path_info)
+
     return render(request, "updateuser.html",context)
 
 
 
 def add_user(request):
-    
-
+    departments = Department.objects.all()
+    context = {"departments": departments}
     if request.method=="POST":
         position = request.POST.get("position")
-        print(position)
+
         name = request.POST.get("name")
         password = request.POST.get("password")
         user_id = request.POST.get("userid")
         
         obj = User.objects.filter(user_id=user_id).first()
+
+        if not name:
+            messages.info(request, "name should  not be blank")
+            return redirect("/adminpanel/addffadfsfdsf")
         if obj:
-            print("this id is already exits")
+         
             messages.info(request, "User id is exits please enter a different id")
+            return redirect("/adminpanel/addffadfsfdsf")
+
+        if position == "selectposition":
+            messages.info(request, "please select the position")
             return redirect("/adminpanel/addffadfsfdsf")
         
 
@@ -88,7 +110,7 @@ def add_user(request):
         return redirect("/adminpanel")
        
 
-    return render(request, "adduser.html")
+    return render(request, "adduser.html", context)
 
 
 def add_department(request):
@@ -112,6 +134,27 @@ def add_department(request):
         return redirect("/adminpanel")
     return render(request, "adddepartment.html")
 
+def update_department(request, id):
+    dep1 = Department.objects.using("default").get(id=id)
+    dep2 = Department.objects.using("new").get(id=id)
+    context = {
+        "dep": dep1
+
+    }
+    if request.method=="POST":
+        name = request.POST.get("name")
+
+        dep1.name= name
+        dep2.name = name 
+        dep1.save()
+        dep2.save()
+
+    return render(request, "adddepartment.html", context)
+
+
+
+    
+
 def login_front_page(request):
     if request.method=="POST":
         user_id = request.POST.get("id")
@@ -131,6 +174,9 @@ def login_front_page(request):
                     return redirect("/adminpanel")      
                 if request.user.position == postions[4][1]:
                     return redirect("/home/post-app")
+
+                if request.user.position == postions[5][1]:
+                    return redirect("/home/security-panel")
                 else:
                     return redirect("/home/show-request")
                 
@@ -156,16 +202,33 @@ def show_full_department(request):
 
 
 def delete_department(request,id):
-    obj = Department.objects.get(id=id)
-    obj.delete(using="default")
-    obj.delete(using="new")
+    try:
+
+        obj1 = Department.objects.using("default").get(id=id)
+
+        obj2 = Department.objects.using("new").get(id=id)
+        obj1.delete()
+        obj2.delete()
+
+    except Exception as e:
+        print(e)
+        messages.info(request, "something went wrong")
+        return redirect("/adminpanel")
     messages.success(request, "Department Deleted Successfully")
 
-    return redirect("/")
+    return redirect("/adminpanel")
 
 
 def show_users(request):
-    users = User.objects.all().order_by('id')
+    try:
+        users = User.objects.using("default").order_by('id')
+
+    except Exception as e:
+        print(e)
+    try:
+        users = User.objects.using("new").order_by("id")
+    except Exception as e:
+        print(e)
     paginator = Paginator(users, 3)
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)

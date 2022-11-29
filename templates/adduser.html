@@ -64,13 +64,24 @@ div {
 
     <label for="country">Position</label>
     <select id="country" name="position">
-      <option selected>Select Position</option>
+      <option selected value="selectposition">Select Position</option>
                     <option value="Director">Director</option>
                     <option value="Associate Director">Associate Director</option>
                     <option value="Tech Director">Tech Director</option>
                     <option value="GH/DH">GH/DH</option>
                     <option value="Employee">Employee</option>
+                    <option value="Security officer">Security officer</option>
     </select>
+    {% comment %} <label for="country">Department</label>
+    <select id="country" name="position">
+      <option selected value="selectposition">Select Department</option>
+
+                    {% for department in departments %}
+                    <option value="{{department.id}}">{{department.name}}</option>
+                    {% endfor %}
+              
+                    
+    </select> {% endcomment %}
 
     
     <label for="lname">Password</label>

@@ -60,6 +60,10 @@ h3{
             <th>Associate Director</th>
             <th>Director</th>
             <th>Action</th>
+            <th>Send SO</th>
+            {% if request.user.position == "Director" %}
+            <th>Cancel</th>
+            {% endif %}
           </tr>
  
         <tbody>
@@ -68,7 +72,7 @@ h3{
           <tr>
             <th >{{obj.r_user}}</th>
             <td>{{obj.department.name}}</td>
-            <td>{{obj.description}}</td>
+            <td>{{obj.description|truncatechars:50 }} <a href="{% url 'showfull' %}">Read more</a></td>
 
             <td>{{obj.date}}</td>
             <td>{{obj.dh_gh_clr}}</td>
@@ -88,9 +92,30 @@ h3{
               </form>
       
             </div></td>
+
+            {% else %}
+
+            <td>
+              Action already performed
+            </td>
             
             
             
+            {% endif %}
+            <td>
+              {% if  request.user.position == "GH/DH" and obj.dir_clr == "Approved"  %}
+              <form method="POST" class="form">
+                {% csrf_token %}
+                <button name="forward" class="btn" style="padding: 5px; background-color: green; border-radius: 5px; display: inline;  width:100px; margin:5px;" value="{{obj.id}}" class="btnstyle" type="submit">Forward SO</button>
+              </form>
+
+              {% endif %}
+
+            </td>
+            {% if request.user.position == "Director" %}
+            <td>
+              <a href="{% url 'cancelrequest' obj.id %}" style="padding: 5px; background-color: green; border-radius: 5px; display: inline;  width:100px; margin:5px;">Cancel</a>
+            </td>
             {% endif %}
       
  

@@ -44,17 +44,20 @@ h3{
   background-color: #fff;
 }
 .addbtn{
-    padding:10px;
-    background-color: green;
+    padding:7px;
+    background-color: #327fa8;
     color: black;
-    margin: 7px;
+   
     text-decoration : none;
-    border-radius: 10px;
+    border-radius: 8px;
   }
 {% endblock style %}
 {% block content %}
 <div class="maindiv">
+  <div>
+    
     <h3> Welcome {{request.user}}  <br> Position ==> {{request.user.position}}<h3>
+  </div>
     <table id="thtable">
       
           <tr>
@@ -73,7 +76,7 @@ h3{
             <th >{{user.name}}</th>
             <td>{{user.user_id}}</td>
             <td>{{user.position}}</td>
-        <td><a href="{% url 'deleteuser' user.id %}" class="addbtn" style="background-color: rgb(204, 69, 69);">Delete</a> <a href="{% url 'updateuser' user.id %}" class="addbtn">Update</a></td>
+        <td><a href="{% url 'deleteuser' user.id %}" class="addbtn" style=";">Delete</a> <a href="{% url 'updateuser' user.id %}" class="addbtn">Update</a></td>
 
             
            
@@ -85,7 +88,7 @@ h3{
         </tbody>
       </table>
       
-      <a href="{% url 'logout' %}" style="float: right; background-color: rgb(255, 7, 7); padding: 5px; margin-top: 5px; color: white; border-radius: 5px; text-decoration: unset;">Logout</a>
+      <a href="{% url 'logout' %}" style="float: right; background-color: #327fa8; padding: 5px; margin-top: 5px; color: white; border-radius: 5px; text-decoration: unset; color:black;">Logout</a>
     
       <div style="margin-top: 25px; float: left;">
         <span>
@@ -98,8 +101,12 @@ h3{
             <a href="/adminpanel/show-users?page={{users.next_page_number}}" class="addbtn">Next</a>
 
             {% endif %}
+            <a href="{% url 'adduser' %}" class="addbtn" style="margin-left: 20px;">Add User</a>
+            <a href="{% url 'adminpanel' %}" class="addbtn" style="padding:7px; border-radius: 10px;">DashBoard</a>
         </span>
+      
       </div> 
+     
 </div>
 
 

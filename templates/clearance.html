@@ -50,6 +50,12 @@ div {
   width: 70%;
   margin: auto;
 }
+
+.longfield{
+  height: 100px;
+  width: 100%;
+}
+
 {% endblock style %}
 {% block content %}
 
@@ -98,7 +104,7 @@ div {
     <label for="lname">DateTime</label>
     <input type="datetime-local" id="lname" name="date" placeholder="">
     <label for="lname">Description</label>
-    <input type="text" id="lname" name="description" placeholder="">
+    <textarea type="text" class="longfield" name="description" placeholder=""></textarea>
   
     <input type="submit" value="Submit">
   </form>

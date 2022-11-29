@@ -9,7 +9,8 @@ postions = (("Director", "Director"),
 ("Associate Director","Associate Director"),
 ("Tech Director","Tech Director"),
 ("GH/DH ","GH/DH"),
-("Employee", "Employee"))
+("Employee", "Employee"),
+("Security officer", "Security officer"))
 class Department(models.Model):
     name = models.CharField(max_length=50)
     
@@ -19,8 +20,11 @@ class Department(models.Model):
 class User(AbstractBaseUser, PermissionsMixin):
     position = models.CharField(max_length = 40, choices=postions)
     name = models.CharField(max_length=150)
+    department = models.ForeignKey(Department, on_delete=models.CASCADE, null=True, blank=True)
+    image = models.ImageField(upload_to="static/images", null=True, blank=True)
     user_id = models.CharField(max_length=20, null=True, blank=True, unique=True)   
     is_staff = models.BooleanField(default=False)
+
     is_active = models.BooleanField(default=True)
    
     objects = UserManager()
@@ -41,6 +45,10 @@ class Appointment(models.Model):
     tech_dir_clr = models.CharField(max_length=50, choices=status , null=True, blank=True, default="Pending")
     ass_dir_clr = models.CharField(max_length=50, choices=status , null=True, blank=True, default="Pending")
     dir_clr = models.CharField(max_length=50, choices=status , null=True, blank=True, default="Pending")
+    send_security = models.BooleanField(default=False, null=True, blank=True)
+    tem_id = models.UUIDField(default=uuid.uuid4())
+    
+    
     
     def __str__(self) -> str:
         return self.r_user.name

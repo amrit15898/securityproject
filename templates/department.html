@@ -9,13 +9,11 @@
   
   #department td, #department th {
     border: 1px solid #ddd;
-    padding: 8px;
+    padding: 12px;
+
   }
   
-  #department tr:nth-child(even){background-color: #f2f2f2;}
-  
-  #department tr:hover {background-color: #ddd;}
-  
+
   #department th {
     padding-top: 12px;
     padding-bottom: 12px;
@@ -23,35 +21,58 @@
     background-color: #04AA6D;
     color: white;
   }
-  .btn{
+ .btn{
     width: 100px;
     background-color: red;
+  } 
+
+  div{
+
+    width: 85%;
+    margin: auto;
+  
+  } 
+
+  .addbtn{
+    background-color: #327fa8; 
+    text-decoration: none;
+    color : black;
+
   }
 
 {% endblock style %}
 {% block content %}
-<h1>
-  All Departments
-</h1>
+<div>
 
-<table id="department">
- 
-
-  <tr>
-    <td>Name</td>
-    <td>Action's</td>
-
-  </tr>
-  {% for department in departments %}
-  <tr>
-    <td>{{department.name}}</td>
-    <td><a href="{% url 'deletedepartment' department.id %}" class="btn">Delete</a>
-      <a href="" class="btn">Update</a>
-    </td>
+  <h1 style="text-align: center;">
+    All Departments
+  </h1>
+  
+  <div>
+    <table id="department">
+   
+  
+      <tr>
+        <td>Name</td>
+        <td>Action's</td>
     
-    {% endfor %}
-  </tr>
-</table>
+      </tr>
+      {% for department in departments %}
+      <tr>
+        <td>{{department.name}}</td>
+        <td><a href="{% url 'deletedepartment' department.id %}" class="addbtn" style="padding: 8px; border-radius: 8px">Delete</a>
+         <a href="" class="addbtn" style= "padding:8px; border-radius: 8px">Update</a> 
+        </td>
+        
+        {% endfor %}
+      </tr>
+    </table>
+  </div>
+  <div style="margin-top:20px;">
+    <a href="{% url 'adddep' %}" class="addbtn" style="padding:8px; border-radius: 8px;">Add Department</a>
+    <a href="{% url 'adminpanel' %}" class="addbtn" style="padding:8px; border-radius: 8px;">DashBoard</a>
+  </div>
+</div>
 
 
 
