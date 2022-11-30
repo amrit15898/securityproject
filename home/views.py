@@ -55,10 +55,19 @@ def post_appointment(request):
         dep = Department.objects.get(id=department)
         obj = Appointment(gh_dh= final_gh_dh, tech_dir =final_tech_dir, description=description, department=dep, date=date)
         obj.r_user = request.user    
-        obj.save(using="default")
-        obj.save(using="new", force_insert=True)
+        try:
+            obj.save(using="default")
+        
+        except Exception as e:
+            print("ede ch nhi hoya")
 
-        return redirect("/home/show-emp-request")
+        try:
+            obj.save(using="new", force_insert=True)
+        except Exception as e:
+            print("chlya")
+
+
+        return redirect("/home/seret")
       
     return render(request, "clearance.html", context)
 
@@ -207,7 +216,15 @@ def employee_request(request):
 
 
 def show_full_request(request,id):
-    obj = Appointment.objects.get(id=id)
+    try:    
+        obj = Appointment.objects.using("default").get(id=id)
+    except Exception as e:
+        print(e)
+    try:    
+        obj = Appointment.objects.using("new").get(id=id)
+    except Exception as e:
+        print(e)
+
     context = {"obj": obj}
     return render(request, "fulldetail.html", context)
 
@@ -222,20 +239,30 @@ def security_officer(request):
     return render(request, "security.html", context)
 
 
-
+@login_required
 def full_security_detail(request,id):
     try:
         obj = Appointment.objects.get(id=id)
         context = {"obj": obj}
-
-
     except Exception as e:
         messages.warning(request, "something went wrong")
         return redirect("/home/security-panel")
+    
+    if "forward" in request.POST:
+            value = request.POST.get("forward")          
+            obj1 = Appointment.objects.using("default").get(id=value)
+            obj2 = Appointment.objects.using("new").get(id=value)         
+            
+            
+            obj1.send_security = True
+            obj2.send_security = True
+            obj1.save()
+            obj2.save()
+            
 
     return render(request, "fullsecurity.html", context)
 
-
+@login_required
 def cancel_request(request, id):
     try:
         obj1 = Appointment.objects.using("default").get(id=id)
@@ -247,8 +274,24 @@ def cancel_request(request, id):
     except Exception as e:
         messages.error(request, "something went wrong")
 
-    return redirect("/home/show-request")
+    return redirect("/home/shsfsdfow-readfafquest")
     
+
+@login_required   
+def cleare_clearance_list(request):
+    try:
+        objs = Appointment.objects.using("default").filter(gh_dh__name= request.user, dir_clr="Approved")
+    except Exception as e:
+        pass
+    try:
+        objs = Appointment.objects.using("new").filter(gh_dh__name= request.user, dir_clr="Approved")
+    except Exception as e:
+        pass
+    
+    context = {"objs": objs}
+    
+    return render(request, "cleard.html", context)
+
 
 
 

@@ -4,13 +4,14 @@ from home.views import *
 
 urlpatterns = [
 
-    path("post-app", post_appointment, name="appointment"),
+    path("postapntent", post_appointment, name="appointment"),
     path("shsfsdfow-readfafquest", show_request, name="showrequest"),
-    path("show-emp-request", employee_request, name="employeerequest"),
-    path("show-full-request/<id>", show_full_request, name="showfull"),
-    path("security-panel", security_officer, name="securitypanel"),
-    path("full-detail/<id>", full_security_detail, name="fulldetail"),
-    path("cancel-request/<id>", cancel_request, name="cancelrequest")
+    path("seret", employee_request, name="employeerequest"),
+    path("sfr/312/dfad/<id>", show_full_request, name="showfull"),
+    path("sesdfpnel", security_officer, name="securitypanel"),
+    path("fd452de/<id>", full_security_detail, name="fulldetail"),
+    path("ccdnl1e/23st/<id>", cancel_request, name="cancelrequest"),
+    path("clrrkests", cleare_clearance_list, name="clearlist")
 
 
 ]

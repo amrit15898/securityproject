@@ -68,7 +68,7 @@ h3{
           <tr>
             <th >{{obj.r_user}}</th>
             <td>{{obj.department.name}}</td>
-            <td>{{obj.description}}</td>
+            <td>{{obj.description|truncatechars:50}}</td>
 
             <td>{{obj.date}}</td>
             <td>{{obj.dh_gh_clr}}</td>

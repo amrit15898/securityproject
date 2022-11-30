@@ -13,12 +13,19 @@ from django.http import HttpResponseRedirect
 def admin_panel(request):
     
     if request.user.is_staff == True:
-        users = User.objects.all()
-        usercount = User.objects.all().count()
-        departmentcount = Department.objects.all().count()
-        appcount = Appointment.objects.all().count()
-
+        try:
+            users = User.objects.using("default")
+            usercount = User.objects.using("default").count()
+        except Exception as e:
+            pass
         
+        try:
+            
+            departmentcount = Department.objects.using("new").count()
+            appcount = Appointment.objects.using("new").count()       
+        except Exception as e:
+            print(e)
+            
         paginator = Paginator(users, 4)
         page_no = request.GET.get("page")
         userDataFinal = paginator.get_page(page_no)
@@ -30,49 +37,59 @@ def admin_panel(request):
         context["departmentcount"] = departmentcount
         context["appcount"] = appcount
         return render(request, "index.html",context)
-
     return HttpResponse("this is page not visible for you")
 
 
 def delete_user(request,id):
     try:
 
-        user1 = User.objects.using("default").get(id=id)
-        user2 = User.objects.using("new").get(id=id)
-    
-        user1.delete()
-        user2.delete()
-        messages.success("user deleted successfully")
+        try:
+            user1 = User.objects.using("default").get(id=id)
+            user1.delete()
+            messages.success(request, "user deleted successfully")
+            return redirect("/adminpanel/suhrs")    
+        except Exception as e:         
+            pass       
+        try:
+            user2 = User.objects.using("new").get(id=id)
+            user2.delete()
+            messages.success(request, "user deleted successfully")
+            return redirect("/adminpanel/suhrs")    
+        except Exception as e:
+            pass
 
-        return redirect("/adminpanel")
 
     except User.DoesNotExist:
         messages.warning(request, "something went wrong user not deleted")
-        return redirect("/adminpanel")
+        return redirect("/adminpanel/suhrs")
 
 def update_user(request,id):
-
     try:
         user1 = User.objects.using("default").get(id=id)
         user2 = User.objects.using("new").get(id=id)
-        context = {"user": user1}
-        
+        context = {"user": user1}       
         if request.method =="POST":
             name = request.POST.get("name")
             position = request.POST.get("position")
-            password = request.POST.get("password")
+            # password = request.POST.get("password")
             user1.name = name 
             user1.position = position
-            user1.password = password 
+            # user1.set_password(password) 
             user2.name = name 
             user2.position = position
-            user2.password = password 
-            user2.save(using="default")
-            user2.save(using="new")
+            # user2.set_password(password)
+            try:
+                user2.save(using="default")
+            except Exception as e:
+                pass
+            try:
+                user2.save(using="new")
+            except Exception as e:
+                pass
             return redirect("/adminpanel")
     except Exception as e:
         print(e)
-        messages.info("something went wrong")
+        messages.info(request, "something went wrong")
         return HttpResponseRedirect(request.path_info)
 
     return render(request, "updateuser.html",context)
@@ -103,19 +120,27 @@ def add_user(request):
             messages.info(request, "please select the position")
             return redirect("/adminpanel/addffadfsfdsf")
         
-
+        if not password:
+            messages.info(request, "password required")
+            return redirect("/adminpanel/addffadfsfdsf")
+        
+        if not user_id:
+            messages.info(request, "please enter a id")
+            return redirect("/adminpanel/addffadfsfdsf")
 
         obj = User(position=position, name=name, user_id =user_id)
 
         obj.set_password(password)
-        obj.save(using='default')
-        obj.save(using='new', force_insert=True)
-
+        try:
+            obj.save(using='default')
+        except Exception as e:
+            pass       
+        try:
+            obj.save(using='new', force_insert=True)
+        except Exception as e:
+            pass
         return redirect("/adminpanel")
-       
-
     return render(request, "adduser.html", context)
-
 
 def add_department(request):
     if request.method == "POST":
@@ -125,12 +150,16 @@ def add_department(request):
             obj = Department.objects.filter(name=name)
             if obj:
                 messages.warning(request, "Depeartment already exits")
-
                 return redirect("/")
             obj = Department(name=name)
-            obj.save(using= "default")
-            obj.save(using="new", force_insert=True)   
-            
+            try:
+                obj.save(using= "default")              
+            except Exception as e:
+                pass
+            try:               
+                obj.save(using="new", force_insert=True)   
+            except Exception as e:
+                print(e)           
         except Exception as e:
             messages.warning("something went wrong", + str(e))
             
@@ -143,16 +172,19 @@ def update_department(request, id):
     dep2 = Department.objects.using("new").get(id=id)
     context = {
         "dep": dep1
-
     }
     if request.method=="POST":
         name = request.POST.get("name")
-
         dep1.name= name
         dep2.name = name 
-        dep1.save()
-        dep2.save()
-
+        try:
+            dep1.save()        
+        except Exception as e:
+            pass
+        try:        
+            dep2.save()
+        except Exception as e:
+            pass
     return render(request, "adddepartment.html", context)
 
 
@@ -166,8 +198,7 @@ def login_front_page(request):
         obj = User.objects.filter(user_id=user_id).first()
         if not obj:
             messages.info(request, "This user_id is not exit ")
-            return redirect("/")
-      
+            return redirect("/")    
         user = authenticate(request, user_id=user_id, password = password)
         if user is not None:
             try:
@@ -177,42 +208,51 @@ def login_front_page(request):
                 if request.user.is_superuser == True:
                     return redirect("/adminpanel")      
                 if request.user.position == postions[4][1]:
-                    return redirect("/home/post-app")
+                    return redirect("/home/postapntent")
 
                 if request.user.position == postions[5][1]:
-                    return redirect("/home/security-panel")
+                    return redirect("/home/sesdfpnel")
                 else:
                     return redirect("/home/shsfsdfow-readfafquest")
                 
             except Exception as e:
                 print("something went wrong")
-                messages.error(request, "please check your crediantles")
-                
+                messages.error(request, "please check your crediantles")             
         else:
-            messages.error(request, "Enter a correct password")
-       
+            messages.error(request, "Enter a correct password")    
     return render(request, "login.html")
 
 def logout_handle(request):
     logout(request)
     return redirect("/adminpanel/login")
 
-
 def show_full_department(request):
-    departments = Department.objects.all()
+    try:
+        departments = Department.objects.using("default")       
+    except Exception as e:
+        pass    
+    try:
+        departments = Department.objects.using("new")       
+    except Exception as e:
+        pass
     context = {"departments": departments}
-
     return render(request, "department.html", context )
 
 
 def delete_department(request,id):
     try:
-
-        obj1 = Department.objects.using("default").get(id=id)
-
-        obj2 = Department.objects.using("new").get(id=id)
-        obj1.delete()
-        obj2.delete()
+        try:
+            obj1 = Department.objects.using("default").get(id=id)
+            obj1.delete()         
+        except Exception as e:
+            pass  
+        try:
+            obj2 = Department.objects.using("new").get(id=id)
+            obj2.delete()
+        except Exception as e:
+            pass
+        
+        
 
     except Exception as e:
         print(e)
@@ -226,7 +266,6 @@ def delete_department(request,id):
 def show_users(request):
     try:
         users = User.objects.using("default").order_by('id')
-
     except Exception as e:
         print(e)
     try:
@@ -241,11 +280,18 @@ def show_users(request):
 
 
 def show_all_appointments(request):
-    appointments = Appointment.objects.all()
+    try:       
+        appointments = Appointment.objects.using("default")
+
+    except Exception as e:
+        pass
+    try:
+        appointments = Appointment.objects.using("new")
+    except Exception as e:
+        print(e)
     paginator = Paginator(appointments, 3)
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
-    
     context = {"objs": page_obj}
     return render(request, "showappointment.html",context)
     

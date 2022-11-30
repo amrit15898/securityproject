@@ -7,7 +7,7 @@
   border-collapse: collapse;
   margin-left : auto;
   margin-right : auto;
-  color: black;
+ 
 
   width: 100%;
   
@@ -32,7 +32,10 @@
   color: black;
 }
 .maindiv{
-  margin: 100px;
+  
+  width: 80%;
+  margin:auto;
+  margin-top:50px;
 }
 h3{
   text-align: center;
@@ -42,6 +45,14 @@ h3{
 } 
 #thtable tr:hover {
   background-color: #fff;
+}
+.addbtn{
+  padding:10px;
+  background-color: #017BFF;
+  color: white;
+  margin: 5px;
+  text-decoration : none;
+  border-radius: 8px;
 }
 {% endblock style %}
 {% block content %}
@@ -53,85 +64,96 @@ h3{
     {% endfor %}
 </ul>
 {% endif %}
-    <h3> Welcome {{request.user}}  <br> Position ==> {{request.user.position}}<h3>
-    <table id="thtable">
-      
-          <tr>
-      
-            <th>User</th>
-            <th>Department</th>
-            <th>Description</th>
-            <th>Date</th>
-            <th>GH/DH Clearance</th>
-            <th>TechDirector Clearanec</th>
-            <th>Associate Director</th>
-            <th>Director</th>
-            <th>Action</th>
-            <th>Send SO</th>
-            {% if request.user.position == "Director" %}
-            <th>Cancel</th>
-            {% endif %}
-          </tr>
- 
-        <tbody>
-          {% for obj in objs %}
+     <div>
+      <h3> Welcome {{request.user}}  <br> Position ==> {{request.user.position}}<h3>
+        <table id="thtable">
+          
+              <tr>
+          
+                <th>User</th>
+                <th>Department</th>
+                <th>Description</th>
+                <th>Date</th>
+                <th>GH/DH Clearance</th>
+                <th>TechDirector Clearanec</th>
+                <th>Associate Director</th>
+                <th>Director</th>
+                <th>Action</th>
+                {% for obj in objs %}
+                {% if  request.user.position == "GH/DH" and obj.dir_clr == "Approved"%}
+             
+                <th>Send SO</th>
 
-          <tr>
-            <th >{{obj.r_user}}</th>
-            <td>{{obj.department.name}}</td>
-            <td>{{obj.description|truncatechars:50 }} <a href="{% url 'showfull' obj.id %}">Read more</a></td>
-
-            <td>{{obj.date}}</td>
-            <td>{{obj.dh_gh_clr}}</td>
-            <td>{{obj.tech_dir_clr}}</td>
-            <td>{{obj.ass_dir_clr}}</td>
-            <td>{{obj.dir_clr}}</td>
-            {% if request.user.position == "GH/DH"  and obj.dh_gh_clr == "Pending" or request.user.position == "Tech Director" and obj.tech_dir_clr == "Pending" and obj.dh_gh_clr != "Pending" or request.user.position == "Associate Director" and obj.ass_dir_clr == "Pending" or request.user.position == "Director" and obj.dir_clr == "Pending" %}
-            <td><div>
-              
-              <form action="" method="post" class="form">
-                {% csrf_token %}
-                <button name="napproved" class="btn" style="padding: 5px; background-color: red; border-radius: 5px; display: inline; width:100px;" value="{{obj.id}}"  type="submit">Not Approved</button>
-              </form>
-              <form method="POST" class="form">
-                {% csrf_token %}
-                <button name="approved" class="btn" style="padding: 5px; background-color: green; border-radius: 5px; display: inline;  width:100px; margin:5px;" value="{{obj.id}}" class="btnstyle" type="submit">Approved</button>
-              </form>
-      
-            </div></td>
-
-            {% else %}
-
-            <td>
-              Action already performed
-            </td>
-            
-            
-            
-            {% endif %}
-            <td>
-              {% if  request.user.position == "GH/DH" and obj.dir_clr == "Approved"  %}
-              <form method="POST" class="form">
-                {% csrf_token %}
-                <button name="forward" class="btn" style="padding: 5px; background-color: green; border-radius: 5px; display: inline;  width:100px; margin:5px;" value="{{obj.id}}" class="btnstyle" type="submit">Forward SO</button>
-              </form>
-
-              {% endif %}
-
-            </td>
-            {% if request.user.position == "Director" %}
-            <td>
-              <a href="{% url 'cancelrequest' obj.id %}" style="padding: 5px; background-color: green; border-radius: 5px; display: inline;  width:100px; margin:5px;">Cancel</a>
-            </td>
-            {% endif %}
-      
- 
-          </tr>
-          {% endfor %}
-      
-        </tbody>
-      </table>
-      <a href="{% url 'logout' %}" style="float: right; background-color: rgb(255, 7, 7); padding: 5px; margin-top: 5px; color: white; border-radius: 5px; text-decoration: unset;">Logout</a>
+                {% endif %}
+                {% endfor %}
+                {% if request.user.position == "Director" %}
+                <th>Cancel</th>
+                {% endif %}
+              </tr>
+     
+            <tbody>
+              {% for obj in objs %}
+    
+              <tr>
+                <th >{{obj.r_user}}</th>
+                <td>{{obj.department.name}}</td>
+                <td>{{obj.description|truncatechars:50 }} <a href="{% url 'showfull' obj.id %}">Read more</a></td>
+    
+                <td>{{obj.date}}</td>
+                <td>{{obj.dh_gh_clr}}</td>
+                <td>{{obj.tech_dir_clr}}</td>
+                <td>{{obj.ass_dir_clr}}</td>
+                <td>{{obj.dir_clr}}</td>
+                {% if request.user.position == "GH/DH"  and obj.dh_gh_clr == "Pending" or request.user.position == "Tech Director" and obj.tech_dir_clr == "Pending" and obj.dh_gh_clr != "Pending" or request.user.position == "Associate Director" and obj.ass_dir_clr == "Pending" and obj.tech_dir_clr != "Pending" or request.user.position == "Director" and obj.dir_clr == "Pending" %}
+                <td><div>
+                  
+                  <form action="" method="post" class="form">
+                    {% csrf_token %}
+                    <button name="napproved" class="addbtn" style="background-color:#DC3545" value="{{obj.id}}"  type="submit">Not Approved</button>
+                  </form>
+                  <form method="POST" class="form">
+                    {% csrf_token %}
+                    <button name="approved" class="addbtn" style="" value="{{obj.id}}" class="btnstyle" type="submit">Approved</button>
+                  </form>
+          
+                </div></td>
+    
+                {% else %}
+    
+                <td>
+                  Action already performed
+                </td>
+                
+                
+                
+                {% endif %}
+                <td>
+                  {% if  request.user.position == "GH/DH" and obj.dir_clr == "Approved"  %}
+                  <form method="POST" class="form">
+                    {% csrf_token %}
+                    <button name="forward" class="addbtn" style="" value="{{obj.id}}" class="btnstyle" type="submit">Forward SO</button>
+                  </form>
+    
+                  {% endif %}
+    
+                </td>
+                {% if request.user.position == "Director" %}
+                <td>
+                  <a href="{% url 'cancelrequest' obj.id %}" style="" class="addbtn">Cancel</a>
+                </td>
+                {% endif %}
+          
+     
+              </tr>
+              {% endfor %}
+          
+            </tbody>
+          </table>
+          <a href="{% url 'logout' %}" style="float: right; background-color:#DC3545; margin-top:10px;" class="addbtn">Logout</a>
+          {% if request.user.position == "GH/DH" %}
+          <a href="{% url 'clearlist' %}" style="float: right; background-color:#DC3545; margin-top:10px;" class="addbtn">Clear Clearance</a>
+          {% endif %}
+     </div>
 
 </div>
 

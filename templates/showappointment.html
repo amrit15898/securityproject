@@ -51,6 +51,7 @@ h3{
   text-decoration : none;
   border-radius: 8px;
   margin-top: 15px;
+  margin-right:10px;
 }
 {% endblock style %}
 {% block content %}
@@ -77,7 +78,7 @@ h3{
           <tr>
             <th >{{obj.r_user}}</th>
             <td>{{obj.department.name}}</td>
-            <td>{{obj.description}}</td>
+            <td>{{obj.description|truncatechars:30}} <a href="{% url 'showfull' obj.id %}">Read More</a></td>
 
             <td>{{obj.date}}</td>
             <td>{{obj.dh_gh_clr}}</td>
@@ -93,7 +94,7 @@ h3{
       </table>
      
 
-      <div style="margin-top: 25px; float: left;">
+      <div style="float: left;">
         <div>
           <span>
             {% if objs.has_previous %}

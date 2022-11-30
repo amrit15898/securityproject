@@ -10,12 +10,13 @@ width: 100%;
 }
 .card{
 padding: 25px;
-width: 170px;
+width: 190px;
 height: 70px;
 border-radius: 10px;
 box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
 display: inline-block;
 margin-right: 20px;
+background-color: 
 
 }
 
@@ -33,35 +34,40 @@ margin: auto;
 body{
   margin: 0px;
 }
+.main{
+  width: 70%;
+  margin: auto;
+}
 
 {% endblock style %}
 {% block content %}
 
-<div >
+<div>
   <div id="navbar">
-
-
   </div>
-  <div class="carddiv">
-    <a href="{% url 'showusers' %}">
-      <div class="card">
-        <h2 class="text">Users <sup style="color: black;">{{usercount}}</sup></h2>
-      </div>
-    </a>
-    <a href="{% url 'showdepartment' %}">
-      <div class="card">
-        <h2 class="text">Department <sup style="color: black;">{{departmentcount}}</sup></h2>
-      </div>
-    </a>
-    <a href="{% url 'showapp' %}">
-      <div class="card">
-        <h2 class="text">Appointment <sup style="color: black;">{{appcount}}</sup></h2>
-      </div>
-    </a>
-  </div>
-  <div style="margin-top:20px;">
-    <a href="{% url 'logout' %}" class="addbtn"
-    style="background-color: blue; border-radius: 10px; padding: 10px; margin-top: 20px; margin-left: 220px ; color: white; text-decoration: none;">Logout</a>
+  <div class="main">
+ 
+    <div class="carddiv">
+      <a href="{% url 'showusers' %}">
+        <div class="card">
+          <h2 class="text">Users <sup style="color: black;">{{usercount}}</sup></h2>
+        </div>
+      </a>
+      <a href="{% url 'showdepartment' %}">
+        <div class="card">
+          <h2 class="text">Department <sup style="color: black;">{{departmentcount}}</sup></h2>
+        </div>
+      </a>
+      <a href="{% url 'showapp' %}">
+        <div class="card">
+          <h2 class="text">Appointment <sup style="color: black;">{{appcount}}</sup></h2>
+        </div>
+      </a>
+    </div>
+    <div style="margin-top:20px;">
+      <a href="{% url 'logout' %}" class="addbtn"
+      style="background-color: blue; border-radius: 10px; padding: 10px; margin-top: 20px; margin-left: 220px ; color: white; text-decoration: none;">Logout</a>
+    </div>
   </div>
 </div>
 

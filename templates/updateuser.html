@@ -64,8 +64,8 @@ div {
     </select>
 
     
-    <label for="lname">Password</label>
-    <input type="password" id="lname" name="password" placeholder="">
+    {% comment %} <label for="lname">Password</label>
+    <input type="password" value={{user.password}} id="lname" name="password" placeholder=""> {% endcomment %}
   
     <input type="submit" value="Submit">
   </form>

@@ -1,14 +1,45 @@
+
+{% extends 'base.html' %}
 {% block style %}
+.container{
+    width: 50%;
+    margin: auto;
+    border: 1px solid black;
+    float: center;
+    margin-top: 200px;
+    
 
+   
+}
+.addbtn{
+    padding:10px;
+    background-color: #017BFF;
+    color: white;
+    margin: 5px;
+    text-decoration : none;
+    border-radius: 8px;
+  }
+{% comment %} .inner{
+    position: absolute;
 
+} {% endcomment %}
 {% endblock style %}
 
 {% block content %}
 <div class="container">
+    <div class="inner">
     <h1>Name ==> {{obj.r_user.name}}</h1>
     <p>Description ==> {{obj.description}}</p>
     <p>Department ==> {{obj.department.name}}</p>
     <p>Date ==> {{obj.date}}</p>
+    </div>
+
+   <div>
+    <form method="POST" class="form">
+        {% csrf_token %}
+        <button name="forward" class="addbtn" style="" value="{{obj.id}}" class="btnstyle" type="submit">Forward SO</button>
+      </form>
+   </div>
 
 </div>
 
