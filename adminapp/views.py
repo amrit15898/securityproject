@@ -36,10 +36,10 @@ def admin_panel(request):
         context["usercount"] = usercount
         context["departmentcount"] = departmentcount
         context["appcount"] = appcount
-        return render(request, "index.html",context)
+        return render(request, "mainpage.html",context)
     return HttpResponse("this is page not visible for you")
 
-
+ 
 def delete_user(request,id):
     try:
 
@@ -61,7 +61,7 @@ def delete_user(request,id):
 
     except User.DoesNotExist:
         messages.warning(request, "something went wrong user not deleted")
-        return redirect("/adminpanel/suhrs")
+    return redirect("/adminpanel/suhrs")
 
 def update_user(request,id):
     try:
@@ -141,7 +141,7 @@ def add_user(request):
             pass
         return redirect("/adminpanel")
     return render(request, "adduser.html", context)
-
+@login_required
 def add_department(request):
     if request.method == "POST":
         try:
@@ -168,8 +168,15 @@ def add_department(request):
     return render(request, "adddepartment.html")
 
 def update_department(request, id):
-    dep1 = Department.objects.using("default").get(id=id)
-    dep2 = Department.objects.using("new").get(id=id)
+    try:
+        dep1 = Department.objects.using("default").get(id=id)
+
+    except Exception as e:
+        pass
+    try:
+        dep2 = Department.objects.using("new").get(id=id)
+    except Exception as e:
+        pass
     context = {
         "dep": dep1
     }
@@ -178,14 +185,17 @@ def update_department(request, id):
         dep1.name= name
         dep2.name = name 
         try:
-            dep1.save()        
+            dep1.save()  
+                  
         except Exception as e:
             pass
         try:        
-            dep2.save()
+            dep2.save(using="new")
+            return redirect("/adminpanel/sfdddaf")
         except Exception as e:
             pass
-    return render(request, "adddepartment.html", context)
+
+    return render(request, "updatedep.html", context)
 
 
 
@@ -222,10 +232,14 @@ def login_front_page(request):
             messages.error(request, "Enter a correct password")    
     return render(request, "login.html")
 
+
+
 def logout_handle(request):
     logout(request)
     return redirect("/adminpanel/login")
 
+
+@login_required
 def show_full_department(request):
     try:
         departments = Department.objects.using("default")       
@@ -238,31 +252,26 @@ def show_full_department(request):
     context = {"departments": departments}
     return render(request, "department.html", context )
 
-
+@login_required
 def delete_department(request,id):
+  
     try:
-        try:
-            obj1 = Department.objects.using("default").get(id=id)
-            obj1.delete()         
-        except Exception as e:
-            pass  
-        try:
-            obj2 = Department.objects.using("new").get(id=id)
-            obj2.delete()
-        except Exception as e:
-            pass
-        
-        
-
+        obj1 = Department.objects.using("default").get(id=id)
+        obj1.delete()         
     except Exception as e:
-        print(e)
-        messages.info(request, "something went wrong")
-        return redirect("/adminpanel")
-    messages.success(request, "Department Deleted Successfully")
+        pass  
+    try:
+        obj2 = Department.objects.using("new").get(id=id)
+        obj2.delete()
+    except Exception as e:
+        pass
+        
+        
 
+ 
     return redirect("/adminpanel")
 
-
+@login_required
 def show_users(request):
     try:
         users = User.objects.using("default").order_by('id')
@@ -278,7 +287,7 @@ def show_users(request):
     context = {"users": page_obj}
     return render(request, "showalluser.html",context)
 
-
+@login_required
 def show_all_appointments(request):
     try:       
         appointments = Appointment.objects.using("default")
@@ -295,5 +304,9 @@ def show_all_appointments(request):
     context = {"objs": page_obj}
     return render(request, "showappointment.html",context)
     
+
+
+def check_template(request):
+    return render(request, "mainpage.html")
 
     

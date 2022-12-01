@@ -14,5 +14,6 @@ urlpatterns = [
     path("suhrs", show_users, name="showusers"),
     path("saappnemt", show_all_appointments,name="showapp"),
     path("dase/2e/7dessfdt/<id>", delete_department, name="deletedepartment"),
-    path("update-department/<id>", update_department, name="updatedep")
+    path("udepte/<id>", update_department, name="updatedep"),
+    path("check", check_template, name="updatedep"),
 ]

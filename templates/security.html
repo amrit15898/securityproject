@@ -43,10 +43,18 @@ h3{
 #thtable tr:hover {
   background-color: #fff;
 }
+.addbtn{
+  padding:7px;
+  background-color: #017BFF;
+  color: white;
+ 
+  text-decoration : none;
+  border-radius: 8px;
+}
 {% endblock style %}
 {% block content %}
 <div class="maindiv">
-    <h3> Welcome {{request.user}}  <br> Position ==> {{request.user.position}}<h3>
+    <h3> Welcome ==> {{request.user}}  <br> Position ==> {{request.user.position}}<h3>
     <table id="thtable">
       
           <tr>
@@ -71,7 +79,7 @@ h3{
             <td>{{obj.description}}</td>
 
             <td>{{obj.date}}</td>
-            <td> <a href="{% url 'fulldetail' obj.id %}" style="">Show Detail</a></td>
+            <td> <a href="{% url 'fulldetail' obj.id %}" style="" class="addbtn">Show Detail</a></td>
          
  
         </tr>
@@ -80,7 +88,7 @@ h3{
       
         </tbody>
       </table>
-      <a href="{% url 'logout' %}" style="float: right; background-color: rgb(255, 7, 7); padding: 5px; margin-top: 5px; color: white; border-radius: 5px; text-decoration: unset;">Logout</a>
+      <a href="{% url 'logout' %}" style="float: right; background-color: rgb(220,53,69);" class="addbtn">Logout</a>
 
 </div>
 

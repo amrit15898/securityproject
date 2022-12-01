@@ -48,7 +48,7 @@ h3{
 }
 .addbtn{
   padding:10px;
-  background-color: #017BFF;
+  background-color: rgb(71, 71, 95);
   color: white;
   margin: 5px;
   text-decoration : none;
@@ -79,13 +79,13 @@ h3{
                 <th>Associate Director</th>
                 <th>Director</th>
                 <th>Action</th>
-                {% for obj in objs %}
+                {% comment %} {% for obj in objs %}
                 {% if  request.user.position == "GH/DH" and obj.dir_clr == "Approved"%}
              
                 <th>Send SO</th>
 
                 {% endif %}
-                {% endfor %}
+                {% endfor %} {% endcomment %}
                 {% if request.user.position == "Director" %}
                 <th>Cancel</th>
                 {% endif %}
@@ -109,7 +109,7 @@ h3{
                   
                   <form action="" method="post" class="form">
                     {% csrf_token %}
-                    <button name="napproved" class="addbtn" style="background-color:#DC3545" value="{{obj.id}}"  type="submit">Not Approved</button>
+                    <button name="napproved" class="addbtn" style="" value="{{obj.id}}"  type="submit">Not Approved</button>
                   </form>
                   <form method="POST" class="form">
                     {% csrf_token %}
@@ -127,16 +127,16 @@ h3{
                 
                 
                 {% endif %}
+                {% comment %} {% if  request.user.position == "GH/DH" and obj.dir_clr == "Approved"  %}
                 <td>
-                  {% if  request.user.position == "GH/DH" and obj.dir_clr == "Approved"  %}
                   <form method="POST" class="form">
                     {% csrf_token %}
                     <button name="forward" class="addbtn" style="" value="{{obj.id}}" class="btnstyle" type="submit">Forward SO</button>
                   </form>
     
-                  {% endif %}
-    
+                  
                 </td>
+                {% endif %} {% endcomment %}
                 {% if request.user.position == "Director" %}
                 <td>
                   <a href="{% url 'cancelrequest' obj.id %}" style="" class="addbtn">Cancel</a>

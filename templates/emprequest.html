@@ -43,6 +43,15 @@ h3{
 #thtable tr:hover {
   background-color: #fff;
 }
+.addbtn{
+  padding:7px;
+  background-color: rgb(71, 71, 95);
+  color: white;
+ 
+  text-decoration : none;
+  border-radius: 8px;
+}
+
 {% endblock style %}
 {% block content %}
 <div class="maindiv">
@@ -51,14 +60,19 @@ h3{
       
           <tr>
       
-            <th>User</th>
+         
             <th>Department</th>
             <th>Description</th>
             <th>Date</th>
+            <th>GH/DH</th>
+            <th>Tech Director</th>
+           
+
             <th>GH/DH Clearance</th>
-            <th>TechDirector Clearanec</th>
+            <th>TechDirector Clearance</th>
             <th>Associate Director</th>
             <th>Director</th>
+            <th>Action</th>
           
           </tr>
  
@@ -66,15 +80,19 @@ h3{
           {% for obj in objs %}
 
           <tr>
-            <th >{{obj.r_user}}</th>
             <td>{{obj.department.name}}</td>
             <td>{{obj.description|truncatechars:50}}</td>
 
             <td>{{obj.date}}</td>
+            <td>{{obj.gh_dh.name}}</td>
+            
+            
             <td>{{obj.dh_gh_clr}}</td>
+            <td>{{obj.tech_dir.name}}</td>
             <td>{{obj.tech_dir_clr}}</td>
             <td>{{obj.ass_dir_clr}}</td>
             <td>{{obj.dir_clr}}</td>
+            <td><a href="{% url 'updateapp' obj.id %}" class="addbtn">Update</a></td>
         
  
           </tr>
@@ -82,7 +100,7 @@ h3{
       
         </tbody>
       </table>
-      <a href="{% url 'logout' %}" style="float: right; background-color: rgb(255, 7, 7); padding: 5px; margin-top: 5px; color: white; border-radius: 5px; text-decoration: unset;">Logout</a>
+      <a href="{% url 'logout' %}"  class="addbtn" style="float: right; margin-top:20px;">Logout</a>
 
 </div>
 

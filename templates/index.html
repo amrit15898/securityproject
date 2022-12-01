@@ -2,10 +2,17 @@
 {% block style %}
 
 #navbar{
-background-color: blue;
-height:50px;
+background-color: #333a3d;
+height:60px;
 width: 100%;
 
+
+}
+.linkbtn{
+  color: white;
+  text-decoration :none;
+  margin: auto;
+  font-size: 25px;
 
 }
 .card{
@@ -21,10 +28,11 @@ background-color:
 }
 
 .carddiv{
-margin-top: 100px;
-margin-left: auto;
-margin-right: auto;
-margin-left: 220px;
+  margin-top: 100px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-left: auto;
+  text-align: -webkit-center;
 }
 
 .text{
@@ -37,13 +45,25 @@ body{
 .main{
   width: 70%;
   margin: auto;
+  margin-top: auto;
 }
-
+{% comment %} li{
+  display:inline;
+  color: white;
+  margin-right:10px;
+  margin-top: 10px;
+} {% endcomment %}
 {% endblock style %}
 {% block content %}
 
 <div>
   <div id="navbar">
+    {% comment %} <ul>
+      <li><a href="" class="linkbtn">Home</a></li>
+      <li><a href="" class="linkbtn">Users</a></li>
+      <li><a href="" class="linkbtn">Department</a></li>
+      <li><a href="" class="linkbtn">Appointment</a></li>
+    </ul> {% endcomment %}
   </div>
   <div class="main">
  
@@ -63,11 +83,13 @@ body{
           <h2 class="text">Appointment <sup style="color: black;">{{appcount}}</sup></h2>
         </div>
       </a>
+      
     </div>
     <div style="margin-top:20px;">
       <a href="{% url 'logout' %}" class="addbtn"
-      style="background-color: blue; border-radius: 10px; padding: 10px; margin-top: 20px; margin-left: 220px ; color: white; text-decoration: none;">Logout</a>
+      style="background-color: rgb(71, 71, 95); float:right; border-radius: 10px; padding: 10px; margin-top: 20px; margin-right: 99px ; color: white; text-decoration: none;">Logout</a>
     </div>
+   
   </div>
 </div>
 

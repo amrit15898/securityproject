@@ -29,7 +29,14 @@ input[type=password], select {
 }
 
 input[type=submit] {
- 
+  width: 20%;
+  background-color: #4CAF50;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
 }
 
 input[type=submit]:hover {
@@ -47,17 +54,6 @@ div {
 .longfield{
   height: 100px;
   width: 100%;
-}
-.addbtn{
-  padding:7px;
-  background-color: #017BFF;
-  color: white;
- 
-  text-decoration : none;
-  border-radius: 8px;
-  margin-top:20px;
-  margin-right:5px;
-  float: right;
 }
 
 {% endblock style %}
@@ -80,7 +76,7 @@ div {
 
     <label for="country">GH DH</label>
     <select id="country" name="gh_dh">
-      <option selected value="SelectGH">Select Users</option>
+      <option selected value="{{ghid}}">{{obj.gh_dh}}</option>
       {% for i in gh_dh %}
       <option value="{{i.id}}">{{i.name}}</option>
       {% endfor %}
@@ -88,7 +84,7 @@ div {
     </select>
     <label for="country">Tech Dir</label>
     <select id="country" name="tdir">
-      <option selected value="SelectTD">Select Users</option>
+      <option selected value="{{td}}">{{obj.tech_dir}}</option>
       {% for dir in tech_dir %}
       <option value="{{dir.id}}">{{dir.name}}</option>
       {% endfor %}
@@ -97,7 +93,7 @@ div {
    
     <label for="country" >Department</label>
     <select id="country" name="department">
-      <option selected value="SelectDep">Select Department</option>
+      <option selected value="{{depid}}">{{obj.department}}</option>
             {% for department in departments %}
             <option value="{{department.id}}">{{department.name}}</option>
             {% endfor %}
@@ -106,15 +102,14 @@ div {
 
     
     <label for="lname">DateTime</label>
-    <input type="datetime-local" id="lname" name="date" placeholder="">
+    <input type="datetime-local" value={{date}} id="lname" name="date" placeholder="">
     <label for="lname">Description</label>
-    <textarea type="text" class="longfield" name="description" placeholder=""></textarea>
+    <textarea type="text"   class="longfield" name="description" placeholder="">{{obj.description}} </textarea>
   
-    <input type="submit" class="addbtn" style="float:left;" value="Submit">
+    <input type="submit" value="Submit">
   </form>
   
-  <a href="{% url 'employeerequest' %}" style=" background-color:  rgb(71, 71, 95);" class="addbtn">Show request</a>
-  <a href="{% url 'employeerequest' %}" style="background-color:  rgb(71, 71, 95); ;" class="addbtn">Logout</a>
+  <a href="{% url 'employeerequest' %}" style="width: 100px; padding: 10px; background-color: rgb(49, 165, 69); border-radius: 5px; margin-top: 20px; color: black; float: right;">Show request</a>
 </div>
 
 {% endblock content %}

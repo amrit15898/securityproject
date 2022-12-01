@@ -11,7 +11,8 @@ urlpatterns = [
     path("sesdfpnel", security_officer, name="securitypanel"),
     path("fd452de/<id>", full_security_detail, name="fulldetail"),
     path("ccdnl1e/23st/<id>", cancel_request, name="cancelrequest"),
-    path("clrrkests", cleare_clearance_list, name="clearlist")
+    path("clrrkests", cleare_clearance_list, name="clearlist"),
+    path("updtap/<id>", update_appointment, name="updateapp"),
 
 
 ]

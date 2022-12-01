@@ -34,9 +34,9 @@
   } 
 
   .addbtn{
-    background-color: #327fa8; 
+    background-color: rgb(71, 71, 95); 
     text-decoration: none;
-    color : black;
+    color : white;
 
   }
 
@@ -61,7 +61,7 @@
       <tr>
         <td>{{department.name}}</td>
         <td><a href="{% url 'deletedepartment' department.id %}" class="addbtn" style="padding: 8px; border-radius: 8px">Delete</a>
-         <a href="" class="addbtn" style= "padding:8px; border-radius: 8px">Update</a> 
+         <a href="{% url 'updatedep' department.id %}" class="addbtn" style= "padding:8px; border-radius: 8px">Update</a> 
         </td>
         
         {% endfor %}

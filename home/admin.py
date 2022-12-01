@@ -10,3 +10,5 @@ admin.site.register(Department)
 @admin.register(Appointment)
 class Appointment_Register(admin.ModelAdmin):
     list_display = ["r_user", "description", "date"]
+
+admin.site.register(Clearance)

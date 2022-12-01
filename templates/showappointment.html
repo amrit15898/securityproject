@@ -45,9 +45,10 @@ h3{
 }
 .addbtn{
   padding:7px;
-  background-color: #327fa8;
-  color: black;
+  background-color: rgb(71, 71, 95);
+  color: white;
   float: right;
+  
   text-decoration : none;
   border-radius: 8px;
   margin-top: 15px;
@@ -69,6 +70,7 @@ h3{
             <th>TechDirector Clearanec</th>
             <th>Associate Director</th>
             <th>Director</th>
+        
       
           </tr>
  
@@ -85,6 +87,7 @@ h3{
             <td>{{obj.tech_dir_clr}}</td>
             <td>{{obj.ass_dir_clr}}</td>
             <td>{{obj.dir_clr}}</td>
+           
           
  
           </tr>
@@ -98,14 +101,14 @@ h3{
         <div>
           <span>
             {% if objs.has_previous %}
-            <a href="/adminpanel/show_all_appointments?page={{objs.previous_page_number}}" class="addbtn">Previous</a>
+            <a href="/adminpanel/saappnemt?page={{objs.previous_page_number}}" class="addbtn">Previous</a>
     
             {% endif %}
 
             <span><b>{{objs.number}}</b></span>
              
             {% if objs.has_next %}
-            <a href="/adminpanel/show_all_appointments?page={{objs.next_page_number}}" class="addbtn">Next</a>
+            <a href="/adminpanel/saappnemt?page={{objs.next_page_number}}" class="addbtn">Next</a>
 
             {% endif %}
            
