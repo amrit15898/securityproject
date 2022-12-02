@@ -1,79 +1,31 @@
-{% extends 'base.html' %}
+{% extends 'foundation.html' %}
+{% block admincontent %}
 
-{% block style %}
-#department {
-    font-family: Arial, Helvetica, sans-serif;
-    border-collapse: collapse;
-    width: 100%;
-  }
-  
-  #department td, #department th {
-    border: 1px solid #ddd;
-    padding: 12px;
-
-  }
-  
-
-  #department th {
-    padding-top: 12px;
-    padding-bottom: 12px;
-    text-align: left;
-    background-color: #04AA6D;
-    color: white;
-  }
- .btn{
-    width: 100px;
-    background-color: red;
-  } 
-
-  div{
-
-    width: 85%;
-    margin: auto;
-  
-  } 
-
-  .addbtn{
-    background-color: rgb(71, 71, 95); 
-    text-decoration: none;
-    color : white;
-
-  }
-
-{% endblock style %}
-{% block content %}
-<div>
-
-  <h1 style="text-align: center;">
-    All Departments
-  </h1>
-  
-  <div>
-    <table id="department">
-   
-  
-      <tr>
-        <td>Name</td>
-        <td>Action's</td>
-    
-      </tr>
-      {% for department in departments %}
-      <tr>
-        <td>{{department.name}}</td>
-        <td><a href="{% url 'deletedepartment' department.id %}" class="addbtn" style="padding: 8px; border-radius: 8px">Delete</a>
-         <a href="{% url 'updatedep' department.id %}" class="addbtn" style= "padding:8px; border-radius: 8px">Update</a> 
-        </td>
-        
-        {% endfor %}
-      </tr>
-    </table>
-  </div>
-  <div style="margin-top:20px;">
-    <a href="{% url 'adddep' %}" class="addbtn" style="padding:8px; border-radius: 8px;">Add Department</a>
-    <a href="{% url 'adminpanel' %}" class="addbtn" style="padding:8px; border-radius: 8px;">DashBoard</a>
-  </div>
+<div class="title">
+  <h2 class="section--title">Departments</h2>
+  <a href="{% url 'adddep' %}" class="add"><i class="ri-add-line"></i>Add Department</a>
 </div>
-
-
-
-{% endblock content %}
+<div class="table">
+  <table>
+      <thead>
+          <tr>
+              <th>Name</th>
+              
+              
+              <th>Action</th>
+          </tr>
+      </thead>
+      <tbody>
+          {% for department in departments %}
+          <tr>
+              <td>{{department.name}}</td>
+        
+              <td class="pending"><a href="{% url 'deletedepartment' department.id %}" style="color: red;margin-right:5px;">Delete</a><a href="{% url 'updatedep' department.id %}" style="color: green;" >Update</a></td>
+              <td><span><i class="ri-edit-line edit"></i><i class="ri-delete-bin-line delete"></i></span></td>
+          </tr>
+          {% endfor %}
+          
+      </tbody>
+  </table>
+</div>
+{% endblock admincontent %}

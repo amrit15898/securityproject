@@ -1,124 +1,33 @@
-{% extends 'base.html' %}
-
-{% block style %}
-
-#thtable {
-
-  border-collapse: collapse;
-  margin-left : auto;
-  margin-right : auto;
-  color: black;
-
-  width: 100%;
-  
-
-
-}
-
-#thtable td, #thtable th {
-  border: 3px solid #ddd;
-  padding: 8px;
-}
-
-#thtable tr:nth-child(even){background-color: #f2f2f2;}
-
-
-
-#thtable th {
-  padding-top: 12px;
-  padding-bottom: 12px;
-  text-align: left;
-
-  color: black;
-}
-.maindiv{
-  margin: 100px;
-}
-h3{
-  text-align: center;
-}    
-.form{
-  display: inline;
-} 
-#thtable tr:hover {
-  background-color: #fff;
-}
-.addbtn{
-    padding:7px;
-    background-color: #017BFF;
-    color: white;
-   
-    text-decoration : none;
-    border-radius: 8px;
-  }
-{% endblock style %}
-{% block content %}
-<div class="maindiv">
-  {% if messages %}
-<ul class="messages">
-    {% for message in messages %}
-    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-    {% endfor %}
-</ul>
-{% endif %}
-  <div>
-    
-    <h3> Welcome {{request.user}}  <br> Position ==> {{request.user.position}}<h3>
-  </div>
-    <div>
-      <table id="thtable">
-      
-        <tr>
-    
-          <th>Name</th>
-          <th>Id</th>
-          <th>Position</th>
-    
-          <th>Action</th>
-        </tr>
-
-      <tbody>
-        {% for user in users %}
-
-        <tr>
-          <th >{{user.name}}</th>
-          <td>{{user.user_id}}</td>
-          <td>{{user.position}}</td>
-      <td><a href="{% url 'deleteuser' user.id %}" class="addbtn" style="background-color: rgb(220,53,69);">Delete</a> <a href="{% url 'updateuser' user.id %}" class="addbtn">Update</a></td>
-
-          
-         
-         
-
-        </tr>
-        {% endfor %}
-        
-      </tbody>
-    </table>
-    
-    </div>
-      
-      <div style="margin-top: 34px;">
-        <a href="{% url 'logout' %}" class="addbtn" style="float: right; background-color: rgb(220,53,69);">Logout</a>
-      </div>
-      <div style="margin-top: 20px; float: left;">
-        <span>
-            {% if users.has_previous %}
-            <a href="/adminpanel/suhrs?page={{users.previous_page_number}}" class="addbtn">Previous</a>
-    
-            {% endif %}
-            <span><b>{{users.number}}</b></span>
-            {% if users.has_next %}
-            <a href="/adminpanel/suhrs?page={{users.next_page_number}}" class="addbtn">Next</a>
-
-            {% endif %}
-            <a href="{% url 'adduser' %}" class="addbtn" style="margin-left: 20px;">Add User</a>
-            <a href="{% url 'adminpanel' %}" class="addbtn" style="padding:7px; border-radius: 10px;">DashBoard</a>
-        </span>
-      
-      </div> 
-     
+{% extends 'foundation.html' %}
+{% block admincontent %}
+<div class="title">
+    <h2 class="section--title">Users</h2>
+    <a href="{% url 'adduser' %}" class="add"><i class="ri-add-line"></i>Add User</a>
 </div>
-
-
-{% endblock content %}
+<div class="table">
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Position</th>
+                <th>Id</th>
+                
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <td>{{user.name}}</td>
+                <td>{{user.position}}</td>
+                <td>{{user.user_id}}</td>
+             
+                <td class="pending"><a href="{% url 'deleteuser' user.id %}" style="color: red;margin-right:5px;">Delete</a><a href="{% url 'updateuser' user.id %}" style="color: green;" >Update</a></td>
+                <td><span><i class="ri-edit-line edit"></i><i class="ri-delete-bin-line delete"></i></span></td>
+            </tr>
+            {% endfor %}
+            
+        </tbody>
+    </table>
+</div>
+{% endblock admincontent %}

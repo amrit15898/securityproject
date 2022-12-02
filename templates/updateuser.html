@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'foundation.html' %}
 {% block style %}
 input[type=text], select {
   width: 100%;
@@ -19,30 +19,10 @@ input[type=password], select {
   box-sizing: border-box;
 }
 
-input[type=submit] {
-  width: 20%;
-  background-color: #4CAF50;
-  color: white;
-  padding: 14px 20px;
-  margin: 8px 0;
-  border: none;
-  border-radius: 20px;
-  cursor: pointer;
-}
 
-input[type=submit]:hover {
-  background-color: #45a049;
-}
 
-div {
-  border-radius: 5px;
-  background-color: #f2f2f2;
-  padding: 20px;
-  width: 70%;
-  margin: auto;
-}
 {% endblock style %}
-{% block content %}
+{% block admincontent %}
 
 <h3 style="text-align: center;">Add User</h3>
 
@@ -72,4 +52,4 @@ div {
 </div>
 
 
-{% endblock content %}
+{% endblock admincontent %}

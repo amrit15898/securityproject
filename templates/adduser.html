@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'foundation.html' %}
 {% block style %}
 input[type=text], select {
   width: 100%;
@@ -6,7 +6,16 @@ input[type=text], select {
   margin: 8px 0;
   display: inline-block;
   border: 1px solid #ccc;
-  border-radius: 4px;
+  border-radius: 10px;
+  box-sizing: border-box;
+}
+input[type=file], select {
+  width: 100%;
+  padding: 8px 16px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 10px;
   box-sizing: border-box;
 }
 input[type=password], select {
@@ -19,30 +28,11 @@ input[type=password], select {
   box-sizing: border-box;
 }
 
-input[type=submit] {
-  width: 20%;
-  background-color: #4CAF50;
-  color: white;
-  padding: 14px 20px;
-  margin: 8px 0;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-}
 
-input[type=submit]:hover {
-  background-color: #45a049;
-}
 
-div {
-  border-radius: 5px;
-  background-color: #f2f2f2;
-  padding: 20px;
-  width: 70%;
-  margin: auto;
-}
+
 {% endblock style %}
-{% block content %}
+{% block admincontent %}
 
 <h2 style="text-align: center;">Add User</h2>
 
@@ -60,6 +50,8 @@ div {
     <input type="text" id="fname" name="name" placeholder="">
     <label for="fname">Id</label>
     <input type="text" id="fname" name="userid" placeholder="">
+    <label for="fname">Image</label>
+    <input type="file" id="fname" name="image" placeholder="">
 
 
     <label for="country">Position</label>
@@ -72,24 +64,15 @@ div {
                     <option value="Employee">Employee</option>
                     <option value="Security officer">Security officer</option>
     </select>
-    {% comment %} <label for="country">Department</label>
-    <select id="country" name="position">
-      <option selected value="selectposition">Select Department</option>
-
-                    {% for department in departments %}
-                    <option value="{{department.id}}">{{department.name}}</option>
-                    {% endfor %}
-              
-                    
-    </select> {% endcomment %}
+  
 
     
     <label for="lname">Password</label>
     <input type="password" id="lname" name="password" placeholder="">
   
-    <input type="submit" value="Submit">
+    <input type="submit" class="add" value="Submit">
   </form>
 </div>
 
 
-{% endblock content %}
+{% endblock admincontent %}

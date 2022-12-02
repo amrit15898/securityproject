@@ -12,3 +12,4 @@ class Appointment_Register(admin.ModelAdmin):
     list_display = ["r_user", "description", "date"]
 
 admin.site.register(Clearance)
+admin.site.register(ForgetMessageRequest)

@@ -1,0 +1,108 @@
+{% extends 'rolefoundation.html' %}
+{% block style %}{% endblock style %}
+
+
+{% block option %}
+<li>
+  <a  id="active--link">
+    
+      <span >Dashboard</span>
+    </a>
+  </li>
+
+{% if request.user.position == "GH/DH" %}
+<li>
+    <a href="{% url 'clearlist' %}"  >
+      
+        <span class="sidebar--item">Clear</span>
+    </a>
+  </li>
+            {% endif %}
+
+
+{% endblock option %}
+{% block admincontent %}
+<div>
+    {% if messages %}
+  <ul class="messages">
+      {% for message in messages %}
+      <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+      {% endfor %}
+  </ul>
+  {% endif %}
+       <div>
+        <h3 style="text-align:center; margin-top:20px; margin-bottom: 20px;"> Welcome {{request.user}}  <br> Position ==> {{request.user.position}}<h3>
+          
+            <div class="table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>User</th>
+                            <th>Dep.</th>
+                       
+                            <th>Date</th>
+                            <th>GH/DH Clearance</th>
+                            <th>TechDirector Clearanec</th>
+                            <th>Associate Director</th>
+                            <th>Director</th>
+                            <th>Action</th>
+                           
+                            {% if request.user.position == "Director" %}
+                            <th>Cancel</th>
+                            {% endif %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for obj in objs %}
+      
+                        <tr>
+                          <th >{{obj.r_user}}</th>
+                          <td>{{obj.department.name}}</td>
+                         
+              
+                          <td>{{obj.date}}</td>
+                          <td>{{obj.dh_gh_clr}}</td>
+                          <td>{{obj.tech_dir_clr}}</td>
+                          <td>{{obj.ass_dir_clr}}</td>
+                          <td>{{obj.dir_clr}}</td>
+                          {% if request.user.position == "GH/DH"  and obj.dh_gh_clr == "Pending" or request.user.position == "Tech Director" and obj.tech_dir_clr == "Pending" and obj.dh_gh_clr != "Pending" or request.user.position == "Associate Director" and obj.ass_dir_clr == "Pending" and obj.tech_dir_clr != "Pending" or request.user.position == "Director" and obj.dir_clr == "Pending" %}
+                          <td><div>
+                            
+                            <form action="" method="post" class="form">
+                              {% csrf_token %}
+                              <button name="napproved" class="add" style="" value="{{obj.id}}"  type="submit">Not Approved</button>
+                            </form>
+                            <form method="POST" class="form">
+                              {% csrf_token %}
+                              <button name="approved" class="add" style="" value="{{obj.id}}" type="submit">Approved</button>
+                            </form>
+                    
+                          </div></td>
+              
+                          {% else %}
+              
+                          <td>
+                            Action already performed
+                          </td>
+                          
+                          
+                          
+                          {% endif %}
+                        
+                          {% if request.user.position == "Director" %}
+                          <td>
+                            <a href="{% url 'cancelrequest' obj.id %}" style="" class="add">Cancel</a>
+                          </td>
+                          {% endif %}
+                    
+               
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        
+       </div>
+  
+  </div>
+{% endblock admincontent %}

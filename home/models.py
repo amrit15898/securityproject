@@ -56,7 +56,7 @@ class Appointment(models.Model):
 class Clearance(models.Model):
     type = models.CharField(max_length=200, null=True ,blank=True)
     
-
-
-
+class ForgetMessageRequest(models.Model):
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    
 

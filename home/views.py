@@ -77,7 +77,7 @@ def post_appointment(request):
                     print("please select the another time")
                     messages.warning(request, "please select another time")
                     return redirect("/home/postapntent")
-            
+
 
         dep = Department.objects.get(id=department)
         obj = Appointment(gh_dh= final_gh_dh, tech_dir =final_tech_dir, description=description, department=dep, date=date)
@@ -273,12 +273,12 @@ def show_request(request):
             
 
    
-        return render(request, "ghtechdir.html",context)
+        return render(request, "ghdh2.html",context)
 
     except Exception as e:
         print(e)
         messages.warning(request, "something went wrong")
-    return render(request, "ghtechdir.html",context)
+    return render(request, "ghdh2.html",context)
         
     
 
@@ -369,6 +369,17 @@ def cleare_clearance_list(request):
     context = {"objs": objs}
     
     return render(request, "cleard.html", context)
+
+
+def forgot_password(request):
+    if request.method == "POST":
+        uidd = request.POST.get("id")
+        user = User.objects.get(user_id=id)
+
+        obj = ForgetMessageRequest(user_id = user)
+        obj.save()
+    
+    return render(request, "forgotpass.html")
 
 
 

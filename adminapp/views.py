@@ -45,16 +45,15 @@ def delete_user(request,id):
 
         try:
             user1 = User.objects.using("default").get(id=id)
-            user1.delete()
-            messages.success(request, "user deleted successfully")
-            return redirect("/adminpanel/suhrs")    
+            user2 = User.objects.using("new").get(id=id)
+      
+      
         except Exception as e:         
             pass       
         try:
-            user2 = User.objects.using("new").get(id=id)
+            user1.delete()
             user2.delete()
-            messages.success(request, "user deleted successfully")
-            return redirect("/adminpanel/suhrs")    
+            return HttpResponseRedirect(request.path_info)   
         except Exception as e:
             pass
 
@@ -133,13 +132,11 @@ def add_user(request):
         obj.set_password(password)
         try:
             obj.save(using='default')
+            obj.save(using='new', force_insert=True)
+            return redirect("/adminpanel")
         except Exception as e:
             pass       
-        try:
-            obj.save(using='new', force_insert=True)
-        except Exception as e:
-            pass
-        return redirect("/adminpanel")
+     
     return render(request, "adduser.html", context)
 @login_required
 def add_department(request):
@@ -257,19 +254,20 @@ def delete_department(request,id):
   
     try:
         obj1 = Department.objects.using("default").get(id=id)
-        obj1.delete()         
+        obj2 = Department.objects.using("new").get(id=id)
     except Exception as e:
         pass  
     try:
-        obj2 = Department.objects.using("new").get(id=id)
+        obj1.delete()         
         obj2.delete()
+        return HttpResponseRedirect(request.path_info)
     except Exception as e:
         pass
-        
-        
 
- 
-    return redirect("/adminpanel")
+    
+    return redirect("/adminpanel/sfdddaf")
+        
+    
 
 @login_required
 def show_users(request):

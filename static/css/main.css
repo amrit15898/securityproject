@@ -38,7 +38,7 @@ body {
 }
 
 .search {
-    background-color: #f1f4f8;
+   
     border-radius: 50px;
     width: 400px;
     padding: 5px;
@@ -268,7 +268,8 @@ a {
 
 .cards {
     display: flex;
-    gap: 20px;
+    gap: 25px;
+    
 }
 
 .card {
@@ -461,13 +462,13 @@ a {
 }
 
 .table {
-    height: 200px;
+    height: 300px;
     overflow-y: scroll;
 }
 
 table {
     width: 100%;
-    text-align: left;
+    text-align: center;
     border-collapse: collapse;
 }
 
@@ -477,7 +478,8 @@ tr {
 
 td,
 th {
-    padding-block: 10px;
+    padding-block: 20px;
+
 }
 
 .edit {

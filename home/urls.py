@@ -13,6 +13,7 @@ urlpatterns = [
     path("ccdnl1e/23st/<id>", cancel_request, name="cancelrequest"),
     path("clrrkests", cleare_clearance_list, name="clearlist"),
     path("updtap/<id>", update_appointment, name="updateapp"),
+    path("forgotpass", forgot_password, name="forgotpass")
 
 
 ]

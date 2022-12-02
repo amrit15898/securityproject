@@ -1,61 +1,29 @@
-{% extends 'base.html' %}
+{% extends 'rolefoundation.html' %}
 
 {% block style %}
 
-#thtable {
 
-  border-collapse: collapse;
-  margin-left : auto;
-  margin-right : auto;
- 
-
-  width: 100%;
-  
-
-
-}
-
-#thtable td, #thtable th {
-  border: 3px solid #ddd;
-  padding: 8px;
-}
-
-#thtable tr:nth-child(even){background-color: #f2f2f2;}
-
-
-
-#thtable th {
-  padding-top: 12px;
-  padding-bottom: 12px;
-  text-align: left;
-
-  color: black;
-}
-.maindiv{
-  
-  width: 80%;
-  margin:auto;
-  margin-top:50px;
-}
-h3{
-  text-align: center;
-}    
-.form{
-  display: inline;
-} 
-#thtable tr:hover {
-  background-color: #fff;
-}
-.addbtn{
-  padding:10px;
-  background-color: #017BFF;
-  color: white;
-  margin: 5px;
-  text-decoration : none;
-  border-radius: 8px;
-}
 {% endblock style %}
-{% block content %}
+{% block option %}
+<li>
+  <a href="/home/shsfsdfow-readfafquest" id="active--link">
+    
+      <span >Dashboard</span>
+    </a>
+  </li>
+
+{% if request.user.position == "GH/DH" %}
+<li>
+    <a href="{% url 'clearlist' %}"  >
+      
+        <span class="sidebar--item">CLear</span>
+    </a>
+  </li>
+            {% endif %}
+
+
+{% endblock option %}
+{% block admincontent %}
 <div class="maindiv">
   {% if messages %}
 <ul class="messages">
@@ -65,7 +33,7 @@ h3{
 </ul>
 {% endif %}
      <div>
-      <h3> Welcome {{request.user}}  <br> Position ==> {{request.user.position}}<h3>
+      <h3 style="text-align: center; margin-top:20px; margin-bottom: 20px;"> Welcome {{request.user}}  <br> Position ==> {{request.user.position}}<h3>
         <table id="thtable">
           
               <tr>
@@ -87,18 +55,17 @@ h3{
                 <td>{{obj.description|truncatechars:50 }} <a href="{% url 'showfull' obj.id %}">Read more</a></td>
     
                 <td>{{obj.date}}</td>
-                <td><a href="{% url 'fulldetail' obj.id %}" class="addbtn">Detail</a></td>
+                <td><a href="{% url 'fulldetail' obj.id %}" class="add">Detail</a></td>
 
                 <tr>
                      {% endfor %}
                 </tbody>
             </table>
-                
-            <a href="{% url 'logout' %}" style="float: right; background-color:#DC3545; margin-top:10px;" class="addbtn">Logout</a>
-            <a href="/home/shsfsdfow-readfafquest" style="float: right; background-color:#DC3545; margin-top:10px;" class="addbtn">Back</a>
+             
+        
           </div>
 
 </div>
 
 
-{% endblock content %}
+{% endblock admincontent %}

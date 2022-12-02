@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'rolefoundation.html' %}
 {% block style %}
 input[type=text], select {
   width: 100%;
@@ -10,6 +10,15 @@ input[type=text], select {
   box-sizing: border-box;
 }
 input[type=datetime-local], select {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+textarea, select {
   width: 100%;
   padding: 12px 20px;
   margin: 8px 0;
@@ -36,35 +45,27 @@ input[type=submit]:hover {
   background-color: #45a049;
 }
 
-div {
-  border-radius: 5px;
-  background-color: #f2f2f2;
-  padding: 20px;
-  width: 70%;
-  margin: auto;
-}
-
-.longfield{
-  height: 100px;
-  width: 100%;
-}
-.addbtn{
-  padding:7px;
-  background-color: #017BFF;
-  color: white;
- 
-  text-decoration : none;
-  border-radius: 8px;
-  margin-top:20px;
-  margin-right:5px;
-  float: right;
-}
 
 {% endblock style %}
-{% block content %}
 
+
+{% block option %}
+<li>
+  <a href="/home/postapntent" id="active--link">
+    
+      <span class="sidebar--item">Dashboard</span>
+    </a>
+  </li>
+<li>
+  <a href="/home/seret" >
+    
+      <span class="sidebar--item">Show Request</span>
+  </a>
+</li>
+{% endblock option %}
+
+{% block admincontent %}
 <h3 style="text-align: center;">Add Appointment</h3>
-
 <div>
   {% if messages %}
 <ul class="messages">
@@ -110,11 +111,11 @@ div {
     <label for="lname">Description</label>
     <textarea type="text" class="longfield" name="description" placeholder=""></textarea>
   
-    <input type="submit" class="addbtn" style="float:left;" value="Submit">
+    <input type="submit" class="add" style="float:left;" value="Submit">
   </form>
   
-  <a href="{% url 'employeerequest' %}" style=" background-color:  rgb(71, 71, 95);" class="addbtn">Show request</a>
-  <a href="{% url 'employeerequest' %}" style="background-color:  rgb(71, 71, 95); ;" class="addbtn">Logout</a>
+  <a href="{% url 'employeerequest' %}" style=" background-color:  rgb(71, 71, 95); width:130px; float:right;"  class="add">Show request</a>
+
 </div>
 
-{% endblock content %}
+{% endblock admincontent %}

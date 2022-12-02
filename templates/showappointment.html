@@ -1,130 +1,46 @@
-{% extends 'base.html' %}
-
-{% block style %}
-
-#thtable {
-
-  border-collapse: collapse;
-  margin-left : auto;
-  margin-right : auto;
-  color: black;
-
-  width: 100%;
-  
-
-
-}
-
-#thtable td, #thtable th {
-  border: 3px solid #ddd;
-  padding: 8px;
-}
-
-#thtable tr:nth-child(even){background-color: #f2f2f2;}
-
-
-
-#thtable th {
-  padding-top: 12px;
-  padding-bottom: 12px;
-  text-align: left;
-
-  color: black;
-}
-.maindiv{
-  margin: 100px;
-}
-h3{
-  text-align: center;
-}    
-.form{
-  display: inline;
-} 
-#thtable tr:hover {
-  background-color: #fff;
-}
-.addbtn{
-  padding:7px;
-  background-color: rgb(71, 71, 95);
-  color: white;
-  float: right;
-  
-  text-decoration : none;
-  border-radius: 8px;
-  margin-top: 15px;
-  margin-right:10px;
-}
-{% endblock style %}
-{% block content %}
-<div class="maindiv">
-    <h3> Welcome {{request.user}}  <br> Position ==> {{request.user.position}}<h3>
-    <table id="thtable">
-      
-          <tr>
-      
-            <th>User</th>
-            <th>Department</th>
-            <th>Description</th>
-            <th>Date</th>
-            <th>GH/DH Clearance</th>
-            <th>TechDirector Clearanec</th>
-            <th>Associate Director</th>
-            <th>Director</th>
-        
-      
-          </tr>
- 
-        <tbody>
-          {% for obj in objs %}
-
-          <tr>
-            <th >{{obj.r_user}}</th>
-            <td>{{obj.department.name}}</td>
-            <td>{{obj.description|truncatechars:30}} <a href="{% url 'showfull' obj.id %}">Read More</a></td>
-
-            <td>{{obj.date}}</td>
-            <td>{{obj.dh_gh_clr}}</td>
-            <td>{{obj.tech_dir_clr}}</td>
-            <td>{{obj.ass_dir_clr}}</td>
-            <td>{{obj.dir_clr}}</td>
-           
-          
- 
-          </tr>
-          {% endfor %}
-      
-        </tbody>
-      </table>
-     
-
-      <div style="float: left;">
-        <div>
-          <span>
-            {% if objs.has_previous %}
-            <a href="/adminpanel/saappnemt?page={{objs.previous_page_number}}" class="addbtn">Previous</a>
-    
-            {% endif %}
-
-            <span><b>{{objs.number}}</b></span>
-             
-            {% if objs.has_next %}
-            <a href="/adminpanel/saappnemt?page={{objs.next_page_number}}" class="addbtn">Next</a>
-
-            {% endif %}
-           
-        </span>
-        </div>
-       
-
-        
-      </div> 
-      <div>
-        <a href="{% url 'adminpanel' %}" style="float: left" class="addbtn">DashBoard</a>
-    <a href="{% url 'logout' %}" style="" class="addbtn">Logout</a>
-      </div>
-      
+{% extends 'foundation.html' %}
+{% block admincontent %}
+<div class="title">
+  <h2 class="section--title">Appointment</h2>
 
 </div>
+<table id="thtable">
+      
+  <tr>
+
+    <th>User</th>
+    <th>Department</th>
+    <th>Description</th>
+    <th>Date</th>
+    <th>GH/DH Clearance</th>
+    <th>TechDirector Clearanec</th>
+    <th>Associate Director</th>
+    <th>Director</th>
 
 
-{% endblock content %}
+  </tr>
+
+<tbody>
+  {% for obj in objs %}
+
+  <tr>
+    <th >{{obj.r_user}}</th>
+    <td>{{obj.department.name}}</td>
+    <td>{{obj.description|truncatechars:30}} <a href="{% url 'showfull' obj.id %}">Read More</a></td>
+
+    <td>{{obj.date}}</td>
+    <td>{{obj.dh_gh_clr}}</td>
+    <td>{{obj.tech_dir_clr}}</td>
+    <td>{{obj.ass_dir_clr}}</td>
+    <td>{{obj.dir_clr}}</td>
+   
+  
+
+  </tr>
+  {% endfor %}
+
+</tbody>
+</table>
+
+
+{% endblock admincontent %}
