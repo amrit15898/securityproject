@@ -16,4 +16,6 @@ urlpatterns = [
     path("dase/2e/7dessfdt/<id>", delete_department, name="deletedepartment"),
     path("udepte/<id>", update_department, name="updatedep"),
     path("check", check_template, name="updatedep"),
+    path("formtghfaaf", forgot_message_request, name="forgotmessage"),
+    path("cdfapass/<id>", change_password, name="changepass")
 ]

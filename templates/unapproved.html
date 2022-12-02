@@ -17,12 +17,6 @@
       <span class="sidebar--item">Show Request</span>
   </a>
 </li>
-<li>
-  <a href="{% url 'unapproved' %}" >
-    
-      <span class="sidebar--item">Cancel Request Request</span>
-  </a>
-</li>
 
 {% endblock option %}
 {% block admincontent %}
@@ -36,16 +30,13 @@
             <th>Department</th>
             <th>Description</th>
             <th>Date</th>
-            <th>GH/DH</th>
-            <th>Tech Director</th>
-           
+            {% comment %} <th>GH/DH</th>
+            <th>Tech Director</th> {% endcomment %}
+            <th>Reason</th>
+            <th>Cancel Person</th>
+            <th>Position</th>
 
-            <th>GH/DH Clearance</th>
-            <th>TechDirector Clearance</th>
-            <th>Associate Director</th>
-            <th>Director</th>
-            {% comment %} <th>Action</th> {% endcomment %}
-          
+     
           </tr>
  
         <tbody>
@@ -53,19 +44,41 @@
 
           <tr>
             <td>{{obj.department.name}}</td>
-            <td>{{obj.description|truncatechars:50}} <a href="{% url 'showfull' obj.id %}">Read</a></td>
+            <td>{{obj.description|truncatechars:50}}</td>
 
             <td>{{obj.date}}</td>
-            <td>{{obj.gh_dh.name}}</td>
+      
             
-            
-            <td>{{obj.dh_gh_clr}}</td>
-            <td>{{obj.tech_dir.name}}</td>
-            <td>{{obj.tech_dir_clr}}</td>
-            <td>{{obj.ass_dir_clr}}</td>
-            <td>{{obj.dir_clr}}</td>
-            {% comment %} <td><a href="{% url 'updateapp' obj.id %}" class="add">Update</a></td> {% endcomment %}
         
+            <td>{{obj.reason_cancelation}}| <a href="{% url 'showcancel' obj.id %}">Read</a></td>
+            {% if obj.dh_gh_clr == "Not Approved" %}
+            <td>{{obj.gh_dh.name}}<td>
+            <td>GH DH</td>
+
+
+            
+            {% endif %}
+            {% if obj.tech_dir_clr == "Not Approved" %}
+            <td>{{obj.tech_dir.name}}<td>
+            <td>Tech Director</td>
+
+
+            
+            {% endif %}
+            {% if obj.ass_dir_clr == "Not Approved" %}
+            <td>{{obj.assdir}}<td>
+            <td>Ass Director</td>
+
+
+            
+            {% endif %}
+            {% if obj.dir_clr == "Not Approved" %}
+            <td>{{obj.dir}}<td>
+            <td>Director</td>
+
+
+            
+            {% endif %}
  
           </tr>
           {% endfor %}

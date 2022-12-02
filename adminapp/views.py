@@ -9,6 +9,7 @@ from django.http import HttpResponse
 from django.contrib import messages
 from django.http import HttpResponseRedirect
 
+
 @login_required
 def admin_panel(request):
     
@@ -26,12 +27,12 @@ def admin_panel(request):
         except Exception as e:
             print(e)
             
-        paginator = Paginator(users, 4)
-        page_no = request.GET.get("page")
-        userDataFinal = paginator.get_page(page_no)
+        # paginator = Paginator(users, 4)
+        # page_no = request.GET.get("page")
+        # userDataFinal = paginator.get_page(page_no)
         departments = Department.objects.all()
         context = {}
-        context["users"] = userDataFinal
+        context["users"] = users
         context["departments"] = departments
         context["usercount"] = usercount
         context["departmentcount"] = departmentcount
@@ -104,30 +105,26 @@ def add_user(request):
         name = request.POST.get("name")
         password = request.POST.get("password")
         user_id = request.POST.get("userid")
-        
+        image = request.POST.get("image")
         obj = User.objects.filter(user_id=user_id).first()
-
         if not name:
             messages.info(request, "name should  not be blank")
             return redirect("/adminpanel/addffadfsfdsf")
         if obj:
-         
             messages.info(request, "User id is exits please enter a different id")
             return redirect("/adminpanel/addffadfsfdsf")
-
         if position == "selectposition":
             messages.info(request, "please select the position")
             return redirect("/adminpanel/addffadfsfdsf")
-        
         if not password:
             messages.info(request, "password required")
             return redirect("/adminpanel/addffadfsfdsf")
-        
         if not user_id:
             messages.info(request, "please enter a id")
             return redirect("/adminpanel/addffadfsfdsf")
 
-        obj = User(position=position, name=name, user_id =user_id)
+        obj = User(position=position, name=name, user_id =user_id, image=image)
+
 
         obj.set_password(password)
         try:
@@ -279,10 +276,10 @@ def show_users(request):
         users = User.objects.using("new").order_by("id")
     except Exception as e:
         print(e)
-    paginator = Paginator(users, 3)
-    page_number = request.GET.get("page")
-    page_obj = paginator.get_page(page_number)
-    context = {"users": page_obj}
+    # paginator = Paginator(users, 3)
+    # page_number = request.GET.get("page")
+    # page_obj = paginator.get_page(page_number)
+    context = {"users": users}
     return render(request, "showalluser.html",context)
 
 @login_required
@@ -306,5 +303,27 @@ def show_all_appointments(request):
 
 def check_template(request):
     return render(request, "mainpage.html")
+
+@login_required
+def forgot_message_request(request):
+    objs = ForgetMessageRequest.objects.all()
+    context = {"objs": objs}
+    return render(request, "forgotrequest.html", context)
+
+def change_password(request, id):
+    obj = User.objects.get(user_id=id)
+    print(obj.name)
+    if request.method=="POST":
+        password = request.POST.get("password")
+        print(password)
+
+        obj.set_password(password)
+        obj.save()
+
+        return HttpResponseRedirect(request.path_info)
+
+    return render(request, "changepass.html")
+
+
 
     

@@ -50,22 +50,11 @@ input[type=submit]:hover {
 
 
 {% block option %}
+
 <li>
-  <a href="/home/postapntent" id="active--link">
-    
-      <span class="sidebar--item">Dashboard</span>
-    </a>
-  </li>
-<li>
-  <a href="/home/seret" >
+  <a href="/home/shsfsdfow-readfafquest" >
     
       <span class="sidebar--item">Show Request</span>
-  </a>
-</li>
-<li>
-  <a href="/home/seret" >
-    
-      <span class="sidebar--item">Cancel Request</span>
   </a>
 </li>
 {% endblock option %}
@@ -85,37 +74,9 @@ input[type=submit]:hover {
    
 
 
-    <label for="country">GH DH</label>
-    <select id="country" name="gh_dh">
-      <option selected value="SelectGH">Select Users</option>
-      {% for i in gh_dh %}
-      <option value="{{i.id}}">{{i.name}}</option>
-      {% endfor %}
-                   
-    </select>
-    <label for="country">Tech Dir</label>
-    <select id="country" name="tdir">
-      <option selected value="SelectTD">Select Users</option>
-      {% for dir in tech_dir %}
-      <option value="{{dir.id}}">{{dir.name}}</option>
-      {% endfor %}
-                   
-    </select>
-   
-    <label for="country" >Department</label>
-    <select id="country" name="department">
-      <option selected value="SelectDep">Select Department</option>
-            {% for department in departments %}
-            <option value="{{department.id}}">{{department.name}}</option>
-            {% endfor %}
-                  
-    </select>
-
     
-    <label for="lname">DateTime</label>
-    <input type="datetime-local" id="lname" name="date" placeholder="">
-    <label for="lname">Description</label>
-    <textarea type="text" class="longfield" name="description" placeholder=""></textarea>
+    <label for="lname">Cancel Reason</label>
+    <textarea type="text" class="longfield" name="reason" placeholder=""></textarea>
   
     <input type="submit" class="add" style="float:left;" value="Submit">
   </form>

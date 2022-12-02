@@ -1,60 +1,21 @@
-{% extends 'base.html' %}
+{% extends 'rolefoundation.html' %}
 
 {% block style %}
 
-#thtable {
 
-  border-collapse: collapse;
-  margin-left : auto;
-  margin-right : auto;
-  color: black;
-
-  width: 100%;
-  
-
-
-}
-
-#thtable td, #thtable th {
-  border: 3px solid #ddd;
-  padding: 8px;
-}
-
-#thtable tr:nth-child(even){background-color: #f2f2f2;}
-
-
-
-#thtable th {
-  padding-top: 12px;
-  padding-bottom: 12px;
-  text-align: left;
-
-  color: black;
-}
-.maindiv{
-  margin: 100px;
-}
-h3{
-  text-align: center;
-}    
-.form{
-  display: inline;
-} 
-#thtable tr:hover {
-  background-color: #fff;
-}
-.addbtn{
-  padding:7px;
-  background-color: #017BFF;
-  color: white;
- 
-  text-decoration : none;
-  border-radius: 8px;
-}
 {% endblock style %}
-{% block content %}
+
+{% block option %}
+<li>
+  <a href="{ url 'securitypanel' }" id="active--link">
+    
+      <span >Dashboard</span>
+    </a>
+  </li>
+{% endblock option %}
+{% block admincontent %}
 <div class="maindiv">
-    <h3> Welcome ==> {{request.user}}  <br> Position ==> {{request.user.position}}<h3>
+    <h3 style="text-align: center; margin-top:20px; margin-bottom: 20px;"> Welcome ==> {{request.user}}  <br> Position ==> {{request.user.position}}<h3>
     <table id="thtable">
       
           <tr>
@@ -64,6 +25,7 @@ h3{
             <th>Description</th>
             <th>Date</th>
             <th>Detail</th>
+            <th>Cancel</th>
         
      
       
@@ -79,7 +41,8 @@ h3{
             <td>{{obj.description}}</td>
 
             <td>{{obj.date}}</td>
-            <td> <a href="{% url 'fulldetail' obj.id %}" style="" class="addbtn">Show Detail</a></td>
+            <td> <a href="{% url 'fulldetail' obj.id %}" style="" class="add">Show Detail</a></td>
+            <td> <a href="{% url 'cancelrequest' obj.id %}" style="margin-left:20px;" class="add">Cancel</a></td>
          
  
         </tr>
@@ -88,9 +51,8 @@ h3{
       
         </tbody>
       </table>
-      <a href="{% url 'logout' %}" style="float: right; background-color: rgb(220,53,69);" class="addbtn">Logout</a>
-
+   
 </div>
 
 
-{% endblock content %}
+{% endblock admincontent %}

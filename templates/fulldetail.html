@@ -1,18 +1,29 @@
-{% extends 'base.html' %}
+{% extends 'rolefoundation.html' %}
 {% block style %}
-div{
-    width: 50%;
-    margin: auto;
-    margin-top: 200px;
-    border: 1px solid black;
-}
 
+p{
+    margin-top:20px;
+}
 {% endblock style %}
-{% block content %}
+
+{% block option %}
+
+<li>
+    <a href="/home/shsfsdfow-readfafquest" id="active--link">
+      
+        <span >Dashboard</span>
+      </a>
+    </li>
+
+{% endblock option %}
+
+
+
+{% block admincontent %}
 
 
     <div>
        <p>{{obj.description}}</p>
       </div>
 
-{% endblock content %}
+{% endblock admincontent %}

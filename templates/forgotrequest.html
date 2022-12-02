@@ -1,0 +1,36 @@
+{% extends 'foundation.html' %}
+{% block admincontent %}
+<div class="title">
+    <h2 class="section--title">Forgot Pass Request</h2>
+
+</div>
+<div class="table">
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Id</th>
+                <th>Change</th>
+                
+
+                
+            </tr>
+        </thead>
+        <tbody>
+            {% for obj in objs %}
+            <tr>
+                <td>{{obj.user_id.name}}</td>
+                <td>{{obj.user_id.user_id}}</td>
+               
+                <td><a href="{% url 'changepass' obj.user_id.user_id %}">Change Password</a></td>
+         
+      
+             
+            </tr>
+            {% endfor %}
+            
+        </tbody>
+    </table>
+</div>
+
+{% endblock admincontent %}

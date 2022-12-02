@@ -395,6 +395,7 @@ a {
     border-radius: 5px;
     cursor: pointer;
     transition: .3s;
+   
 }
 
 .add:hover {
@@ -468,7 +469,7 @@ a {
 
 table {
     width: 100%;
-    text-align: center;
+    text-align: right;
     border-collapse: collapse;
 }
 

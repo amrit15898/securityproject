@@ -39,7 +39,8 @@
                         <tr>
                             <th>User</th>
                             <th>Dep.</th>
-                       
+                            <th>Description</th>
+
                             <th>Date</th>
                             <th>GH/DH Clearance</th>
                             <th>TechDirector Clearanec</th>
@@ -58,6 +59,7 @@
                         <tr>
                           <th >{{obj.r_user}}</th>
                           <td>{{obj.department.name}}</td>
+                          <td>{{obj.description}} <a href="{% url 'showfull' obj.id %}">Read</a></td>
                          
               
                           <td>{{obj.date}}</td>
@@ -74,7 +76,7 @@
                             </form>
                             <form method="POST" class="form">
                               {% csrf_token %}
-                              <button name="approved" class="add" style="" value="{{obj.id}}" type="submit">Approved</button>
+                              <button name="approved" class="add" style="margin-top: 10px; text-align: center;" value="{{obj.id}}" type="submit">Approved</button>
                             </form>
                     
                           </div></td>

@@ -5,13 +5,12 @@ from .models import postions
 # Create your views here.
 
 from datetime import datetime, date
-
+from django.http import HttpResponseRedirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-todaydate = date.today()
+todaydate = date.today().day
 @login_required
 def post_appointment(request):
-
     try:
         gh_dh = User.objects.using("default").filter(position = "GH/DH")
         tech_dir = User.objects.using("default").filter(position = "Tech Director")
@@ -62,8 +61,6 @@ def post_appointment(request):
 
         pd = " ".join(d)
         print(pd)
-
-       
         for obj in Appointment.objects.all():
             if str(obj.date.date()) == str(d[0]):
                 print(obj.date)
@@ -77,7 +74,6 @@ def post_appointment(request):
                     print("please select the another time")
                     messages.warning(request, "please select another time")
                     return redirect("/home/postapntent")
-
 
         dep = Department.objects.get(id=department)
         obj = Appointment(gh_dh= final_gh_dh, tech_dir =final_tech_dir, description=description, department=dep, date=date)
@@ -139,7 +135,7 @@ def update_appointment(request, id):
         print(e)
     return render(request, "updateapp.html", context)
 
-
+@login_required
 def show_request(request):
     print(request.user.name)
     print(request.user.position)
@@ -151,28 +147,24 @@ def show_request(request):
                 objs = Appointment.objects.using("default").filter(gh_dh__name=request.user,
                                                                    date__gte = datetime.now())       
             elif request.user.position == postions[2][1]:
-                objs = Appointment.objects.using("default").filter(tech_dir__name = request.user)
+                objs = Appointment.objects.using("default").filter(tech_dir__name = request.user, date__gte = datetime.now(), dh_gh_clr = "Approved")
 
 
             elif request.user.position == postions[0][1]:
                 objs = Appointment.objects.filter(date__gte = datetime.now())
             elif request.user.position == postions[1][1]:
-                objs = Appointment.objects.filter(date__gte = datetime.now()) 
+                objs = Appointment.objects.filter(date__gte = datetime.now(), tech_dir_clr ="Approved") 
         except Exception as e:
-            pass   
-
+            pass  
 
         try:
             if request.user.position == postions[3][1]:
    
                 objs = Appointment.objects.using("new").filter(gh_dh__name=request.user,
                                                                    date__gte = datetime.datetime.now())
-
-    
             elif request.user.position == postions[2][1]:
                 objs = Appointment.objects.using("new").filter(tech_dir__name = request.user,
                                                                    date__gte = datetime.datetime.now())
-
 
             elif request.user.position == postions[0][1]:
                 objs = Appointment.objects.using("new").filter(
@@ -180,55 +172,39 @@ def show_request(request):
             elif request.user.position == postions[1][1]:
                 objs = Appointment.objects.using("new").filter(date__gte = datetime.datetime.now()) 
         except Exception as e:
-            pass  
-
-            
-
+            pass         
         context["objs"] = objs
-
-    
         if 'approved' in request.POST:
             value = request.POST.get("approved")
             obj1 = Appointment.objects.using("default").get(id=value)
             obj2 = Appointment.objects.using("new").get(id=value)
-  
             position = request.user.position
-       
             if (position == postions[3][1]):
                 try:
                     obj1.dh_gh_clr = "Approved"
                     obj2.dh_gh_clr = "Approved"
                 except Exception as e:
                     pass
-                
-                    
             if position == postions[2][1]:
                 try:
                     obj1.tech_dir_clr = "Approved"
                     obj2.tech_dir_clr = "Approved"
                 except Exception as e:
                     pass
-                
             if position == postions[0][1]:
-            
                 try:
                     obj1.dir_clr = "Approved"
                     obj2.dir_clr = "Approved"
                 except Exception as e:
                     pass
-                
             if position == postions[1][1]:
                 try:
                     obj1.ass_dir_clr = "Approved"
                     obj2.ass_dir_clr = "Approved"
                 except Exception as e:
                     pass
-                
-            
             obj1.save()
             obj2.save()
-
-         
         if 'napproved' in request.POST:
             value = request.POST.get("napproved")     
             obj1 = Appointment.objects.using("default").get(id=value)
@@ -238,60 +214,51 @@ def show_request(request):
                 print("gh called")
                 obj1.dh_gh_clr = "Not Approved"
                 obj2.dh_gh_clr = "Not Approved"
-                
-                    
+                obj1.save()
+                obj2.save()
+                return redirect(f"/home/cfhadf-regfsa/{value}")                    
             if position == postions[2][1]:
-                print("gh called")
                 obj1.tech_dir_clr = "Not Approved"
                 obj2.tech_dir_clr = "Not Approved"
-                
+                obj1.save()
+                obj2.save()
+                return redirect(f"/home/cfhadf-regfsa/{value}")               
             if position == postions[0][1]:
                 print("Associate director")
                 obj1.dir_clr = "Not Approved"
                 obj2.dir_clr = "Not Approved"
-                
+                obj1.save()
+                obj2.save()
+                return redirect(f"/home/cfhadf-regfsa/{value}")         
             if position == postions[1][1]:
                 print("director")
                 obj1.ass_dir_clr = "Not Approved"
                 obj2.ass_dir_clr = "Not Approved"
-                
-            obj1.save()
-            obj2.save()
-
-                    
-
+                obj1.save()
+                obj2.save()
+                return redirect(f"/home/cfhadf-regfsa/{value}")
         if "forward" in request.POST:
             value = request.POST.get("forward")          
             obj1 = Appointment.objects.using("default").get(id=value)
-            obj2 = Appointment.objects.using("new").get(id=value)         
-            
-            
+            obj2 = Appointment.objects.using("new").get(id=value)                
             obj1.send_security = True
             obj2.send_security = True
             obj1.save()
             obj2.save()
-            
-
-   
         return render(request, "ghdh2.html",context)
-
     except Exception as e:
         print(e)
         messages.warning(request, "something went wrong")
     return render(request, "ghdh2.html",context)
-        
-    
-
-
-
-
-
 @login_required
 def employee_request(request):
-    objs = Appointment.objects.filter(r_user = request.user)
+    try:
+        objs = Appointment.objects.filter(r_user = request.user)
+        objs = Appointment.objects.using("new").filter(r_user = request.user)
+    except Exception as e:
+        pass
     context = {"objs": objs}
     return render(request, "emprequest.html",context)
-
 
 def show_full_request(request,id):
     try:    
@@ -302,21 +269,17 @@ def show_full_request(request,id):
         obj = Appointment.objects.using("new").get(id=id)
     except Exception as e:
         print(e)
-
     context = {"obj": obj}
     return render(request, "fulldetail.html", context)
-
 
 @login_required
 def security_officer(request):
     try:
-        objs = Appointment.objects.filter(send_security=True)
+        objs = Appointment.objects.filter(date__date__day = todaydate,send_security = True )
         context = {"objs": objs}
     except Exception as e:
         print(e)
     return render(request, "security.html", context)
-
-
 @login_required
 def full_security_detail(request,id):
     try:
@@ -325,36 +288,26 @@ def full_security_detail(request,id):
     except Exception as e:
         messages.warning(request, "something went wrong")
         return redirect("/home/security-panel")
-    
     if "forward" in request.POST:
             value = request.POST.get("forward")          
             obj1 = Appointment.objects.using("default").get(id=value)
             obj2 = Appointment.objects.using("new").get(id=value)         
-            
-            
             obj1.send_security = True
             obj2.send_security = True
             obj1.save()
             obj2.save()
-            
-
     return render(request, "fullsecurity.html", context)
-
 @login_required
 def cancel_request(request, id):
     try:
         obj1 = Appointment.objects.using("default").get(id=id)
         obj2 = Appointment.objects.using("new").get(id=id)
-
         obj1.delete()
         obj2.delete()
-
     except Exception as e:
         messages.error(request, "something went wrong")
-
     return redirect("/home/shsfsdfow-readfafquest")
     
-
 @login_required   
 def cleare_clearance_list(request):
     try:
@@ -365,21 +318,67 @@ def cleare_clearance_list(request):
         objs = Appointment.objects.using("new").filter(gh_dh__name= request.user, dir_clr="Approved")
     except Exception as e:
         pass
-    
-    context = {"objs": objs}
-    
+    context = {"objs": objs}  
     return render(request, "cleard.html", context)
-
 
 def forgot_password(request):
     if request.method == "POST":
         uidd = request.POST.get("id")
-        user = User.objects.get(user_id=id)
-
+        user = User.objects.get(user_id=uidd)
+        if not user:
+            messages.error(request, "please enter correct id")
+            return HttpResponseRedirect(request.path_info)
         obj = ForgetMessageRequest(user_id = user)
         obj.save()
-    
+        obj.save(using="new")
+        messages.success(request, "your forgot password request sent")
+        return redirect("/")
     return render(request, "forgotpass.html")
+
+@login_required
+def reson_unopproved(request, id):
+    obj = Appointment.objects.get(id=id)
+    if request.method=="POST":
+        reason = request.POST.get('reason')
+        obj.reason_cancelation = reason
+        try:
+            obj.save()
+            obj.save(using="new")
+
+        except Exception as e:
+            pass
+    return render(request, "cancelreason.html")
+
+
+
+@login_required
+def cancel_employee_request(request):
+    try:
+        objs = Appointment.objects.filter(dh_gh_clr="Not Approved") | Appointment.objects.filter(tech_dir_clr="Not Approved") | Appointment.objects.filter(ass_dir_clr="Not Approved") | Appointment.objects.filter(dir_clr="Not Approved")
+        objs = Appointment.objects.using("new").filter(dh_gh_clr="Not Approved") | Appointment.objects.filter(tech_dir_clr="Not Approved") | Appointment.objects.filter(ass_dir_clr="Not Approved") | Appointment.objects.filter(dir_clr="Not Approved")
+
+    except Exception as e:
+        pass
+    context = {}
+    context["objs"] = objs 
+    context["assdir"] = User.objects.filter(position = "Associate Director").first()
+    context["dir"] = User.objects.filter(position = "Director").first()
+
+
+    return render(request, "unapproved.html", context)
+
+
+def show_cancel_reason(request,):
+    try:
+        obj = Appointment.objects.get(id=id)
+        obj = Appointment.objects.using("new").get(id=id)
+
+    except Exception as e:
+        pass
+    context = {"obj": obj}
+    return render(request, "fullreason.html", context)
+    
+
 
 
 

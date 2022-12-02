@@ -47,9 +47,7 @@ class Appointment(models.Model):
     dir_clr = models.CharField(max_length=50, choices=status , null=True, blank=True, default="Pending")
     send_security = models.BooleanField(default=False, null=True, blank=True)
     tem_id = models.UUIDField(default=uuid.uuid4())
-    
-    
-    
+    reason_cancelation = models.TextField(null = True, blank=True)    
     # def __str__(self) -> str:
     #     return self.r_user.name
     

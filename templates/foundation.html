@@ -15,26 +15,23 @@
 </head>
 
 <body>
+    
+  {% if messages %}
+  <ul class="messages">
+      {% for message in messages %}
+      <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{message}}</li>
+      {% endfor %}
+  </ul>
+  {% endif %}
     <section class="header">
         <div class="logo">
-            <i class="ri-menu-line icon icon-0 menu"></i>
+           
             <h2>My<span>Project</span></h2>
         </div>
         <div class="search--notification--profile">
-            <div class="search">
-                <input type="text" placeholder="Search Scdule..">
-                <button><i class="ri-search-2-line"></i></button>
-            </div>
+          
             <div class="notification--profile">
-                <div class="picon lock">
-                    <i class="ri-lock-line"></i>
-                </div>
-                <div class="picon bell">
-                    <i class="ri-notification-2-line"></i>
-                </div>
-                <div class="picon chat">
-                    <i class="ri-wechat-2-line"></i>
-                </div>
+               
                 <div class="picon profile">
                     <img src="assets/images/profile.jpg" alt="">
                 </div>
@@ -69,6 +66,12 @@
                         <span class="sidebar--item">Appointment</span>
                     </a>
                 </li>
+                <li>
+                    <a href="{% url 'forgotmessage' %}">
+                     
+                        <span class="sidebar--item">Forgot Password Requests</span>
+                    </a>
+                </li>
             </ul>
             <ul class="sidebar--bottom-items">
                 
@@ -92,7 +95,7 @@
         
         </div>
     </section>
-    <script src="assets/js/main.js"></script>
+
 </body>
 
 </html>
