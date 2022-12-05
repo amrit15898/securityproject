@@ -31,8 +31,10 @@ input[type=password], select {
     {% csrf_token %}
     <label for="fname">Name</label>
     <input type="text" id="fname" value="{{user.name}}" name="name" placeholder="">
-    <label for="fname">Password</label>
-    <input type="text" id="fname"  name="password" placeholder="">
+    <label for="fname">User id</label>
+    <input type="text" id="fname" value="{{user.user_id}}" name="user_id" placeholder="">
+    {% comment %} <label for="fname">Password</label>
+    <input type="text" id="fname"  name="password" placeholder=""> {% endcomment %}
 
 
     <label for="country">Position</label>
@@ -49,7 +51,7 @@ input[type=password], select {
     {% comment %} <label for="lname">Password</label>
     <input type="password" value={{user.password}} id="lname" name="password" placeholder=""> {% endcomment %}
   
-    <input type="submit" value="Submit">
+    <input type="submit" class="add" value="Submit">
   </form>
 </div>
 
