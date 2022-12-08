@@ -48,8 +48,8 @@
         <thead>
             <tr>
                 <th>Name</th>
-                <th>Position</th>
-                <th>Id</th>
+                <th>Designation</th>
+                <th>Employee Id</th>
                 
                 <th>Action</th>
             </tr>
@@ -59,7 +59,7 @@
             <tr>
                 <td>{{user.name}}</td>
                 <td>{{user.position}}</td>
-                <td>{{user.user_id}}</td>
+                <td>{{user.employee_id}}</td>
              
                 <td class="pending"><a href="{% url 'deleteuser' user.id %}" style="color: red;margin-right:5px;">Delete</a><a href="{% url 'updateuser' user.id %}" style="color: green;" >Update</a></td>
                 <td><span><i class="ri-edit-line edit"></i><i class="ri-delete-bin-line delete"></i></span></td>

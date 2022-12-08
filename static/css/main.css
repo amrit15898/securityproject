@@ -463,13 +463,23 @@ a {
 }
 
 .table {
-    height: 300px;
-    overflow-y: scroll;
+    /* height: 300px; */
+    overflow-x: auto;
 }
-
+.table thead th{
+    white-space: nowrap;
+    padding: 5px 10px;
+}
+.table tbody td,
+.table tbody th{
+    padding: 5px 10px;
+}
+.text-nowrap{
+    white-space: nowrap;
+}
 table {
     width: 100%;
-    text-align: right;
+    text-align: left;
     border-collapse: collapse;
 }
 
@@ -480,6 +490,8 @@ tr {
 td,
 th {
     padding-block: 20px;
+    text-align: left;
+    margin-right: 10px;
 
 }
 

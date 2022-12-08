@@ -21,14 +21,14 @@ class User(AbstractBaseUser, PermissionsMixin):
     position = models.CharField(max_length = 40, choices=postions)
     name = models.CharField(max_length=150)
     department = models.ForeignKey(Department, on_delete=models.CASCADE, null=True, blank=True)
-    image = models.ImageField(upload_to="static/images", null=True, blank=True)
-    user_id = models.CharField(max_length=20, null=True, blank=True, unique=True)   
+    image = models.ImageField(upload_to="images", null=True, blank=True)
+    employee_id = models.CharField(max_length=20, null=True, blank=True, unique = True)   
     is_staff = models.BooleanField(default=False)
 
     is_active = models.BooleanField(default=True)
    
     objects = UserManager()
-    USERNAME_FIELD = 'user_id'
+    USERNAME_FIELD = 'employee_id'
     
     def __str__(self) -> str:
         return self.name
@@ -55,6 +55,6 @@ class Clearance(models.Model):
     type = models.CharField(max_length=200, null=True ,blank=True)
     
 class ForgetMessageRequest(models.Model):
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    employee_id = models.ForeignKey(User, on_delete=models.CASCADE)
     
 

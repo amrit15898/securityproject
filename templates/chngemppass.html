@@ -1,0 +1,98 @@
+{% extends 'rolefoundation.html' %}
+{% block style %}
+input[type=text], select {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+  input[type=datetime-local], select {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+  textarea, select {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+  input[type=password], select {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+  
+  input[type=submit] {
+   
+  }
+  
+  input[type=submit]:hover {
+    background-color: #45a049;
+  }
+  
+{% endblock style%}
+{% block option %}
+<li>
+    <a href="/home/shsfsdfow-readfafquest">
+      
+        <span >Dashboard</span>
+      </a>
+    </li>
+<li>
+    <a href="/home/shsfsdfow-readfafquest" >
+      
+        <span >Profile</span>
+      </a>
+    </li>
+<li>
+    <a href="/home/shsfsdfow-readfafquest" >
+      
+        <span >Dashboard</span>
+      </a>
+    </li>
+    
+{% endblock option %}
+{% block admincontent %}
+
+<h3 style="text-align: center;">Change Password</h3>
+<div>
+  {% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+  <form action="" method="POST">
+    {% csrf_token %}
+   
+
+
+    <label for="lname">Current Password</label>
+    <input type="password" class="longfield" name="currentpass" placeholder=""/>
+    
+    <label for="lname">New Password</label>
+    <input type="password" class="longfield" name="newpassword" placeholder=""/>
+    <label for="lname">Confirm Password</label>
+    <input type="password" class="longfield" name="confirmpassword" placeholder=""/>
+  
+    <input type="submit" class="add" style="float:left;" value="Submit">
+  </form>
+ 
+</div>
+{% endblock admincontent %}

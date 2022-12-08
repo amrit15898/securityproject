@@ -8,6 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.contrib import messages
 from django.http import HttpResponseRedirect
+import random 
 
 
 @login_required
@@ -22,8 +23,8 @@ def admin_panel(request):
         try:
             users = User.objects.exclude(is_staff = True)
             usercount = User.objects.all().count()
-            departmentcount = Department.objects.using("new").count()
-            appcount = Appointment.objects.using("new").count()   
+            departmentcount = Department.objects.all().count()
+            appcount = Appointment.objects.all().count()   
             departments = Department.objects.all()   
             print() 
         except Exception as e:
@@ -46,7 +47,7 @@ def admin_panel(request):
         context["departmentcount"] = departmentcount
         context["appcount"] = appcount
         return render(request, "mainpage.html",context)
-    return HttpResponse("this is page not visible for you")
+    return render(request, "notfound.html")
 
 @login_required 
 def delete_user(request,id):
@@ -68,12 +69,12 @@ def update_user(request,id):
         context = {"user": user1}       
         if request.method =="POST":
             name = request.POST.get("name")
-            user_id = request.POST.get("user_id")
+            employee_id = request.POST.get("employee_id")
             position = request.POST.get("position")
             # password = request.POST.get("password")
             user1.name = name 
             user1.position = position
-            user1.user_id = user_id
+            user1.employee_id = employee_id
             # user1.set_password(password) 
             user1.save()
             # user1.save(using="new")
@@ -90,12 +91,19 @@ def add_user(request):
     departments = Department.objects.all()
     context = {"departments": departments}
     if request.method=="POST":
+        char = list("abcdefghijklmonpqrstuvwxyz")
+        length = 9
+        rpassword = ""
+        for i in range(length):
+            rpassword+=random.choice(char)
+        print("password is"+rpassword)
         position = request.POST.get("position")
         name = request.POST.get("name")
         password = request.POST.get("password")
-        user_id = request.POST.get("userid")
-        image = request.POST.get("image")
-        obj = User.objects.filter(user_id=user_id).first()
+        employee_id = request.POST.get("userid")
+        file = request.FILES.get("img")
+        print(file)
+        obj = User.objects.filter(employee_id=employee_id).first()
         if not name:
             messages.info(request, "name should  not be blank")
             return redirect("/adminpanel/addffadfsfdsf")
@@ -108,10 +116,10 @@ def add_user(request):
         if not password:
             messages.info(request, "password required")
             return redirect("/adminpanel/addffadfsfdsf")
-        if not user_id:
+        if not employee_id:
             messages.info(request, "please enter a id")
             return redirect("/adminpanel/addffadfsfdsf")
-        obj = User(position=position, name=name, user_id =user_id, image=image)
+        obj = User(position=position, name=name, employee_id=employee_id, image=file)
         obj.set_password(password)
         obj.save()
         # obj.save(using='new', force_insert=True)
@@ -142,22 +150,24 @@ def add_department(request):
 def update_department(request, id):
     try:
         dep1 = Department.objects.using("default").get(id=id)
-        dep2 = Department.objects.using("new").get(id=id)
+        # dep2 = Department.objects.using("new").get(id=id)
     except Exception as e:
         messages.warning(request, "soemthing went wrong")
-    context = {
-        "dep": dep1
-    }
+    
     if request.method=="POST":
         name = request.POST.get("name")
         dep1.name= name
-        dep2.name = name 
+        # dep2.name = name 
         try:
             dep1.save()      
             # dep2.save(using="new")
             return redirect("/adminpanel/sfdddaf")
         except Exception as e:
             pass
+
+    context = {
+        "dep": dep1
+    }
     return render(request, "updatedep.html", context)
 
 
@@ -166,17 +176,17 @@ def update_department(request, id):
 
 def login_front_page(request):
     if request.method=="POST":
-        user_id = request.POST.get("id")
+        employee_id = request.POST.get("id")
         password = request.POST.get("password")
-        if user_id == "":
+        if employee_id == "":
             messages.warning(request, "please enter a user id") 
         if password == "":
             messages.warning(request, "please enter a password")
-        obj = User.objects.filter(user_id=user_id).first()
+        obj = User.objects.filter(employee_id=employee_id).first()
         if not obj:
-            messages.info(request, "This user_id is not exit ")
+            messages.info(request, "This employee_id is not exit ")
             return redirect("/")    
-        user = authenticate(request, user_id=user_id, password = password)
+        user = authenticate(request, employee_id=employee_id, password = password)
         if user is not None:
             try:
                 login(request, user)
@@ -264,13 +274,19 @@ def check_template(request):
 
 @login_required
 def forgot_message_request(request):
-    objs = ForgetMessageRequest.objects.all()
+    objs = {}
+    try:
+        objs = ForgetMessageRequest.objects.all()
+        
+    except Exception as e:
+        messages.error(request, "something went wrong")
     context = {"objs": objs}
+    
     return render(request, "forgotrequest.html", context)
 
 def change_password(request, id):
     try:
-        obj = User.objects.get(user_id=id)
+        obj = User.objects.get(employee_id=id)
         if request.method=="POST":
             password = request.POST.get("password")
             obj.set_password(password)
@@ -283,4 +299,24 @@ def change_password(request, id):
 
 
 
-    
+def full_profile(request):
+    return render(request, "profile.html")
+
+def change_employee_password(request):
+    if request.method =="POST":
+        currentpass = request.POST.get("currentpass")
+        newpassword = request.POST.get("newpassword")
+        confirmpassword = request.POST.get("confirmpassword")
+
+        obj = authenticate(employee_id= request.user.employee_id , password = currentpass)
+        if obj:
+            print("yes")
+            if newpassword==confirmpassword and newpassword!=currentpass:
+                obj.set_password(newpassword)
+                obj.save()
+                messages.success(request, "password successfully changed")
+                return redirect("/")
+            else:
+                messages.error(request, "password not match")
+
+    return render(request, "chngemppass.html")

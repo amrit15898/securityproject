@@ -21,8 +21,10 @@
             <tr>
                 <td>{{obj.user_id.name}}</td>
                 <td>{{obj.user_id.user_id}}</td>
-               
+                {% if obj.user_id.user_id %}
+                
                 <td><a href="{% url 'changepass' obj.user_id.user_id %}">Change Password</a></td>
+                {% endif %} 
          
       
              

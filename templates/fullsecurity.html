@@ -38,15 +38,21 @@
 {% endblock style %}
 
 {% block option %}
-{% if request.user.position == 'Security officer' %}
+{% comment %} {% if request.user.position == 'Security officer' %} {% endcomment %}
 <li>
-  <a href="">
+  <a href="/home/sesdfpnel">
     
       <span >Dashboard</span>
     </a>
   </li>
+<li>
+  <a href="/home/sesdfpnel">
+    
+      <span >Profile</span>
+    </a>
+  </li>
 
-  {% endif %}
+  {% comment %} {% endif %} {% endcomment %}
   {% if request.user.position == 'GH/DH' %}
 
   <a href="/home/shsfsdfow-readfafquest">
@@ -61,13 +67,13 @@
 
 {% block admincontent %}
 <div class="container">
-    <div class="inner">
-    <h4 style="text-align:left; margin-bottom: 20px;">Name == {{obj.r_user.name}}</h4>
+  <div class="inner">
+    <p style="text-align:left; margin-bottom: 20px;">Name == {{obj.r_user.name}}</p>
     <p>Description == {{obj.description}}</p>
     <p>Department == {{obj.department.name}}</p>
     <p>Date == {{obj.date}}</p>
-    <div><img src="" alt="" srcset=""></div>
-    </div>
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTdRx1rDicE0AYshdx1RDRyXrJ8jBq39o1EQ2HrWSQD&s" style="height:150px; width:150px; float:right;    margin-top: 207px;
+    margin-left: 850px;"  alt="" srcset="">
 
   
    {% if request.user.position == 'GH/DH' and obj.send_security == False %}

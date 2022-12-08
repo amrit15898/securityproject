@@ -1,0 +1,53 @@
+{% extends 'rolefoundation.html' %}
+{% block style %}
+.container{
+    width: 70%;
+    margin: auto;
+    margin-left: 400px;
+    margin-top: 200px;
+
+}
+p{
+    padding:10px;
+}
+img{
+    padding: 10px;
+}
+
+{% endblock style %}
+{% block option %}
+<li>
+    <a href="/home/shsfsdfow-readfafquest">
+      
+        <span >Dashboard</span>
+      </a>
+    </li>
+<li>
+    <a href="/home/shsfsdfow-readfafquest" >
+      
+        <span >Profile</span>
+      </a>
+    </li>
+<li>
+    <a href="/home/shsfsdfow-readfafquest" >
+      
+        <span >Dashboard</span>
+      </a>
+    </li>
+    
+{% endblock option %}
+{% block admincontent %}
+<div class="container">
+    <!-- {% if request.user.image %}
+    <img src="{{request.user.image}}" style = "width: 150px; height:200px; margin-left: 430px;" alt="" srcset="">
+    {% endif %} -->
+    <p>Name = {{request.user.name}}</p>
+    <p>Emploee id = {{request.user.user_id}}</p>
+    <p>Designation = {{request.user.position}}</p>
+
+</div>
+<a href="{% url 'chngpassword'%}">Change Password</a>
+
+
+{% endblock admincontent %}
+

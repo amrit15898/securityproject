@@ -27,8 +27,13 @@ input[type=password], select {
   border-radius: 4px;
   box-sizing: border-box;
 }
-
-
+.btngroup{
+  display: flex;
+ 
+}
+.btngroup #hidepass{
+  margin-left : 10px;
+}
 
 
 {% endblock style %}
@@ -44,17 +49,17 @@ input[type=password], select {
     {% endfor %}
 </ul>
 {% endif %}
-  <form action="" method="POST">
+  <form action="" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
-    <label for="fname">Name</label>
+    <label for="">Name</label>
     <input type="text" id="fname" name="name" placeholder="">
-    <label for="fname">Id</label>
+    <label for="">Id</label>
     <input type="text" id="fname" name="userid" placeholder="">
-    <label for="fname">Image</label>
-    <input type="file" id="fname" name="image" placeholder="">
+    <label for="">Image</label>
+    <input type="file"  name="img" placeholder="">
 
 
-    <label for="country">Position</label>
+    <label for="country">Designation</label>
     <select id="country" name="position">
       <option selected value="selectposition">Select Position</option>
                     <option value="Director">Director</option>
@@ -68,7 +73,12 @@ input[type=password], select {
 
     
     <label for="lname">Password</label>
-    <input type="password" id="lname" name="password" placeholder="">
+    <input type="password" id="pass" name="password" placeholder="">
+    <div class="btngroup">
+      <button onclick="getPassword()" class="add" type="button" style="margin-bottom: 10px;">Genrate Password</button>
+    <button onclick="showpass()" class="add" type="button" id ="hidepass" style="margin-bottom: 10px;">Show Password</button>
+    </div>
+    
   
     <input type="submit" class="add" value="Submit">
   </form>

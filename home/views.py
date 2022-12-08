@@ -68,7 +68,7 @@ def post_appointment(request):
                     minutes_diff = (d2- d1).total_seconds() / 60.0
                     if minutes_diff<30:
                         print("please select the another time")
-                        messages.warning(request, "please select another time")
+                        messages.warning(request, "please select another time this time is already booked")
                         return redirect("/home/postapntent")
 
             dep = Department.objects.get(id=department)
@@ -94,12 +94,12 @@ def update_appointment(request, id):
         tech_dir = User.objects.using("default").filter(position="Tech Director")   
     except Exception as e:
         print(e)
-    try:
-        gh_dh = User.objects.using("new").filter(position = "GH/DH")
-        tech_dir = User.objects.using("new").filter(position = "Tech Director")
+    # try:
+    #     gh_dh = User.objects.using("new").filter(position = "GH/DH")
+    #     tech_dir = User.objects.using("new").filter(position = "Tech Director")
     
-    except Exception as e:
-        print(e)
+    # except Exception as e:
+    #     print(e)
     departments = Department.objects.all()
     context = {}
     context["gh_dh"] = gh_dh
@@ -126,10 +126,10 @@ def update_appointment(request, id):
                 obj.save()
             except Exception as e:
                 pass             
-            try:
-                obj.save(using="new")        
-            except Exception as e:
-                pass
+            # try:
+            #     obj.save(using="new")        
+            # except Exception as e:
+            #     pass
     except Exception as e:
         print(e)
     return render(request, "updateapp.html", context)
@@ -157,22 +157,22 @@ def show_request(request):
         except Exception as e:
             pass  
 
-        try:
-            if request.user.position == postions[3][1]:
+        # try:
+        #     if request.user.position == postions[3][1]:
    
-                objs = Appointment.objects.using("new").filter(gh_dh__name=request.user,
-                                                                   date__gte = datetime.datetime.now())
-            elif request.user.position == postions[2][1]:
-                objs = Appointment.objects.using("new").filter(tech_dir__name = request.user,
-                                                                   date__gte = datetime.datetime.now())
+        #         objs = Appointment.objects.using("new").filter(gh_dh__name=request.user,
+        #                                                            date__gte = datetime.datetime.now())
+        #     elif request.user.position == postions[2][1]:
+        #         objs = Appointment.objects.using("new").filter(tech_dir__name = request.user,
+        #                                                            date__gte = datetime.datetime.now())
 
-            elif request.user.position == postions[0][1]:
-                objs = Appointment.objects.using("new").filter(
-                                                                   date__gte = datetime.datetime.now())
-            elif request.user.position == postions[1][1]:
-                objs = Appointment.objects.using("new").filter(date__gte = datetime.datetime.now()) 
-        except Exception as e:
-            pass         
+        #     elif request.user.position == postions[0][1]:
+        #         objs = Appointment.objects.using("new").filter(
+        #                                                            date__gte = datetime.datetime.now())
+        #     elif request.user.position == postions[1][1]:
+        #         objs = Appointment.objects.using("new").filter(date__gte = datetime.datetime.now()) 
+        # except Exception as e:
+        #     pass         
         context["objs"] = objs
         if 'approved' in request.POST:
             value = request.POST.get("approved")
@@ -310,13 +310,14 @@ def cleare_clearance_list(request):
     return render(request, "cleard.html", context)
 
 def forgot_password(request):
+
     if request.method == "POST":
         uidd = request.POST.get("id")
-        user = User.objects.get(user_id=uidd)
+        user = User.objects.get(employee_id=uidd)
         if not user:
             messages.error(request, "please enter correct id")
             return HttpResponseRedirect(request.path_info)
-        obj = ForgetMessageRequest(user_id = user)
+        obj = ForgetMessageRequest(employee_id = user)
         obj.save()
         # obj.save(using="new")
         messages.success(request, "your forgot password request sent")

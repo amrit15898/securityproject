@@ -1,5 +1,7 @@
 {% extends 'rolefoundation.html' %}
-{% block style %}{% endblock style %}
+{% block style %}
+
+{% endblock style %}
 
 
 {% block option %}
@@ -9,15 +11,22 @@
       <span >Dashboard</span>
     </a>
   </li>
+  
+  {% if request.user.position == "GH/DH" %}
 
-{% if request.user.position == "GH/DH" %}
-<li>
-    <a href="{% url 'clearlist' %}"  >
+  {% endif %}
+  <li>
+    <a href="{% url 'fullprofile' %}">
       
-        <span class="sidebar--item">Clear</span>
-    </a>
-  </li>
-            {% endif %}
+        <span >Profile</span>
+      </a>
+    </li>
+  <li>
+    <a href="{% url 'fullprofile' %}">
+      
+        <span >Change Password</span>
+      </a>
+    </li>
 
 
 {% endblock option %}
@@ -34,7 +43,7 @@
         <h3 style="text-align:center; margin-top:20px; margin-bottom: 20px;"> Welcome {{request.user}}  <br> Position ==> {{request.user.position}}<h3>
           
             <div class="table">
-                <table>
+                <table border="1px" cellpadding="15px">
                     <thead>
                         <tr>
                             <th>User</th>
@@ -58,17 +67,20 @@
       
                         <tr>
                           <th >{{obj.r_user}}</th>
-                          <td>{{obj.department.name}}</td>
-                          <td>{{obj.description}} <a href="{% url 'showfull' obj.id %}">Read</a></td>
+                          <th>{{obj.department.name}}</th>
+                          <th>{{obj.description}} <a href="{% url 'showfull' obj.id %}">Read</a></th>
                          
               
-                          <td>{{obj.date}}</td>
-                          <td>{{obj.dh_gh_clr}}</td>
-                          <td>{{obj.tech_dir_clr}}</td>
-                          <td>{{obj.ass_dir_clr}}</td>
-                          <td>{{obj.dir_clr}}</td>
+                          <th>{{obj.date}}</th>
+                          <th ><button class="add" {% if obj.dh_gh_clr == "Not Approved" %} style="background-color: #ba0000;" {% elif obj.dh_gh_clr == "Approved" %} style="background-color:#17b139"   {% else %} style="background-color: #63badf;"  {% endif %}>{{obj.dh_gh_clr}}</button></th>
+                          <th ><button class="add" {% if obj.tech_dir_clr == "Not Approved" %} style="background-color: #ba0000;" {% elif obj.tech_dir_clr == "Approved" %} style="background-color:#17b139"  {% else %} style="background-color: #63badf;"  {% endif %}>{{obj.tech_dir_clr}}</button></th>
+                          <th ><button class="add" {% if obj.ass_dir_clr == "Not Approved" %} style="background-color: #ba0000;" {% elif obj.ass_dir_clr == "Approved" %} style="background-color:#17b139"  {% else %} style="background-color: #63badf;"  {% endif %}>{{obj.ass_dir_clr}}</button></th>
+                          <th ><button class="add" {% if obj.dir_clr == "Not Approved" %} style="background-color: #ba0000;" {% elif obj.dir_clr == "Approved" %} style="background-color:#17b139"  {% else %} style="background-color: #63badf;"  {% endif %}>{{obj.dir_clr}}</button></th>
+                          <!-- <th>{{obj.tech_dir_clr}}</th>
+                          <th>{{obj.ass_dir_clr}}</th>
+                          <th>{{obj.dir_clr}}</th> -->
                           {% if request.user.position == "GH/DH"  and obj.dh_gh_clr == "Pending" or request.user.position == "Tech Director" and obj.tech_dir_clr == "Pending" and obj.dh_gh_clr != "Pending" or request.user.position == "Associate Director" and obj.ass_dir_clr == "Pending" and obj.tech_dir_clr != "Pending" or request.user.position == "Director" and obj.dir_clr == "Pending" %}
-                          <td><div>
+                          <th><div>
                             
                             <form action="" method="post" class="form">
                               {% csrf_token %}
@@ -79,23 +91,24 @@
                               <button name="approved" class="add" style="margin-top: 10px; text-align: center;" value="{{obj.id}}" type="submit">Approved</button>
                             </form>
                     
-                          </div></td>
+                          </div></th>
               
                           {% else %}
               
-                          <td>
+                          <th>
                             Action already performed
-                          </td>
+                          </th>
                           
                           
                           
                           {% endif %}
                         
                           {% if request.user.position == "Director" %}
-                          <td>
+                          <th>
                             <a href="{% url 'cancelrequest' obj.id %}" style="" class="add">Cancel</a>
-                          </td>
+                          </th>
                           {% endif %}
+                       
                     
                
                         </tr>
