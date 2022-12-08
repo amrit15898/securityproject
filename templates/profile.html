@@ -3,8 +3,8 @@
 .container{
     width: 70%;
     margin: auto;
-    margin-left: 400px;
-    margin-top: 200px;
+    margin-top:100px;
+   
 
 }
 p{
@@ -14,36 +14,108 @@ img{
     padding: 10px;
 }
 
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+  }
+  th, td {
+    padding: 5px;
+    text-align: left;
+  }
+  #imagetd{
+    height: 250px;
+  }
+
 {% endblock style %}
 {% block option %}
+{% if request.user.position == "Employee" %}
 <li>
-    <a href="/home/shsfsdfow-readfafquest">
+    <a href="/home/postapntent" id="active--link">
+      
+        <span class="sidebar--item">Dashboard</span>
+      </a>
+    </li>
+  <li>
+    <a href="/home/seret" >
+      
+        <span class="sidebar--item">Show Request</span>
+    </a>
+  </li>
+  <li>
+    <a href="/home/seret" >
+      
+        <span class="sidebar--item">Cancel Request</span>
+    </a>
+  </li>
+  <li>
+    <a href="{% url 'fullprofile' %}" >
+      
+        <span class="sidebar--item">Profile</span>
+    </a>
+  </li>
+{% endif %}
+{% if request.user.position == "GH/DH" or request.user.position == "Tech Director" or request.user.position == "Director" %}
+<li>
+    <a href="/home/shsfsdfow-readfafquest" id="active--link">
       
         <span >Dashboard</span>
       </a>
     </li>
+    <li>
+      <a href="{% url 'fullprofile' %}">
+        
+          <span >Profile</span>
+        </a>
+      </li>
+{% endif %}
+
+{% if request.user.position == "Associate Director" %}
 <li>
-    <a href="/home/shsfsdfow-readfafquest" >
-      
-        <span >Profile</span>
-      </a>
-    </li>
-<li>
-    <a href="/home/shsfsdfow-readfafquest" >
+    <a href="/home/shsfsdfow-readfafquest" id="active--link">
       
         <span >Dashboard</span>
       </a>
     </li>
-    
+    <li>
+      <a href="{% url 'fullprofile' %}">
+        
+          <span >Profile</span>
+        </a>
+      </li>
+
+{% endif %}
+
 {% endblock option %}
 {% block admincontent %}
 <div class="container">
     <!-- {% if request.user.image %}
     <img src="{{request.user.image}}" style = "width: 150px; height:200px; margin-left: 430px;" alt="" srcset="">
     {% endif %} -->
-    <p>Name = {{request.user.name}}</p>
-    <p>Emploee id = {{request.user.user_id}}</p>
-    <p>Designation = {{request.user.position}}</p>
+    <table style="width:100%">
+        {% if request.user.image %}
+        
+        <tr>
+            <th>Profile Pic</th>
+            <td id="imagetd"><img src="/media/{{request.user.image}}" alt="" srcset="" style="height: 200px;
+              width: 200px;
+              margin-left: 850px;
+              margin-top: 125px;"></td>
+          </tr>
+        
+        {% endif %}
+        <tr>
+          <th>Name:</th>
+          <td>{{request.user.name}}</td>
+        </tr>
+        <tr>
+          <th>Designation</th>
+          <td>{{request.user.position}}</td>
+        </tr>
+        <tr>
+          <th>Id</th>
+          <td>{{request.user.employee_id}}</td>
+        </tr>
+      </table>
 
 </div>
 <a href="{% url 'chngpassword'%}">Change Password</a>

@@ -8,7 +8,7 @@ import uuid
 postions = (("Director", "Director"),
 ("Associate Director","Associate Director"),
 ("Tech Director","Tech Director"),
-("GH/DH ","GH/DH"),
+("GH/DH","GH/DH"),
 ("Employee", "Employee"),
 ("Security officer", "Security officer"))
 class Department(models.Model):

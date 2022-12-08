@@ -21,12 +21,7 @@
         <span >Profile</span>
       </a>
     </li>
-  <li>
-    <a href="{% url 'fullprofile' %}">
-      
-        <span >Change Password</span>
-      </a>
-    </li>
+ 
 
 
 {% endblock option %}
@@ -55,11 +50,11 @@
                             <th>TechDirector Clearanec</th>
                             <th>Associate Director</th>
                             <th>Director</th>
-                            <th>Action</th>
                            
-                            {% if request.user.position == "Director" %}
+                           
+                            {% comment %} {% if request.user.position == "Director" %}
                             <th>Cancel</th>
-                            {% endif %}
+                            {% endif %} {% endcomment %}
                         </tr>
                     </thead>
                     <tbody>
@@ -93,22 +88,18 @@
                     
                           </div></th>
               
-                          {% else %}
-              
-                          <th>
-                            Action already performed
-                          </th>
+                                              
                           
                           
                           
                           {% endif %}
                         
-                          {% if request.user.position == "Director" %}
+                          {% comment %} {% if request.user.position == "Director" %}
                           <th>
                             <a href="{% url 'cancelrequest' obj.id %}" style="" class="add">Cancel</a>
                           </th>
                           {% endif %}
-                       
+                        {% endcomment %}
                     
                
                         </tr>

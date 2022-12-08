@@ -5,6 +5,33 @@ p{
     margin-top:20px;
 }
 {% endblock style %}
+{% block option %}
+<li>
+    <a href="/home/postapntent" id="active--link">
+      
+        <span class="sidebar--item">Dashboard</span>
+      </a>
+    </li>
+  <li>
+    <a href="/home/seret" >
+      
+        <span class="sidebar--item">Show Request</span>
+    </a>
+  </li>
+  <li>
+    <a href="/home/seret" >
+      
+        <span class="sidebar--item">Cancel Request</span>
+    </a>
+  </li>
+  <li>
+    <a href="{% url 'fullprofile' %}" >
+      
+        <span class="sidebar--item">Profile</span>
+    </a>
+  </li>
+
+{% endblock option %}
 {% block admincontent %}
 
 

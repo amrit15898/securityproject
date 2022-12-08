@@ -47,7 +47,65 @@ input[type=text], select {
   
 {% endblock style%}
 {% block option %}
+{% if request.user.position == "Employee" %}
 <li>
+  <a href="/home/postapntent" id="active--link">
+    
+      <span class="sidebar--item">Dashboard</span>
+    </a>
+  </li>
+<li>
+  <a href="/home/seret" >
+    
+      <span class="sidebar--item">Show Request</span>
+  </a>
+</li>
+<li>
+  <a href="/home/seret" >
+    
+      <span class="sidebar--item">Cancel Request</span>
+  </a>
+</li>
+<li>
+  <a href="{% url 'fullprofile' %}" >
+    
+      <span class="sidebar--item">Profile</span>
+  </a>
+</li>
+{% endif %}
+
+{% if request.user.position == "GH/DH" or request.user.position == "Tech Director" %}
+<li>
+  <a href="/home/shsfsdfow-readfafquest" id="active--link">
+    
+      <span >Dashboard</span>
+    </a>
+  </li>
+  <li>
+    <a href="{% url 'fullprofile' %}">
+      
+        <span >Profile</span>
+      </a>
+    </li>
+
+{% endif %}
+
+{% if request.user.position == "Associate Director" or request.user.position == "Director" %}
+<li>
+    <a href="/home/shsfsdfow-readfafquest" id="active--link">
+      
+        <span >Dashboard</span>
+      </a>
+    </li>
+    <li>
+      <a href="{% url 'fullprofile' %}">
+        
+          <span >Profile</span>
+        </a>
+      </li>
+
+{% endif %}
+{% comment %} <li>
     <a href="/home/shsfsdfow-readfafquest">
       
         <span >Dashboard</span>
@@ -65,7 +123,7 @@ input[type=text], select {
         <span >Dashboard</span>
       </a>
     </li>
-    
+     {% endcomment %}
 {% endblock option %}
 {% block admincontent %}
 

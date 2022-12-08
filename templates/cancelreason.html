@@ -49,30 +49,24 @@ input[type=submit]:hover {
 {% endblock style %}
 
 {% block option %}
-<li>
-  <a  id="active--link">
-    
-      <span >Dashboard</span>
-    </a>
-  </li>
+
   
   {% if request.user.position == "GH/DH" %}
 
   {% endif %}
+
+  <li>
+    <a href="/home/shsfsdfow-readfafquest">
+      
+        <span >Dashboard</span>
+      </a>
+    </li>
   <li>
     <a href="{% url 'fullprofile' %}">
       
         <span >Profile</span>
       </a>
     </li>
-  <li>
-    <a href="{% url 'fullprofile' %}">
-      
-        <span >Change Password</span>
-      </a>
-    </li>
-
-
 {% endblock option %}
 {% block admincontent %}
 <h3 style="text-align: center;">Add Appointment</h3>

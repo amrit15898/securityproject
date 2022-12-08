@@ -6,7 +6,7 @@
 {% endblock style %}
 {% block option %}
 <li>
-  <a href="/home/postapntent" id="active--link">
+  <a href="/home/postapntent">
     
       <span class="sidebar--item">Dashboard</span>
     </a>
@@ -15,6 +15,18 @@
   <a href="/home/seret" >
     
       <span class="sidebar--item">Show Request</span>
+  </a>
+</li>
+<li>
+  <a href="/home/seret" >
+    
+      <span class="sidebar--item">Cancel Request</span>
+  </a>
+</li>
+<li>
+  <a href="{% url 'fullprofile' %}" >
+    
+      <span class="sidebar--item">Profile</span>
   </a>
 </li>
 
@@ -59,21 +71,21 @@
             
             {% endif %}
             {% if obj.tech_dir_clr == "Not Approved" %}
-            <td>{{obj.tech_dir.name}}<td>
+            <td>{{tech_dir.name}}<td>
             <td>Tech Director</td>
 
 
             
             {% endif %}
             {% if obj.ass_dir_clr == "Not Approved" %}
-            <td>{{obj.assdir}}<td>
+            <td>{{assdir}}<td>
             <td>Ass Director</td>
 
 
             
             {% endif %}
             {% if obj.dir_clr == "Not Approved" %}
-            <td>{{obj.dir}}<td>
+            <td>{{dir}}<td>
             <td>Director</td>
 
 

@@ -332,7 +332,7 @@ def reson_unopproved(request, id):
             reason = request.POST.get('reason')
             obj.reason_cancelation = reason
             obj.save()
-            # obj.save(using="new")
+            return redirect("/home/shsfsdfow-readfafquest")
 
     except Exception as e:
         pass
@@ -358,7 +358,7 @@ def cancel_employee_request(request):
     return render(request, "unapproved.html", context)
 
 
-def show_cancel_reason(request,):
+def show_cancel_reason(request,id):
     try:
         obj = Appointment.objects.get(id=id)
         # obj = Appointment.objects.using("new").get(id=id)

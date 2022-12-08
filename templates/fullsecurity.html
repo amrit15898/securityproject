@@ -6,7 +6,7 @@
     margin: auto;
  
     float: center;
-    margin-top: 200px;
+    margin-top: 100px;
     border-radius: 10px;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
     
@@ -31,6 +31,9 @@
     font-size: 20px;
     margin-bottom: 20px;
   }
+  .imagetd{
+    height: 250px;
+  }
 {% comment %} .inner{
     position: absolute;
 
@@ -46,7 +49,7 @@
     </a>
   </li>
 <li>
-  <a href="/home/sesdfpnel">
+  <a href="">
     
       <span >Profile</span>
     </a>
@@ -67,7 +70,7 @@
 
 {% block admincontent %}
 <div class="container">
-  <div class="inner">
+  {% comment %} <div class="inner">
     <p style="text-align:left; margin-bottom: 20px;">Name == {{obj.r_user.name}}</p>
     <p>Description == {{obj.description}}</p>
     <p>Department == {{obj.department.name}}</p>
@@ -86,7 +89,32 @@
    <a href="/home/shsfsdfow-readfafquest" style="float: right; background-color:#DC3545; margin-top:10px;" class="addbtn">Home</a>
    {% else %}
    <a href="/home/sesdfpnel" style="float: right; background-color:#DC3545; margin-top:10px;" class="addbtn">Home</a>
-   {% endif %}
+   {% endif %} {% endcomment %}
+   <table style="width:100%">
+    {% if obj.r_user.image %}
+    
+    <tr>
+        <th>Profile Pic</th>
+        <td class="imagetd"><img src="/media/{{obj.r_user.image}}" alt="" srcset="" style="height: 200px;
+          width: 200px;
+          margin-left: 850px;
+          margin-top: 126px;"></td>
+      </tr>
+    
+    {% endif %}
+    <tr>
+      <th>Name:</th>
+      <td>{{obj.r_user.name}}</td>
+    </tr>
+    <tr>
+      <th>Description:</th>
+      <td class="imagetd">{{obj.description}}</td>
+    </tr>
+    <tr>
+      <th>Department</th>
+      <td>{{obj.department.name}}</td>
+    </tr>
+  </table>
 
 
 </div>
