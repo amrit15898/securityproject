@@ -24,20 +24,20 @@ input[type=password], select {
 {% endblock style %}
 {% block admincontent %}
 
-<h3 style="text-align: center;">Add User</h3>
+<h3 style="text-align: center;">Edit User</h3>
 
 <div>
   <form action="" method="POST">
     {% csrf_token %}
     <label for="fname">Name</label>
     <input type="text" id="fname" value="{{user.name}}" name="name" placeholder="">
-    <label for="fname">User id</label>
-    <input type="text" id="fname" value="{{user.employee_id}}" name="user_id" placeholder="">
+    <label for="fname">Employee id</label>
+    <input type="text" id="fname" value="{{user.employee_id}}" name="employee_id" placeholder="">
     {% comment %} <label for="fname">Password</label>
     <input type="text" id="fname"  name="password" placeholder=""> {% endcomment %}
 
 
-    <label for="country">Position</label>
+    <label for="country">Designation</label>
     <select id="country" name="position">
       <option selected>{{user.position}}</option>
                     <option value="Director">Director</option>

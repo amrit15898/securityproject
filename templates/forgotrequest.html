@@ -1,7 +1,7 @@
 {% extends 'foundation.html' %}
 {% block admincontent %}
 <div class="title">
-    <h2 class="section--title">Forgot Pass Request</h2>
+    <h2 class="section--title">Forgot password requests</h2>
 
 </div>
 <div class="table">
@@ -9,21 +9,18 @@
         <thead>
             <tr>
                 <th>Name</th>
-                <th>Id</th>
-                <th>Change</th>
-                
-
-                
+                <th>Employee Id</th>
+                <th>Change</th>      
             </tr>
         </thead>
         <tbody>
             {% for obj in objs %}
             <tr>
-                <td>{{obj.user_id.name}}</td>
-                <td>{{obj.user_id.user_id}}</td>
-                {% if obj.user_id.user_id %}
+                <td>{{obj.employee_id.name}}</td>
+                <td>{{obj.employee_id.employee_id}}</td>
+                {% if obj.employee_id.employee_id %}
                 
-                <td><a href="{% url 'changepass' obj.user_id.user_id %}">Change Password</a></td>
+                <td><a href="{% url 'changepass' obj.employee_id.employee_id %}" class="add" style="width:100px;">Change Password</a></td>
                 {% endif %} 
          
       

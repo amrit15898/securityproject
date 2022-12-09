@@ -67,6 +67,18 @@ table, th, td {
           <span >Profile</span>
         </a>
       </li>
+    <li>
+      <a href="{% url 'chngpassword' %}">
+        
+          <span >Change Password</span>
+        </a>
+      </li>
+    <li>
+      <a href="{% url 'logout' %}">
+        
+          <span >Logout</span>
+        </a>
+      </li>
 {% endif %}
 
 {% if request.user.position == "Associate Director" %}
@@ -82,43 +94,140 @@ table, th, td {
           <span >Profile</span>
         </a>
       </li>
+    <li>
+      <a href="{% url 'chngpassword' %}">
+        
+          <span >Change Password</span>
+        </a>
+      </li>
+    <li>
+      <a href="{% url 'logout' %}">
+        
+          <span >Logout</span>
+        </a>
+      </li>
+
+{% endif %}
+
+{% if request.user.position == "Security officer" %}
+<li>
+  <a href="/home/sesdfpnel">
+    
+      <span >Dashboard</span>
+    </a>
+  </li>
+<li>
+  <a href="{% url 'fullprofile' %}" >
+    
+      <span >Profile</span>
+    </a>
+  </li>
+  <li>
+    <a href="{% url 'chngpassword' %}">
+      
+        <span >Chagne Password</span>
+      </a>
+    </li>
+  <li>
+    <a href="{% url 'logout' %}">
+      
+        <span >Logout</span>
+      </a>
+    </li>
+{% endif %}
+
+{% if request.user.is_staff == True %}
+<ul class="sidebar--items">
+  <li>
+      <a href="/adminpanel" id="active--link">
+        
+          <span class="sidebar--item">Dashboard</span>
+      </a>
+  </li>
+  <li>
+      <a href="{% url 'showusers' %}">
+    
+          <span class="sidebar--item">Users</a>
+      </a>
+  </li>
+  <li>
+      <a href="{% url 'showdepartment' %}">
+        
+          <span class="sidebar--item" style="white-space: nowrap;">Department</span>
+      </a>
+  </li>
+  
+  <li>
+      <a href="{% url 'showapp' %}">
+       
+          <span class="sidebar--item">Appointment</span>
+      </a>
+  </li>
+  <li>
+      <a href="{% url 'forgotmessage' %}">
+       
+          <span class="sidebar--item">Forgot Password Requests</span>
+      </a>
+  </li>
+  <li>
+      <a href="{% url 'fullprofile' %}">
+       
+          <span class="sidebar--item">Profile</span>
+      </a>
+  </li>
+  <li>
+    <a href="{% url 'chngpassword' %}">
+        
+        <span class="sidebar--item">Change Password</span>
+    </a>
+</li>
+  <li>
+    <a href="{% url 'logout' %}">
+        
+        <span class="sidebar--item">Logout</span>
+    </a>
+</li>
+</ul>
 
 {% endif %}
 
 {% endblock option %}
 {% block admincontent %}
 <div class="container">
+  <h1 style ="text-align: center; margin-bottom: 10px;">Profile Details</h1>
     <!-- {% if request.user.image %}
     <img src="{{request.user.image}}" style = "width: 150px; height:200px; margin-left: 430px;" alt="" srcset="">
     {% endif %} -->
-    <table style="width:100%">
-        {% if request.user.image %}
-        
-        <tr>
-            <th>Profile Pic</th>
-            <td id="imagetd"><img src="/media/{{request.user.image}}" alt="" srcset="" style="height: 200px;
-              width: 200px;
-              margin-left: 850px;
-              margin-top: 125px;"></td>
-          </tr>
-        
-        {% endif %}
-        <tr>
-          <th>Name:</th>
-          <td>{{request.user.name}}</td>
+   <div class="table">
+    <table style="width:100%" border="1px" cellpadding="15px">
+      {% if request.user.image %}
+      
+      <tr>
+          <th>Profile Pic</th>
+          <td id="imagetd"><img src="/media/{{request.user.image}}" alt="" srcset="" style="height: 200px;
+            width: 200px;
+            margin-left: 850px;
+            margin-top: 125px;"></td>
         </tr>
-        <tr>
-          <th>Designation</th>
-          <td>{{request.user.position}}</td>
-        </tr>
-        <tr>
-          <th>Id</th>
-          <td>{{request.user.employee_id}}</td>
-        </tr>
-      </table>
+      
+      {% endif %}
+      <tr>
+        <th>Name</th>
+        <td>{{request.user.name}}</td>
+      </tr>
+      <tr>
+        <th>Designation</th>
+        <td>{{request.user.position}}</td>
+      </tr>
+      <tr>
+        <th>Employee ID</th>
+        <td>{{request.user.employee_id}}</td>
+      </tr>
+    </table>
+   </div>
 
 </div>
-<a href="{% url 'chngpassword'%}">Change Password</a>
+
 
 
 {% endblock admincontent %}

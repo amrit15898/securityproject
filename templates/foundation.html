@@ -16,8 +16,8 @@
 
 <body>
     
-  {% comment %} {% if messages %}
-  <ul class="messages">
+    {% comment %} {% if messages %}
+    <ul class="messages">
       {% for message in messages %}
       <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{message}}</li>
       {% endfor %}
@@ -47,52 +47,71 @@
                 </li>
                 <li>
                     <a href="{% url 'showusers' %}">
-                  
+                        
                         <span class="sidebar--item">Users</a>
-                    </a>
-                </li>
+                        </a>
+                    </li>
                 <li>
                     <a href="{% url 'showdepartment' %}">
                       
-                        <span class="sidebar--item" style="white-space: nowrap;">Department</span>
+                        <span class="sidebar--item" style="white-space: nowrap;">Departments</span>
                     </a>
                 </li>
                 
                 <li>
                     <a href="{% url 'showapp' %}">
                      
-                        <span class="sidebar--item">Appointment</span>
+                        <span class="sidebar--item">Appointments</span>
                     </a>
                 </li>
                 <li>
                     <a href="{% url 'forgotmessage' %}">
-                     
+                        
                         <span class="sidebar--item">Forgot Password Requests</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'fullprofile' %}">
+                        
+                        <span class="sidebar--item">Profile</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'chngpassword' %}">
+                        
+                        <span class="sidebar--item">Change Password</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'logout' %}">
+                        
+                        <span class="sidebar--item">Logout</span>
                     </a>
                 </li>
             </ul>
             <ul class="sidebar--bottom-items">
                 
-                <li>
+                <!-- <li>
                     <a href="{% url 'logout' %}">
                         <span class="icon icon-8"><i class="ri-logout-box-r-line"></i></span>
                         <span class="sidebar--item" class="">Logout</span>
                     </a>
-                </li>
+                </li> -->
             </ul>
         </div>
         <div class="main--content">
             
-          
-          
+            
+            
             <div class="recent--patients">
-               {% block admincontent %}
-               
-               {% endblock admincontent %}
+                {% block admincontent %}
+                
+                {% endblock admincontent %}
             </div>
-        
+            
         </div>
     </section>
+    <!-- <script src="/static/js/index.js"></script> -->
     <script src="/static/js/index.js"></script>
 </body>
 

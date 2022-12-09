@@ -53,7 +53,7 @@ input[type=password], select {
     {% csrf_token %}
     <label for="">Name</label>
     <input type="text" id="fname" name="name" placeholder="">
-    <label for="">Id</label>
+    <label for="">Employee Id</label>
     <input type="text" id="fname" name="userid" placeholder="">
     <label for="">Image</label>
     <input type="file"  name="img" placeholder="">
@@ -75,12 +75,12 @@ input[type=password], select {
     <label for="lname">Password</label>
     <input type="password" id="pass" name="password" placeholder="">
     <div class="btngroup">
-      <button onclick="getPassword()" class="add" type="button" style="margin-bottom: 10px;">Genrate Password</button>
-    <button onclick="showpass()" class="add" type="button" id ="hidepass" style="margin-bottom: 10px;">Show Password</button>
+      <button onclick="getPassword()" class="add" type="button" style="margin-bottom: 10px; height:30px; background-color: grey;">Genrate Password</button>
+    <button onclick="showpass()" class="add" type="button" id ="hidepass" style="margin-bottom: 10px; background-color: rgb(204, 59, 59); height:30px;">Show Password</button>
     </div>
     
   
-    <input type="submit" class="add" value="Submit">
+    <input type="submit" class="add" style="height:35px; background-color: rgb(40, 148, 40);" value="Submit">
   </form>
 </div>
 

@@ -40,15 +40,15 @@ def post_appointment(request):
             dir_clr = request.POST.get("dir_clr")
             
             if gh_dh == "SelectGH":
-                messages.warning(request, "Please select Gh")
+                messages.warning(request, "Please select GH.")
                 return redirect("/home/postapntent")
             
             if tdir == "SelectTD":
-                messages.warning(request, "Please select tdir")
+                messages.warning(request, "Please select Tech-Director.")
                 return redirect("/home/postapntent")
 
             if department == "SelectDep":
-                messages.warning(request, "Please the select the department")
+                messages.warning(request, "Please select Department.")
                 return redirect("/home/postapntent")
 
             final_gh_dh = User.objects.get(id=gh_dh)
@@ -67,8 +67,8 @@ def post_appointment(request):
                 
                     minutes_diff = (d2- d1).total_seconds() / 60.0
                     if minutes_diff<30:
-                        print("please select the another time")
-                        messages.warning(request, "please select another time this time is already booked")
+
+                        messages.warning(request, "Please select another time slot, this slot is already booked.")
                         return redirect("/home/postapntent")
 
             dep = Department.objects.get(id=department)
@@ -144,16 +144,16 @@ def show_request(request):
     try:
         try:
             if request.user.position == postions[3][1]:
-                objs = Appointment.objects.using("default").filter(gh_dh__name=request.user,
-                                                                   date__gte = datetime.now())       
+                objs = Appointment.objects.filter(gh_dh__name=request.user,
+                                                                   date__gte = datetime.now()).exclude(dh_gh_clr = "Not Approved")       
             elif request.user.position == postions[2][1]:
-                objs = Appointment.objects.using("default").filter(tech_dir__name = request.user, date__gte = datetime.now(), dh_gh_clr = "Approved")
+                objs = Appointment.objects.filter(tech_dir__name = request.user, date__gte = datetime.now(), dh_gh_clr = "Approved").exclude(tech_dir_clr = "Not approved")
 
 
             elif request.user.position == postions[0][1]:
                 objs = Appointment.objects.filter(date__gte = datetime.now())
             elif request.user.position == postions[1][1]:
-                objs = Appointment.objects.filter(date__gte = datetime.now(), tech_dir_clr ="Approved") 
+                objs = Appointment.objects.filter(date__gte = datetime.now(), tech_dir_clr ="Approved").exclude(ass_dir_clr  = "Not Approved")
         except Exception as e:
             pass  
 
@@ -211,7 +211,7 @@ def show_request(request):
                 return redirect(f"/home/cfhadf-regfsa/{value}")                    
             if position == postions[2][1]:
                 obj1.tech_dir_clr = "Not Approved"
-                obj2.save()
+                obj1.save()
                 # obj2.tech_dir_clr = "Not Approved"
                 # obj1.save()
                 return redirect(f"/home/cfhadf-regfsa/{value}")               
@@ -239,7 +239,7 @@ def show_request(request):
             # obj2.save()
         return render(request, "ghdh2.html",context)
     except Exception as e:
-        messages.warning(request, "something went wrong")
+        messages.warning(request, "Something went wrong.")
     return render(request, "ghdh2.html",context)
 @login_required
 def employee_request(request):
@@ -265,7 +265,7 @@ def show_full_request(request,id):
 @login_required
 def security_officer(request):
     try:
-        objs = Appointment.objects.filter(date__date__day = todaydate,send_security = True )
+        objs = Appointment.objects.filter(date__date__day = todaydate, dir_clr = "Approved" )
         context = {"objs": objs}
     except Exception as e:
         print(e)
@@ -276,7 +276,7 @@ def full_security_detail(request,id):
         obj = Appointment.objects.get(id=id)
         context = {"obj": obj}
     except Exception as e:
-        messages.warning(request, "something went wrong")
+        messages.warning(request, "Something went wrong.")
         return redirect("/home/security-panel")
     if "forward" in request.POST:
             value = request.POST.get("forward")          
@@ -295,7 +295,7 @@ def cancel_request(request, id):
         obj1.delete()
         # obj2.delete()
     except Exception as e:
-        messages.error(request, "something went wrong")
+        messages.error(request, "Something went wrong.")
     return redirect("/home/shsfsdfow-readfafquest")
     
 @login_required   
@@ -313,14 +313,17 @@ def forgot_password(request):
 
     if request.method == "POST":
         uidd = request.POST.get("id")
-        user = User.objects.get(employee_id=uidd)
-        if not user:
-            messages.error(request, "please enter correct id")
+        try:
+            user = User.objects.get(employee_id=uidd)
+        except Exception as e:
+            messages.error(request, "ID does not match. Please check again.")
             return HttpResponseRedirect(request.path_info)
+      
+            
         obj = ForgetMessageRequest(employee_id = user)
         obj.save()
         # obj.save(using="new")
-        messages.success(request, "your forgot password request sent")
+        messages.success(request, "Your request for password change has been sent.")
         return redirect("/")
     return render(request, "forgotpass.html")
 

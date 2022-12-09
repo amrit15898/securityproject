@@ -20,7 +20,7 @@
           <tr>
               <td>{{department.name}}</td>
         
-              <td class="pending"><a href="{% url 'deletedepartment' department.id %}" style="color: red;margin-right:5px;">Delete</a><a href="{% url 'updatedep' department.id %}" style="color: green;" >Update</a></td>
+              <td class="pending" style="display:flex;"><a href="{% url 'deletedepartment' department.id %}" class="add" style="color: white; background-color:rgb(204, 59, 59); width:fit-content; margin-right:5px; margin-bottom:10px; height:35px;">Delete</a><a href="{% url 'updatedep' department.id %}" class="add" style="color: white; background-color:rgb(40, 148, 40); width:fit-content; height:35px;" >Update</a></td>
               <td><span><i class="ri-edit-line edit"></i><i class="ri-delete-bin-line delete"></i></span></td>
           </tr>
           {% endfor %}

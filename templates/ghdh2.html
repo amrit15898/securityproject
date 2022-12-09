@@ -21,6 +21,18 @@
         <span >Profile</span>
       </a>
     </li>
+  <li>
+    <a href="{% url 'chngpassword' %}">
+      
+        <span >Change Password</span>
+      </a>
+    </li>
+  <li>
+    <a href="{% url 'logout' %}">
+      
+        <span >Logout</span>
+      </a>
+    </li>
  
 
 
@@ -35,7 +47,7 @@
   </ul>
   {% endif %}
        <div>
-        <h3 style="text-align:center; margin-top:20px; margin-bottom: 20px;"> Welcome {{request.user}}  <br> Position ==> {{request.user.position}}<h3>
+        <h1 style="text-align:center; margin-top:20px; margin-bottom: 20px;"> Welcome {{request.user}}  <br> Position ==> {{request.user.position}}<h1>
           
             <div class="table">
                 <table border="1px" cellpadding="15px">
@@ -46,10 +58,11 @@
                             <th>Description</th>
 
                             <th>Date</th>
-                            <th>GH/DH Clearance</th>
-                            <th>TechDirector Clearanec</th>
+                            <th>GH/DH</th>
+                            <th>Tech-Director</th>
                             <th>Associate Director</th>
                             <th>Director</th>
+                            <th>Action</th>
                            
                            
                             {% comment %} {% if request.user.position == "Director" %}
@@ -63,7 +76,7 @@
                         <tr>
                           <th >{{obj.r_user}}</th>
                           <th>{{obj.department.name}}</th>
-                          <th>{{obj.description}} <a href="{% url 'showfull' obj.id %}">Read</a></th>
+                          <th>{{obj.description|truncatechars:100}} <a href="{% url 'showfull' obj.id %}" style="text-decoration: underline;">read more</a></th>
                          
               
                           <th>{{obj.date}}</th>
@@ -75,15 +88,15 @@
                           <th>{{obj.ass_dir_clr}}</th>
                           <th>{{obj.dir_clr}}</th> -->
                           {% if request.user.position == "GH/DH"  and obj.dh_gh_clr == "Pending" or request.user.position == "Tech Director" and obj.tech_dir_clr == "Pending" and obj.dh_gh_clr != "Pending" or request.user.position == "Associate Director" and obj.ass_dir_clr == "Pending" and obj.tech_dir_clr != "Pending" or request.user.position == "Director" and obj.dir_clr == "Pending" %}
-                          <th><div>
+                          <th ><div style="display:flex;">
                             
-                            <form action="" method="post" class="form">
-                              {% csrf_token %}
-                              <button name="napproved" class="add" style="" value="{{obj.id}}"  type="submit">Not Approved</button>
-                            </form>
                             <form method="POST" class="form">
                               {% csrf_token %}
-                              <button name="approved" class="add" style="margin-top: 10px; text-align: center;" value="{{obj.id}}" type="submit">Approved</button>
+                              <button name="approved" class="add" style="text-align: center; margin-right:5px;" value="{{obj.id}}" type="submit">Approved</button>
+                            </form>
+                            <form action="" method="post" class="form">
+                              {% csrf_token %}
+                              <button name="napproved" class="add" style="background-color:rgb(209, 47, 47);" value="{{obj.id}}"  type="submit">Not Approved</button>
                             </form>
                     
                           </div></th>

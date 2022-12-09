@@ -29,6 +29,18 @@
       <span class="sidebar--item">Profile</span>
   </a>
 </li>
+<li>
+  <a href="{% url 'chngpassword' %}" >
+    
+      <span class="sidebar--item">Change Password</span>
+  </a>
+</li>
+<li>
+  <a href="{% url 'logout' %}" >
+    
+      <span class="sidebar--item">Logout</span>
+  </a>
+</li>
 
 {% endblock option %}
 {% block admincontent %}

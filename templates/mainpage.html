@@ -19,7 +19,7 @@
         <div class="card card-2">
             <div class="card--data">
                 <div class="card--content">
-                    <h5 class="card--title">Total Department</h5>
+                    <h5 class="card--title">Total Departments</h5>
                     <h1>{{departmentcount}}</h1>
                 </div>
            
@@ -29,7 +29,7 @@
         <div class="card card-3">
             <div class="card--data">
                 <div class="card--content">
-                    <h5 class="card--title">Total Appointment</h5>
+                    <h5 class="card--title">Total Appointments</h5>
                     <h1>{{appcount}}</h1>
                 </div>
                
@@ -47,21 +47,21 @@
     <table>
         <thead>
             <tr>
+                <th>Employee ID</th>
                 <th>Name</th>
                 <th>Designation</th>
-                <th>Id</th>
                 
-                <th>Action</th>
+                <th style="">Action</th>
             </tr>
         </thead>
         <tbody>
             {% for user in users %}
             <tr>
+                <td>{{user.employee_id}}</td>
                 <td>{{user.name}}</td>
                 <td>{{user.position}}</td>
-                <td>{{user.employee_id}}</td>
              
-                <td class="pending"><a href="{% url 'deleteuser' user.id %}" style="color: red;margin-right:5px;">Delete</a><a href="{% url 'updateuser' user.id %}" style="color: green;" >Update</a></td>
+                <td class="pending" style="display:flex;"><a href="{% url 'deleteuser' user.id %}" class="add" style="color: white; background-color:rgb(204, 59, 59); width:fit-content; margin-right:5px; margin-bottom:10px; height:35px; ">Delete</a><a href="{% url 'updateuser' user.id %}" style="color: white; background-color:rgb(40, 148, 40); width:fit-content; height:35px;" class="add" >Update</a></td>
                 <td><span><i class="ri-edit-line edit"></i><i class="ri-delete-bin-line delete"></i></span></td>
             </tr>
             {% endfor %}

@@ -49,9 +49,21 @@
     </a>
   </li>
 <li>
-  <a href="">
+  <a href="{% url 'fullprofile' %}" >
     
       <span >Profile</span>
+    </a>
+  </li>
+<li>
+  <a href="{% url 'fullprofile' %}" >
+    
+      <span >Change Password</span>
+    </a>
+  </li>
+<li>
+  <a href="{% url 'logout' %}" >
+    
+      <span >Logout</span>
     </a>
   </li>
 
@@ -103,15 +115,15 @@
     
     {% endif %}
     <tr>
-      <th>Name:</th>
+      <th><h3>NAME :</h3></th>
       <td>{{obj.r_user.name}}</td>
     </tr>
     <tr>
-      <th>Description:</th>
+      <th><h3>DESCRIPTION :</h3></th>
       <td class="imagetd">{{obj.description}}</td>
     </tr>
     <tr>
-      <th>Department</th>
+      <th><h3>DEPARTMENT :</h3></th>
       <td>{{obj.department.name}}</td>
     </tr>
   </table>

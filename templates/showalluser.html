@@ -1,7 +1,7 @@
 {% extends 'foundation.html' %}
 {% block admincontent %}
 <div class="title">
-    <h2 class="section--title">Users</h2>
+    <h2 class="section--title" style="text-align:center;">Users</h2>
     <a href="{% url 'adduser' %}" class="add"><i class="ri-add-line"></i>Add User</a>
 </div>
 <div class="table">
@@ -10,7 +10,7 @@
             <tr>
                 <th>Name</th>
                 <th>Designation</th>
-                <th>Id</th>            
+                <th>Employee ID</th>            
                 <th>Action</th>
             </tr>
         </thead>
@@ -21,7 +21,7 @@
                 <td>{{user.position}}</td>
                 <td>{{user.employee_id}}</td>
              
-                <td class="pending"><a href="{% url 'deleteuser' user.id %}" style="color: red;margin-right:5px;">Delete</a><a href="{% url 'updateuser' user.id %}" style="color: green;" >Update</a></td>
+                <td class="pending" ><a href="{% url 'deleteuser' user.id %}" class="add" style="color: white; background-color:rgb(204, 59, 59); width:fit-content; margin-right:5px; margin-bottom:10px; height:35px;">Delete</a><a href="{% url 'updateuser' user.id %}" class="add" style="color: white; background-color:rgb(40, 148, 40); width:fit-content; height:35px;" >Update</a></td>
                 <td><span><i class="ri-edit-line edit"></i><i class="ri-delete-bin-line delete"></i></span></td>
             </tr>
             {% endfor %}

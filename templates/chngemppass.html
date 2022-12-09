@@ -87,6 +87,18 @@ input[type=text], select {
         <span >Profile</span>
       </a>
     </li>
+    <li>
+      <a href="{% url 'chngpassword' %}">
+        
+          <span >Change Password</span>
+        </a>
+      </li>
+    <li>
+      <a href="{% url 'logout' %}">
+        
+          <span >Logout</span>
+        </a>
+      </li>
 
 {% endif %}
 
@@ -103,8 +115,103 @@ input[type=text], select {
           <span >Profile</span>
         </a>
       </li>
+      <li>
+        <a href="{% url 'chngpassword' %}">
+          
+            <span >Change Password</span>
+          </a>
+        </li>
+      <li>
+        <a href="{% url 'logout' %}">
+          
+            <span >Logout</span>
+          </a>
+        </li>
 
 {% endif %}
+
+{% if request.user.position == "Security officer" %}
+<li>
+  <a href="/home/sesdfpnel">
+    
+      <span >Dashboard</span>
+    </a>
+  </li>
+<li>
+  <a href="{% url 'fullprofile' %}" >
+    
+      <span >Profile</span>
+    </a>
+  </li>
+  <li>
+    <a href="{% url 'chngpassword' %}">
+      
+        <span >Change Password</span>
+      </a>
+    </li>
+  <li>
+    <a href="{% url 'logout' %}">
+      
+        <span >Logout</span>
+      </a>
+    </li>
+
+{% endif %}
+{% if request.user.is_staff == True %}
+<ul class="sidebar--items">
+  <li>
+      <a href="/adminpanel" id="active--link">
+        
+          <span class="sidebar--item">Dashboard</span>
+      </a>
+  </li>
+  <li>
+      <a href="{% url 'showusers' %}">
+    
+          <span class="sidebar--item">Users</a>
+      </a>
+  </li>
+  <li>
+      <a href="{% url 'showdepartment' %}">
+        
+          <span class="sidebar--item" style="white-space: nowrap;">Department</span>
+      </a>
+  </li>
+  
+  <li>
+      <a href="{% url 'showapp' %}">
+       
+          <span class="sidebar--item">Appointment</span>
+      </a>
+  </li>
+  <li>
+      <a href="{% url 'forgotmessage' %}">
+       
+          <span class="sidebar--item">Forgot Password Requests</span>
+      </a>
+  </li>
+  <li>
+      <a href="{% url 'fullprofile' %}">
+       
+          <span class="sidebar--item">Profile</span>
+      </a>
+  </li>
+  <li>
+    <a href="{% url 'chngpassword' %}">
+        
+        <span class="sidebar--item">Change Password</span>
+    </a>
+</li>
+  <li>
+    <a href="{% url 'logout' %}">
+        
+        <span class="sidebar--item">Logout</span>
+    </a>
+</li>
+</ul>
+
+{% endif %}
+
 {% comment %} <li>
     <a href="/home/shsfsdfow-readfafquest">
       
@@ -127,7 +234,7 @@ input[type=text], select {
 {% endblock option %}
 {% block admincontent %}
 
-<h3 style="text-align: center;">Change Password</h3>
+<h1 style="text-align: center; margin-top:10px;">Change Password</h1>
 <div>
   {% if messages %}
 <ul class="messages">

@@ -45,13 +45,17 @@ input[type=submit]:hover {
   background-color: #45a049;
 }
 
+.btngroup{
+  display: flex;
+}
+
 
 {% endblock style %}
 
 
 
 {% block admincontent %}
-<h3 style="text-align: center;">Add Appointment</h3>
+<h3 style="text-align: center;">Change Password</h3>
 <div>
   {% if messages %}
 <ul class="messages">
@@ -68,11 +72,16 @@ input[type=submit]:hover {
     
     <label for="lname">New Password</label>
     <input type="password" class="longfield" name="password" placeholder=""/>
+    
+    <div class="btngroup">
+      <button onclick="getPassword()" class="add" type="button" style="margin-bottom: 10px; margin-right:5px; height:30px; background-color: grey;">Genrate Password</button>
+    <button onclick="showpass()" class="add" type="button" id ="hidepass" style="margin-bottom: 10px; background-color: rgb(204, 59, 59); height:30px;">Show Password</button>
+  </div>
   
-    <input type="submit" class="add" style="float:left;" value="Submit">
+  <input type="submit" class="add" style="float:left; height:30px; margin-right:5px; background-color:green; height:35px;" value="Submit">
   </form>
   
-  <a href="{% url 'employeerequest' %}" style=" background-color:  rgb(71, 71, 95); width:130px; float:right;"  class="add">Show request</a>
+
 
 </div>
 

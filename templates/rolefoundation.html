@@ -23,11 +23,8 @@
             <i class="ri-menu-line icon icon-0 menu"></i>
             <h2>DR<span>DO</span></h2>
         </div>
-        <div class="search--notification--profile">
-            <div class="search">
-                <input type="text" placeholder="Search Scdule..">
-                <button><i class="ri-search-2-line"></i></button>
-            </div>
+        {% comment %} <div class="search--notification--profile">
+            
             <div class="notification--profile">
                 <div class="picon lock">
                     <i class="ri-lock-line"></i>
@@ -42,7 +39,7 @@
                    
                 </div>
             </div>
-        </div>
+        </div> {% endcomment %}
     </section>
     <section class="main">
         <div class="sidebar">
@@ -54,12 +51,12 @@
             </ul>
             <ul class="sidebar--bottom-items">
                 
-                <li>
+                {% comment %} <li>
                     <a href="{% url 'logout' %}">
                         <span class="icon icon-8"><i class="ri-logout-box-r-line"></i></span>
                         <span class="sidebar--item" class="">Logout</span>
                     </a>
-                </li>
+                </li> {% endcomment %}
             </ul>
         </div>
         

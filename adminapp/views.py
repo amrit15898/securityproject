@@ -28,7 +28,7 @@ def admin_panel(request):
             departments = Department.objects.all()   
             print() 
         except Exception as e:
-            messages.error(request, "Something went wrong")
+            messages.error(request, "Something went wrong.")
 
         
         # try:
@@ -58,7 +58,7 @@ def delete_user(request,id):
         return redirect("/adminpanel/suhrs")
          
     except User.DoesNotExist:
-        messages.warning(request, "something went wrong user not deleted")
+        messages.warning(request, "Something went wrong, user not deleted.")
         return redirect("/adminpanel/suhrs")
            
     
@@ -81,7 +81,7 @@ def update_user(request,id):
             return redirect("/adminpanel")
     except Exception as e:
         print(e)
-        messages.info(request, "something went wrong")
+        messages.info(request, "Something went wrong.")
         return HttpResponseRedirect(request.path_info)
     return render(request, "updateuser.html",context)
 
@@ -105,19 +105,19 @@ def add_user(request):
         print(file)
         obj = User.objects.filter(employee_id=employee_id).first()
         if not name:
-            messages.info(request, "name should  not be blank")
+            messages.info(request, "Employee Name should not be blank.")
             return redirect("/adminpanel/addffadfsfdsf")
         if obj:
-            messages.info(request, "User id is exits please enter a different id")
+            messages.info(request, "User ID already exists. Please enter a different ID.")
             return redirect("/adminpanel/addffadfsfdsf")
         if position == "selectposition":
-            messages.info(request, "please select the position")
+            messages.info(request, "Please select the position.")
             return redirect("/adminpanel/addffadfsfdsf")
         if not password:
-            messages.info(request, "password required")
+            messages.info(request, "Password required!")
             return redirect("/adminpanel/addffadfsfdsf")
         if not employee_id:
-            messages.info(request, "please enter a id")
+            messages.info(request, "Please enter Employee ID.")
             return redirect("/adminpanel/addffadfsfdsf")
         obj = User(position=position, name=name, employee_id=employee_id, image=file)
         obj.set_password(password)
@@ -134,7 +134,7 @@ def add_department(request):
             name = request.POST.get("name")
             obj = Department.objects.filter(name=name)
             if obj:
-                messages.warning(request, "Depeartment already exits")
+                messages.warning(request, "Department already exists.")
                 return redirect("/")
             obj = Department(name=name)
             obj.save()  
@@ -142,7 +142,7 @@ def add_department(request):
             # obj.save(using = "new")
 
         except Exception as e:
-            messages.warning(request, "something went wrong", + str(e))   
+            messages.warning(request, "Something went wrong.", + str(e))   
             return redirect("/adminpanel")
 
     return render(request, "adddepartment.html")
@@ -152,7 +152,7 @@ def update_department(request, id):
         dep1 = Department.objects.using("default").get(id=id)
         # dep2 = Department.objects.using("new").get(id=id)
     except Exception as e:
-        messages.warning(request, "soemthing went wrong")
+        messages.warning(request, "Something went wrong.")
     
     if request.method=="POST":
         name = request.POST.get("name")
@@ -179,12 +179,12 @@ def login_front_page(request):
         employee_id = request.POST.get("id")
         password = request.POST.get("password")
         if employee_id == "":
-            messages.warning(request, "please enter a user id") 
+            messages.warning(request, "Please enter User ID.") 
         if password == "":
-            messages.warning(request, "please enter a password")
+            messages.warning(request, "Please enter Password.")
         obj = User.objects.filter(employee_id=employee_id).first()
         if not obj:
-            messages.info(request, "This employee_id is not exit ")
+            messages.info(request, "This employee ID does not exist.")
             return redirect("/")    
         user = authenticate(request, employee_id=employee_id, password = password)
         if user is not None:
@@ -204,9 +204,9 @@ def login_front_page(request):
                 
             except Exception as e:
        
-                messages.error(request, "please check your crediantles")             
+                messages.error(request, "Please check your credentials.")             
         else:
-            messages.error(request, "Enter a correct password")    
+            messages.error(request, "Please enter the correct password.")    
     return render(request, "login.html")
 
 
@@ -223,7 +223,7 @@ def show_full_department(request):
         departments = Department.objects.all()     
         # departments = Department.objects.using("new")       
     except Exception as e:
-        messages.warning(request, "somethign went wrong")
+        messages.warning(request, "Something went wrong.")
     context = {"departments": departments}
     return render(request, "department.html", context )
 
@@ -262,7 +262,7 @@ def show_all_appointments(request):
         appointments = Appointment.objects.all()
         # appointments = Appointment.objects.using("new")
     except Exception as e:
-        messages.warning("something went wrong")
+        messages.warning("Something went wrong.")
    
     context = {"objs": appointments}
     return render(request, "showappointment.html",context)
@@ -279,7 +279,7 @@ def forgot_message_request(request):
         objs = ForgetMessageRequest.objects.all()
         
     except Exception as e:
-        messages.error(request, "something went wrong")
+        messages.error(request, "Something went wrong.")
     context = {"objs": objs}
     
     return render(request, "forgotrequest.html", context)
@@ -291,9 +291,9 @@ def change_password(request, id):
             password = request.POST.get("password")
             obj.set_password(password)
             obj.save()
-            return HttpResponseRedirect(request.path_info)
+            return redirect("/adminpanel")
     except Exception as e:
-            messages.error(request, "something went wrong")
+            messages.error(request, "Something went wrong.")
             return HttpResponseRedirect(request.path_info)
     return render(request, "changepass.html")
 
@@ -310,13 +310,13 @@ def change_employee_password(request):
 
         obj = authenticate(employee_id= request.user.employee_id , password = currentpass)
         if obj:
-            print("yes")
+         
             if newpassword==confirmpassword and newpassword!=currentpass:
                 obj.set_password(newpassword)
                 obj.save()
-                messages.success(request, "password successfully changed")
+                messages.success(request, "Password changed successfully!")
                 return redirect("/")
             else:
-                messages.error(request, "password not match")
+                messages.error(request, "Password does not match!")
 
     return render(request, "chngemppass.html")

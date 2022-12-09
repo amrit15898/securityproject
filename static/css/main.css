@@ -390,6 +390,7 @@ a {
     padding: 5px 10px;
     outline: none;
     border: none;
+    height: 35px;
     background-color: #5073fb;
     color: #fff;
     border-radius: 5px;

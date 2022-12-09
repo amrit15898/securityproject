@@ -13,50 +13,64 @@
     </a>
   </li>
 <li>
-  <a href="">
+  <a href="{% url 'fullprofile' %}">
     
       <span >Profile</span>
+    </a>
+  </li>
+<li>
+  <a href="{% url 'chngpassword' %}">
+    
+      <span >Chagne Password</span>
+    </a>
+  </li>
+<li>
+  <a href="{% url 'logout' %}">
+    
+      <span >Logout</span>
     </a>
   </li>
 {% endblock option %}
 {% block admincontent %}
 <div class="maindiv">
     <h3 style="text-align: center; margin-top:20px; margin-bottom: 20px;"> Welcome ==> {{request.user}}  <br> Position ==> {{request.user.position}}<h3>
-    <table id="thtable">
+   <div class="table">
+    <table id="thtable" border="1px" cellpadding="15px">
       
-          <tr>
-      
-            <th>User</th>
-            <th>Department</th>
-            <th>Description</th>
-            <th>Date</th>
-            <th>Detail</th>
-            <th>Cancel</th>
-        
+      <tr>
+  
+        <th>User</th>
+        <th>Department</th>
+        <th>Description</th>
+        <th>Date</th>
+        <th>Details</th>
+        <th>Cancel</th>
+    
+ 
+  
+      </tr>
+
+    <tbody>
+        {% for obj in objs %}
+       
+
+      <tr>
+        <th >{{obj.r_user}}</th>
+        <td>{{obj.department.name}}</td>
+        <td>{{obj.description}}</td>
+
+        <td>{{obj.date}}</td>
+        <td> <a href="{% url 'fulldetail' obj.id %}" style="width: fit-content;" class="add">Show Details</a></td>
+        <td> <a href="{% url 'cancelrequest' obj.id %}" style="margin-left:20px; width: fit-content;" class="add">Cancel</a></td>
      
-      
-          </tr>
- 
-        <tbody>
-            {% for obj in objs %}
-           
 
-          <tr>
-            <th >{{obj.r_user}}</th>
-            <td>{{obj.department.name}}</td>
-            <td>{{obj.description}}</td>
+    </tr>
 
-            <td>{{obj.date}}</td>
-            <td> <a href="{% url 'fulldetail' obj.id %}" style="" class="add">Show Detail</a></td>
-            <td> <a href="{% url 'cancelrequest' obj.id %}" style="margin-left:20px;" class="add">Cancel</a></td>
-         
- 
-        </tr>
-   
-    {% endfor %}
-      
-        </tbody>
-      </table>
+{% endfor %}
+  
+    </tbody>
+  </table>
+   </div>
    
 </div>
 
