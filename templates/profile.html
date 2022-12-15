@@ -53,6 +53,18 @@ table, th, td {
         <span class="sidebar--item">Profile</span>
     </a>
   </li>
+  <li>
+    <a href="{% url 'chngpassword' %}">
+      
+        <span >Change Password</span>
+      </a>
+    </li>
+  <li>
+    <a href="{% url 'logout' %}">
+      
+        <span >Logout</span>
+      </a>
+    </li>
 {% endif %}
 {% if request.user.position == "GH/DH" or request.user.position == "Tech Director" or request.user.position == "Director" %}
 <li>

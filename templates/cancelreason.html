@@ -67,6 +67,18 @@ input[type=submit]:hover {
         <span >Profile</span>
       </a>
     </li>
+    <li>
+      <a href="{% url 'chngpassword' %}">
+        
+          <span >Change Password</span>
+        </a>
+      </li>
+    <li>
+      <a href="{% url 'logout' %}">
+        
+          <span >Logout</span>
+        </a>
+      </li>
 {% endblock option %}
 {% block admincontent %}
 <h1 style="text-align: center; margin-top:10px;">Reason For Disapproval</h1>

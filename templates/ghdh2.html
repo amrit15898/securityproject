@@ -1,3 +1,5 @@
+
+
 {% extends 'rolefoundation.html' %}
 {% block style %}
 
@@ -12,9 +14,9 @@
     </a>
   </li>
   
-  {% if request.user.position == "GH/DH" %}
+ {% if request.user.position == "GH/DH" %}
 
-  {% endif %}
+{% endif %}
   <li>
     <a href="{% url 'fullprofile' %}">
       
