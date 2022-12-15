@@ -9,6 +9,15 @@ input[type=text], select {
   border-radius: 4px;
   box-sizing: border-box;
 }
+input[type=file], select {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
 input[type=password], select {
   width: 100%;
   padding: 12px 20px;
@@ -27,12 +36,14 @@ input[type=password], select {
 <h3 style="text-align: center;">Edit User</h3>
 
 <div>
-  <form action="" method="POST">
+  <form action="" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     <label for="fname">Name</label>
     <input type="text" id="fname" value="{{user.name}}" name="name" placeholder="">
     <label for="fname">Employee id</label>
     <input type="text" id="fname" value="{{user.employee_id}}" name="employee_id" placeholder="">
+    <label for="fname">Image</label>
+    <input type="file" id="fname"  name="img" placeholder=""><br>
     {% comment %} <label for="fname">Password</label>
     <input type="text" id="fname"  name="password" placeholder=""> {% endcomment %}
 

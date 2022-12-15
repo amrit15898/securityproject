@@ -28,9 +28,7 @@ def admin_panel(request):
             departments = Department.objects.all()   
             print() 
         except Exception as e:
-            messages.error(request, "Something went wrong.")
-
-        
+            messages.error(request, "Something went wrong.")       
         # try:
             
         # except Exception as e:
@@ -56,11 +54,9 @@ def admin_panel(request):
 def delete_user(request,id):
     if request.user.is_staff == True:
         try: 
-            user1 = User.objects.get(id=id)
-    
+            user1 = User.objects.get(id=id) 
             user1.delete()
-            return redirect("/adminpanel/suhrs")
-            
+            return redirect("/adminpanel/suhrs")     
         except User.DoesNotExist:
             messages.warning(request, "Something went wrong, user not deleted.")
             return redirect("/adminpanel/suhrs")
@@ -78,10 +74,12 @@ def update_user(request,id):
                 name = request.POST.get("name")
                 employee_id = request.POST.get("employee_id")
                 position = request.POST.get("position")
+                file = request.FILES.get("img")
                 # password = request.POST.get("password")
                 user1.name = name 
                 user1.position = position
                 user1.employee_id = employee_id
+                user1.image = file 
                 # user1.set_password(password) 
                 user1.save()
                 # user1.save(using="new")
@@ -152,7 +150,6 @@ def add_department(request):
                 obj.save()  
                 return redirect("/adminpanel/sfdddaf")        
                 # obj.save(using = "new")
-
             except Exception as e:
                 messages.warning(request, "Something went wrong.", + str(e))   
                 return redirect("/adminpanel")
@@ -251,8 +248,7 @@ def delete_department(request,id):
             return HttpResponseRedirect(request.path_info)
         except Exception as e:
             pass
-
-    
+  
         return redirect("/adminpanel/sfdddaf")
     return redirect("/")
         
@@ -265,7 +261,6 @@ def show_users(request):
         try:
             users = User.objects.exclude(is_staff=True)
             # users = User.objects.all(using = "new")
-
         except Exception as e:
             print(e)
         context = {"users": users}
