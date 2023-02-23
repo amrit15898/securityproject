@@ -16,7 +16,10 @@ urlpatterns = [
     path("forgotpass", forgot_password, name="forgotpass"),
     path("cfhadf-regfsa/<int:id>", reson_unopproved, name="cancelreason"),
     path("undnfadfda", cancel_employee_request, name="unapproved"),
-    path("sfohfdoafca/<id>", show_cancel_reason, name="showcancel" )
+    path("sfohfdoafca/<id>", show_cancel_reason, name="showcancel" ),
+    path("showwhistssot/<emp_id>", show_employee_history, name="showhistory"),
+    path("hsowfulluser/<int:id>", show_full_user_detail, name="showuser"),
+    path("dpanellsf", department_panel, name="dpanel")
 
 
 ]

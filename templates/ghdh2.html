@@ -64,6 +64,7 @@
                             <th>Tech-Director</th>
                             <th>Associate Director</th>
                             <th>Director</th>
+                            <th>Show History</th>
                             <th>Action</th>
                            
                            
@@ -76,7 +77,7 @@
                         {% for obj in objs %}
       
                         <tr>
-                          <th >{{obj.r_user}}</th>
+                          <th ><a href="{% url 'showuser' obj.r_user.id %}">{{obj.r_user}}</a></th>
                           <th>{{obj.department.name}}</th>
                           <th>{{obj.description|truncatechars:100}} <a href="{% url 'showfull' obj.id %}" style="text-decoration: underline;">read more</a></th>
                          
@@ -86,6 +87,7 @@
                           <th ><button class="add" {% if obj.tech_dir_clr == "Not Approved" %} style="background-color: #ba0000;" {% elif obj.tech_dir_clr == "Approved" %} style="background-color:#17b139"  {% else %} style="background-color: #63badf;"  {% endif %}>{{obj.tech_dir_clr}}</button></th>
                           <th ><button class="add" {% if obj.ass_dir_clr == "Not Approved" %} style="background-color: #ba0000;" {% elif obj.ass_dir_clr == "Approved" %} style="background-color:#17b139"  {% else %} style="background-color: #63badf;"  {% endif %}>{{obj.ass_dir_clr}}</button></th>
                           <th ><button class="add" {% if obj.dir_clr == "Not Approved" %} style="background-color: #ba0000;" {% elif obj.dir_clr == "Approved" %} style="background-color:#17b139"  {% else %} style="background-color: #63badf;"  {% endif %}>{{obj.dir_clr}}</button></th>
+                          <th><a href="showwhistssot/{{obj.r_user.employee_id}}">History</a></th>
                           <!-- <th>{{obj.tech_dir_clr}}</th>
                           <th>{{obj.ass_dir_clr}}</th>
                           <th>{{obj.dir_clr}}</th> -->

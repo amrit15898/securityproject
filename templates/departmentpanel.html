@@ -1,0 +1,86 @@
+{% extends 'rolefoundation.html' %}
+{% block style %}
+input[type=password], select {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+{% endblock style %}
+{% block option %}
+<li>
+  <a  id="active--link">
+    
+      <span >Dashboard</span>
+    </a>
+  </li>
+  
+ <!-- {% if request.user.position == "GH/DH" %}
+
+{% endif %}
+  <li>
+    <a href="{% url 'fullprofile' %}">
+      
+        <span >Profile</span>
+      </a>
+    </li>
+  <li>
+    <a href="{% url 'chngpassword' %}">
+      
+        <span >Change Password</span>
+      </a>
+    </li>
+  <li> -->
+    <a href="{% url 'logout' %}">
+      
+        <span >Logout</span>
+      </a>
+    </li>
+ 
+
+
+{% endblock option %}
+{% block admincontent %}
+<form action="" method="POST">
+    {% csrf_token %}
+
+    <select id="departmen" name="days">
+      <option selected value="selectposition">All data</option>
+                   
+
+                    <option value="last7days">Last 7 Days</option>
+                    <option value="today">Today</option>
+
+                  
+    </select>
+    <input type="submit" class="add" style="height:35px; background-color: rgb(5, 130, 247);" value="Submit">
+</form>
+
+<div class="table">
+    <table>
+        <thead>
+            <tr>
+                <th>User Name</th>
+                <th>Date visit</th>
+                <th>purpose</th>            
+            
+            </tr>
+        </thead>
+        <tbody>
+            {% for appointment in appointments %}
+            <tr>
+                <td><a href="{% url 'showuser' appointment.r_user.id %}">{{appointment.r_user.name}}</a></td>
+                <td>{{appointment.date}}</td>
+                <td>{{appointment.description}}</td>
+             
+            </tr>
+            {% endfor %}
+            
+        </tbody>
+    </table>
+</div>
+
+{% endblock admincontent %}

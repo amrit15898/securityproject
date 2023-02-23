@@ -24,9 +24,11 @@ class User(AbstractBaseUser, PermissionsMixin):
     image = models.ImageField(upload_to="images", null=True, blank=True)
     employee_id = models.CharField(max_length=20, null=True, blank=True, unique = True)   
     is_staff = models.BooleanField(default=False)
-
     is_active = models.BooleanField(default=True)
-   
+    adhaar_no = models.CharField(max_length=20, null=True, blank=True, default=None)
+    location = models.TextField(null=True, blank=True, default=None)
+    department_access = models.BooleanField(default=False, null=True, blank=True)
+    pis = models.CharField(max_length=200)
     objects = UserManager()
     USERNAME_FIELD = 'employee_id'
     
@@ -34,10 +36,14 @@ class User(AbstractBaseUser, PermissionsMixin):
         return self.name
     # REQUIRED_FIELDS = ['department', 'position']
 status = (("Approved", "Approved"),("Not Approved", "Not Approved"), ("Pending", "Pending"))
+clearance_level = (("red", "red"), ("green", "green"), ("yellow", "yellow"))
 class Appointment(models.Model):
+    organization_name = models.CharField(max_length=200, null=True, blank=True)
     r_user = models.ForeignKey(User,on_delete=models.CASCADE, related_name="r_user")
     gh_dh = models.ForeignKey(User, on_delete= models.CASCADE,related_name="gh_dh", null=True, blank=True)
     tech_dir = models.ForeignKey(User, on_delete= models.CASCADE,related_name="tech_dir", null=True, blank=True)
+    clearance_level = models.CharField(max_length= 200, choices=clearance_level)
+
     date = models.DateTimeField(auto_now_add=False)
     description = models.TextField()
     department = models.ForeignKey(Department ,on_delete=models.CASCADE)
@@ -47,10 +53,11 @@ class Appointment(models.Model):
     dir_clr = models.CharField(max_length=50, choices=status , null=True, blank=True, default="Pending")
     send_security = models.BooleanField(default=False, null=True, blank=True)
     tem_id = models.UUIDField(default=uuid.uuid4())
-    reason_cancelation = models.TextField(null = True, blank=True)    
-    # def __str__(self) -> str:
-    #     return self.r_user.name
-    
+    reason_cancelation = models.TextField(null = True, blank=True)   
+    items = models.TextField(null=True, blank=True, default=None)  
+    purpose = models.TextField(null=True, blank=True, default=None)
+    duration = models.CharField(max_length=20, null=True, blank=True)
+
 class Clearance(models.Model):
     type = models.CharField(max_length=200, null=True ,blank=True)
     

@@ -100,8 +100,9 @@ input[type=submit]:hover {
 {% endif %}
   <form action="" method="POST">
     {% csrf_token %}
-   
+    <label for="">Organzation Name</label>
 
+    <input type="text" name="organization">
 
     <label for="country">GH DH</label>
     <select id="country" name="gh_dh">
@@ -132,8 +133,10 @@ input[type=submit]:hover {
     
     <label for="lname">DateTime</label>
     <input type="datetime-local" id="lname" name="date" placeholder="">
-    <label for="lname">Description</label>
+    <label for="lname">Purpose</label>
     <textarea type="text" class="longfield" name="description" placeholder=""></textarea>
+    <label for="lname">items</label>
+    <textarea type="text" class="longfield" name="items" placeholder=""></textarea>
   
     <input type="submit" class="add" style="float:left;" value="Submit">
   </form>

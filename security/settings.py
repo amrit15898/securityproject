@@ -73,18 +73,18 @@ WSGI_APPLICATION = 'security.wsgi.application'
 
 
 # Database
-# https://docs.djangoproject.com/en/4.1/ref/settings/#databases
+# # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',  
-        'NAME': 'new1',  
-        'USER': 'root',  
-        'PASSWORD': '',  
-        'HOST': '127.0.0.1',  
-        'PORT': '3306',  
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',  
+#         'NAME': 'new1',  
+#         'USER': 'root',  
+#         'PASSWORD': '',  
+#         'HOST': '127.0.0.1',  
+#         'PORT': '3306',  
         
-    },
+#     },
     # 'new': {
     #     'ENGINE': 'django.db.backends.mysql',  
     #     'NAME': 'new2',  
@@ -94,8 +94,13 @@ DATABASES = {
     #     'PORT': '3306',  
         
     # }
+# }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators

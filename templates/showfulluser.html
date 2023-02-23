@@ -1,0 +1,250 @@
+{% extends 'rolefoundation.html' %}
+{% block style %}
+.container{
+    width: 70%;
+    margin: auto;
+    margin-top:100px;
+   
+
+}
+p{
+    padding:10px;
+}
+img{
+    padding: 10px;
+}
+
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+  }
+  th, td {
+    padding: 5px;
+    text-align: left;
+  }
+  #imagetd{
+    height: 250px;
+  }
+
+{% endblock style %}
+{% block option %}
+{% if request.user.position == "Employee" %}
+<li>
+    <a href="/home/postapntent" id="active--link">
+      
+        <span class="sidebar--item">Dashboard</span>
+      </a>
+    </li>
+  <li>
+    <a href="/home/seret" >
+      
+        <span class="sidebar--item">Show Request</span>
+    </a>
+  </li>
+  <li>
+    <a href="/home/seret" >
+      
+        <span class="sidebar--item">Cancel Request</span>
+    </a>
+  </li>
+  <li>
+    <a href="{% url 'fullprofile' %}" >
+      
+        <span class="sidebar--item">Profile</span>
+    </a>
+  </li>
+  <li>
+    <a href="{% url 'chngpassword' %}">
+      
+        <span >Change Password</span>
+      </a>
+    </li>
+  <li>
+    <a href="{% url 'logout' %}">
+      
+        <span >Logout</span>
+      </a>
+    </li>
+{% endif %}
+{% if request.user.position == "GH/DH" or request.user.position == "Tech Director" or request.user.position == "Director" %}
+<li>
+    <a href="/home/shsfsdfow-readfafquest" id="active--link">
+      
+        <span >Dashboard</span>
+      </a>
+    </li>
+    <li>
+      <a href="{% url 'fullprofile' %}">
+        
+          <span >Profile</span>
+        </a>
+      </li>
+    <li>
+      <a href="{% url 'chngpassword' %}">
+        
+          <span >Change Password</span>
+        </a>
+      </li>
+    <li>
+      <a href="{% url 'logout' %}">
+        
+          <span >Logout</span>
+        </a>
+      </li>
+{% endif %}
+
+{% if request.user.position == "Associate Director" %}
+<li>
+    <a href="/home/shsfsdfow-readfafquest" id="active--link">
+      
+        <span >Dashboard</span>
+      </a>
+    </li>
+    <li>
+      <a href="{% url 'fullprofile' %}">
+        
+          <span >Profile</span>
+        </a>
+      </li>
+    <li>
+      <a href="{% url 'chngpassword' %}">
+        
+          <span >Change Password</span>
+        </a>
+      </li>
+    <li>
+      <a href="{% url 'logout' %}">
+        
+          <span >Logout</span>
+        </a>
+      </li>
+
+{% endif %}
+
+{% if request.user.position == "Security officer" %}
+<li>
+  <a href="/home/sesdfpnel">
+    
+      <span >Dashboard</span>
+    </a>
+  </li>
+<li>
+  <a href="{% url 'fullprofile' %}" >
+    
+      <span >Profile</span>
+    </a>
+  </li>
+  <li>
+    <a href="{% url 'chngpassword' %}">
+      
+        <span >Chagne Password</span>
+      </a>
+    </li>
+  <li>
+    <a href="{% url 'logout' %}">
+      
+        <span >Logout</span>
+      </a>
+    </li>
+{% endif %}
+
+{% if request.user.is_staff == True %}
+<ul class="sidebar--items">
+  <li>
+      <a href="/adminpanel" id="active--link">
+        
+          <span class="sidebar--item">Dashboard</span>
+      </a>
+  </li>
+  <li>
+      <a href="{% url 'showusers' %}">
+    
+          <span class="sidebar--item">Users</a>
+      </a>
+  </li>
+  <li>
+      <a href="{% url 'showdepartment' %}">
+        
+          <span class="sidebar--item" style="white-space: nowrap;">Department</span>
+      </a>
+  </li>
+  
+  <li>
+      <a href="{% url 'showapp' %}">
+       
+          <span class="sidebar--item">Appointment</span>
+      </a>
+  </li>
+  <li>
+      <a href="{% url 'forgotmessage' %}">
+       
+          <span class="sidebar--item">Forgot Password Requests</span>
+      </a>
+  </li>
+  <li>
+      <a href="{% url 'fullprofile' %}">
+       
+          <span class="sidebar--item">Profile</span>
+      </a>
+  </li>
+  <li>
+    <a href="{% url 'chngpassword' %}">
+        
+        <span class="sidebar--item">Change Password</span>
+    </a>
+</li>
+  <li>
+    <a href="{% url 'logout' %}">
+        
+        <span class="sidebar--item">Logout</span>
+    </a>
+</li>
+</ul>
+
+{% endif %}
+
+{% endblock option %}
+{% block admincontent %}
+<div class="container">
+  <h1 style ="text-align: center; margin-bottom: 10px;">Profile Details</h1>
+    <!-- {% if request.user.image %}
+    <img src="{{request.user.image}}" style = "width: 150px; height:200px; margin-left: 430px;" alt="" srcset="">
+    {% endif %} -->
+    <div class="table">
+        <table style="width:100%" border="1px" cellpadding="15px">
+          {% if obj.image %}
+          
+          <tr>
+              <th>Profile Pic</th>
+              <td id="imagetd"><img src="/media/{{request.user.image}}" alt="" srcset="" style="height: 200px;
+                width: 200px;
+                margin-left: 850px;
+                margin-top: 125px;"></td>
+            </tr>
+          
+          {% endif %}
+          <tr>
+            <th>Name</th>
+            <td>{{user.name}}</td>
+          </tr>
+          <tr>
+            <th>Designation</th>
+            <td>{{user.position}}</td>
+          </tr>
+          <tr>
+            <th>Employee ID</th>
+            <td>{{user.employee_id}}</td>
+          </tr>
+          <tr>
+            <th>Adhaar  ID</th>
+            <td>{{user.adhaar_no}}</td>
+          </tr>
+        </table>
+       </div>
+  
+</div>
+
+
+
+{% endblock admincontent %}
+

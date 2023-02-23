@@ -55,10 +55,20 @@ input[type=password], select {
     <input type="text" id="fname" name="name" placeholder="">
     <label for="">Employee Id</label>
     <input type="text" id="fname" name="userid" placeholder="">
+    <label for="">Adhaar Id</label>
+    <input type="text" id="fname" name="adhaar_no" placeholder="">
     <label for="">Image</label>
     <input type="file"  name="img" placeholder="">
 
+    <label for="department">Department</label>
+    <select id="departmen" name="department">
+      <option selected value="selectposition">Select Position</option>
+                    {% for department in departments %}
 
+                    <option value="{{department.id}}">{{department.name}}</option>
+                    {% endfor %}
+    </select>
+  
     <label for="country">Designation</label>
     <select id="country" name="position">
       <option selected value="selectposition">Select Position</option>

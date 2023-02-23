@@ -1,0 +1,61 @@
+{% extends 'rolefoundation.html' %}
+{% block option %}
+<li>
+  <a  id="active--link">
+    
+      <span >Dashboard</span>
+    </a>
+  </li>
+  
+ {% if request.user.position == "GH/DH" %}
+
+{% endif %}
+  <li>
+    <a href="{% url 'fullprofile' %}">
+      
+        <span >Profile</span>
+      </a>
+    </li>
+  <li>
+    <a href="{% url 'chngpassword' %}">
+      
+        <span >Change Password</span>
+      </a>
+    </li>
+  <li>
+    <a href="{% url 'logout' %}">
+      
+        <span >Logout</span>
+      </a>
+    </li>
+ 
+
+
+{% endblock option %}
+{% block admincontent %}
+
+<div class="table">
+    <table>
+        <thead>
+            <tr>
+                <th>Department Name</th>
+                <th>Date visit</th>
+                <th>purpose</th>            
+            
+            </tr>
+        </thead>
+        <tbody>
+            {% for obj in objs %}
+            <tr>
+                <td>{{obj.department.name}}</td>
+                <td>{{obj.date}}</td>
+                <td>{{obj.description}}</td>
+             
+            </tr>
+            {% endfor %}
+            
+        </tbody>
+    </table>
+</div>
+
+{% endblock admincontent %}

@@ -1,9 +1,9 @@
 from django.shortcuts import render, redirect
 from .models import *
 from .models import postions
-
+from django.utils import timezone
+from datetime import timedelta
 # Create your views here.
-
 from datetime import datetime, date
 from django.http import HttpResponseRedirect
 from django.contrib import messages
@@ -30,10 +30,13 @@ def post_appointment(request):
         # except Exception as e:
         #     print(e)   
             if request.method=="POST":
+                organization = request.POST.get("organization")
                 gh_dh = request.POST.get("gh_dh")
                 tdir = request.POST.get("tdir")
                 date = request.POST.get("date")  
                 description = request.POST.get("description")
+                items = request.POST.get("items")
+
                 department = request.POST.get("department")
                 dh_gh_clr = request.POST.get("dh_gh_clr")
                 tech_dir_clr = request.POST.get("tech_dir_clr")
@@ -73,7 +76,7 @@ def post_appointment(request):
                             return redirect("/home/postapntent")
 
                 dep = Department.objects.get(id=department)
-                obj = Appointment(gh_dh= final_gh_dh, tech_dir =final_tech_dir, description=description, department=dep, date=date)
+                obj = Appointment(organization_name=organization, gh_dh= final_gh_dh, tech_dir =final_tech_dir, description=description,items =items,  department=dep, date=date)
                 obj.r_user = request.user    
                 obj.save()
                 # obj.save(using="new")
@@ -140,11 +143,9 @@ def update_appointment(request, id):
 @login_required
 def show_request(request):
     if request.user.position == postions[3][1] or request.user.position == postions[2][1] or request.user.position == postions[0][1] or request.user.position == postions[1][1]:
-    
         user = request.user   
         context = {}
         objs = {}
-
         try:
             try:
                 if request.user.position == postions[3][1]:
@@ -152,8 +153,6 @@ def show_request(request):
                                                                     date__gte = datetime.now()).exclude(dh_gh_clr = "Not Approved")       
                 elif request.user.position == postions[2][1]:
                     objs = Appointment.objects.filter(tech_dir__name = request.user, date__gte = datetime.now(), dh_gh_clr = "Approved").exclude(tech_dir_clr = "Not approved")
-
-
                 elif request.user.position == postions[0][1]:
                     objs = Appointment.objects.filter(date__gte = datetime.now())
                 elif request.user.position == postions[1][1]:
@@ -184,21 +183,16 @@ def show_request(request):
                 # obj2 = Appointment.objects.using("new").get(id=value)
                 position = request.user.position
                 if (position == postions[3][1]):
-                    
                     obj1.dh_gh_clr = "Approved"
                         # obj2.dh_gh_clr = "Approved"
-                
                 if position == postions[2][1]:
-                
                     obj1.tech_dir_clr = "Approved"
                         # obj2.tech_dir_clr = "Approved"
                 
                 if position == postions[0][1]:
                         obj1.dir_clr = "Approved" 
                 if position == postions[1][1]:
-                    obj1.ass_dir_clr = "Approved"
-            
-                    
+                    obj1.ass_dir_clr = "Approved"            
                 obj1.save()
             
             if 'napproved' in request.POST:
@@ -232,7 +226,7 @@ def show_request(request):
                     obj1.save()
                     # obj2.ass_dir_clr = "Not Approved"
                     # obj2.save()
-                    return redirect(f"/home/cfhadf-regfsa/{value}")
+                    return redirect("/home/shsfsdfow-readfafquest")
             if "forward" in request.POST:
                 value = request.POST.get("forward")          
                 obj1 = Appointment.objects.get(id=value)
@@ -260,7 +254,6 @@ def employee_request(request):
 def show_full_request(request,id):
     try:    
         obj = Appointment.objects.get(id=id)
-    
         # obj = Appointment.objects.using("new").get(id=id)
     except Exception as e:
         print(e)
@@ -324,8 +317,6 @@ def forgot_password(request):
         except Exception as e:
             messages.error(request, "ID does not match. Please check again.")
             return HttpResponseRedirect(request.path_info)
-      
-            
         obj = ForgetMessageRequest(employee_id = user)
         obj.save()
         # obj.save(using="new")
@@ -355,7 +346,6 @@ def cancel_employee_request(request):
     try:
         objs = Appointment.objects.filter(dh_gh_clr="Not Approved") | Appointment.objects.filter(tech_dir_clr="Not Approved") | Appointment.objects.filter(ass_dir_clr="Not Approved") | Appointment.objects.filter(dir_clr="Not Approved")
         # objs = Appointment.objects.using("new").filter(dh_gh_clr="Not Approved") | Appointment.objects.filter(tech_dir_clr="Not Approved") | Appointment.objects.filter(ass_dir_clr="Not Approved") | Appointment.objects.filter(dir_clr="Not Approved")
-
     except Exception as e:
         pass
     context = {}
@@ -371,13 +361,47 @@ def show_cancel_reason(request,id):
     try:
         obj = Appointment.objects.get(id=id)
         # obj = Appointment.objects.using("new").get(id=id)
-
     except Exception as e:
         pass
     context = {"obj": obj}
     return render(request, "fullreason.html", context)
     
 
+def show_employee_history(request, emp_id):
+    try:
+        objs = {}
+        objs = Appointment.objects.filter(r_user__employee_id = emp_id)
+        context = {"objs": objs}
+    except Exception as e:
+        print(e)
+
+    return render(request, "emp_history.html", context)
+
+
+def show_full_user_detail(request, id):
+    user = User.objects.get(id=id)
+    context ={"user":user}
+
+    return render(request, "showfulluser.html",context)
+
+
+def department_panel(request):
+    appointments = {}
+    if request.method == "POST":
+        days = request.POST.get("days")
+        today = timezone.now().date()
+        if days == "last7days":
+            start_date = today - timedelta(days=today.weekday())
+            end_date = start_date + timedelta(days=6)   
+            appointments = Appointment.objects.filter(date__date__range=[start_date, end_date])& Appointment.objects.filter(department= request.user.department)
+        elif  days == "today":
+            appointments = Appointment.objects.filter(date__date = today)
+        else:
+            appointments = Appointment.objects.filter(department = request.user.department)
+
+    context = {"appointments": appointments}
+    return render(request, "departmentpanel.html", context)
+    
 
 
 

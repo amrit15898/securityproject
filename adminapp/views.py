@@ -110,6 +110,7 @@ def add_user(request):
             name = request.POST.get("name")
             password = request.POST.get("password")
             employee_id = request.POST.get("userid")
+            adhaar_no = request.POST.get("adhaar_no")
             file = request.FILES.get("img")
             print(file)
             obj = User.objects.filter(employee_id=employee_id).first()
@@ -128,7 +129,13 @@ def add_user(request):
             if not employee_id:
                 messages.info(request, "Please enter Employee ID.")
                 return redirect("/adminpanel/addffadfsfdsf")
-            obj = User(position=position, name=name, employee_id=employee_id, image=file)
+
+            check_adhaar = User.objects.filter(adhaar_no=adhaar_no).first()
+            if check_adhaar:
+                messages.info(request,"this adhaar no alread register")
+                return redirect("/adminpanel/addffadfsfdsf")
+            obj = User(position=position, name=name, employee_id=employee_id, image=file, adhaar_no=adhaar_no)
+
             obj.set_password(password)
             obj.save()
             # obj.save(using='new', force_insert=True)
@@ -144,7 +151,7 @@ def add_department(request):
                 name = request.POST.get("name")
                 obj = Department.objects.filter(name=name)
                 if obj:
-                    messages.warning(request, "Department already exists.")
+                    messages.warning(request,"Department already exists.")
                     return redirect("/")
                 obj = Department(name=name)
                 obj.save()  
@@ -207,6 +214,9 @@ def login_front_page(request):
                     return redirect("/home/postapntent")
                 if request.user.position == postions[5][1]:
                     return redirect("/home/sesdfpnel")
+                
+                if request.user.department_access == True:
+                    return redirect("/home/dpanellsf")
                 else:
                     return redirect("/home/shsfsdfow-readfafquest")
                 
