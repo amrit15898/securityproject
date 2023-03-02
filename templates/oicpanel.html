@@ -1,0 +1,96 @@
+{% extends 'rolefoundation.html' %}
+{% block option %}
+<li>
+  <a href="/home/oicpanel" >
+    
+      <span class="sidebar--item">Dashboard</span>
+  </a>
+</li>
+<li>
+  <a href="{% url 'fullprofile' %}" >
+    
+      <span class="sidebar--item">Profile</span>
+  </a>
+</li>
+<li>
+  <a href="{% url 'chngpassword' %}" >
+    
+      <span class="sidebar--item">Change Password</span>
+  </a>
+</li>
+<li>
+  <a href="{% url 'logout' %}" >
+    
+      <span class="sidebar--item">Logout</span>
+  </a>
+</li>
+{% endblock option %}
+{% block admincontent %}
+
+<div class="title">
+    <h2 class="section--title" style="text-align: center">Appointment Clearance</h2>
+  
+  </div>
+
+<form action="" method="POST">
+    {% csrf_token %}
+
+    <select id="departmen" name="days">
+      <option selected value="selectposition">All data</option>
+                   
+
+                    <option value="last7days">Last 7 Days</option>
+                    <option value="today">Today</option>
+
+                  
+    </select>
+    <input type="submit" class="add" style="height:35px; background-color: rgb(5, 130, 247);" value="Submit">
+</form>
+  <table id="thtable" class="table">
+        
+    <tr>
+  
+      <th>User</th>
+    
+      <th>Description</th>
+      <th>Date</th>
+      <th>GH/DH</th>
+      <th>Tech-Director</th>
+      <th>Associate Director</th>
+      <th>Director</th>
+      <th>Send SO</th>
+  
+  
+    </tr>
+  
+  <tbody>
+    {% for obj in objs %}
+  
+    <tr>
+      <th >{{obj.r_user}}</th>
+      
+      <td>{{obj.description|truncatechars:30}} <a href="{% url 'showfull' obj.id %}">Read More</a></td>
+  
+      <td>{{obj.date}}</td>
+      <td>{{obj.dh_gh_clr}}</td>
+      <td>{{obj.tech_dir_clr}}</td>
+      <td>{{obj.ass_dir_clr}}</td>
+      <td>{{obj.dir_clr}}</td>
+      <td>
+        <form action="" method="post">
+          {% csrf_token %}
+          <button value="{{obj.id}}" name="forward">Send So</button>
+        </form>
+      </td>
+      
+    </tr>
+    {% endfor %}
+  
+  </tbody>
+  </table>
+  <form action="" method="post">
+    {% csrf_token %}
+    <button name="download">Download</button>
+  </form>
+  
+{% endblock admincontent %}

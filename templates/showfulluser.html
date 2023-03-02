@@ -212,11 +212,11 @@ table, th, td {
     {% endif %} -->
     <div class="table">
         <table style="width:100%" border="1px" cellpadding="15px">
-          {% if obj.image %}
+          {% if user.image %}
           
           <tr>
               <th>Profile Pic</th>
-              <td id="imagetd"><img src="/media/{{request.user.image}}" alt="" srcset="" style="height: 200px;
+              <td id="imagetd"><img src="/media/{{user.image}}" alt="" srcset="" style="height: 200px;
                 width: 200px;
                 margin-left: 850px;
                 margin-top: 125px;"></td>

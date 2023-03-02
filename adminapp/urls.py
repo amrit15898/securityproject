@@ -19,5 +19,6 @@ urlpatterns = [
     path("formtghfaaf", forgot_message_request, name="forgotmessage"),
     path("cdfapass/<id>", change_password, name="changepass"),
     path("fu-flr", full_profile, name="fullprofile"),
-    path("changemppas", change_employee_password, name="chngpassword")
+    path("changemppas", change_employee_password, name="chngpassword"),
+    path("login-option", login_option, name="loginoption")
 ]

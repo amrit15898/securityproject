@@ -17,6 +17,18 @@
  {% if request.user.position == "GH/DH" %}
 
 {% endif %}
+<li>
+  <a href="{% url 'appointment' %}">
+    
+      <span >Request</span>
+    </a>
+  </li>
+  <li>
+    <a href="{% url 'pvtemp' %}">
+      
+        <span >Post Pvt. Request</span>
+      </a>
+    </li>
   <li>
     <a href="{% url 'fullprofile' %}">
       
@@ -24,6 +36,7 @@
       </a>
     </li>
   <li>
+
     <a href="{% url 'chngpassword' %}">
       
         <span >Change Password</span>
@@ -56,7 +69,7 @@
                     <thead>
                         <tr>
                             <th>User</th>
-                            <th>Dep.</th>
+                            <th>Clearance Level</th>
                             <th>Description</th>
 
                             <th>Date</th>
@@ -66,6 +79,7 @@
                             <th>Director</th>
                             <th>Show History</th>
                             <th>Action</th>
+                            <th>Send Oic</th>
                            
                            
                             {% comment %} {% if request.user.position == "Director" %}
@@ -78,7 +92,7 @@
       
                         <tr>
                           <th ><a href="{% url 'showuser' obj.r_user.id %}">{{obj.r_user}}</a></th>
-                          <th>{{obj.department.name}}</th>
+                          <th>{{obj.clearance_level}}</th>
                           <th>{{obj.description|truncatechars:100}} <a href="{% url 'showfull' obj.id %}" style="text-decoration: underline;">read more</a></th>
                          
               
@@ -91,7 +105,7 @@
                           <!-- <th>{{obj.tech_dir_clr}}</th>
                           <th>{{obj.ass_dir_clr}}</th>
                           <th>{{obj.dir_clr}}</th> -->
-                          {% if request.user.position == "GH/DH"  and obj.dh_gh_clr == "Pending" or request.user.position == "Tech Director" and obj.tech_dir_clr == "Pending" and obj.dh_gh_clr != "Pending" or request.user.position == "Associate Director" and obj.ass_dir_clr == "Pending" and obj.tech_dir_clr != "Pending" or request.user.position == "Director" and obj.dir_clr == "Pending" %}
+                          {% if request.user.position == "GH/DH"  and obj.dh_gh_clr == "Pending" or request.user.position == "Tech Director" and obj.tech_dir_clr == "Pending" or request.user.position == "Associate Director" and obj.ass_dir_clr == "Pending"  or request.user.position == "Director" and obj.dir_clr == "Pending" %}
                           <th ><div style="display:flex;">
                             
                             <form method="POST" class="form">
@@ -102,14 +116,16 @@
                               {% csrf_token %}
                               <button name="napproved" class="add" style="background-color:rgb(209, 47, 47);" value="{{obj.id}}"  type="submit">Not Approved</button>
                             </form>
-                    
+                            
                           </div></th>
-              
-                                              
+                          {% else %}
+                         <th> <button>action performed</button></th>
+                          
                           
                           
                           
                           {% endif %}
+                      
                         
                           {% comment %} {% if request.user.position == "Director" %}
                           <th>
@@ -117,7 +133,8 @@
                           </th>
                           {% endif %}
                         {% endcomment %}
-                    
+                    <th><form action="" method="post">
+                      {% csrf_token %}<button clas="add" name="sendoic" value="{{obj.id}}">Send Oic</button></form></th>        
                
                         </tr>
                         {% endfor %}

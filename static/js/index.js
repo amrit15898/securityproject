@@ -28,3 +28,10 @@ function showpass(){
 
 
 }
+const mySelect = document.getElementById('mySelect');
+
+mySelect.addEventListener('change', () => {
+  const selectedValue = mySelect.value;
+  console.log("on change")
+  console.log(selectedValue);
+});

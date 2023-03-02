@@ -1,0 +1,72 @@
+{% extends 'rolefoundation.html' %}
+{% block option %}
+    <li>
+        <a href=""><span>Dashboard</span></a>
+        
+    </li>
+    <li>
+    <a href="{% url 'fullprofile' %}">
+      
+        <span >Profile</span>
+      </a>
+    </li>
+  <li>
+    <a href="{% url 'chngpassword' %}">
+      
+        <span >Change Password</span>
+      </a>
+    </li>
+  <li>
+    <a href="{% url 'logout' %}">
+      
+        <span >Logout</span>
+      </a>
+    </li>
+{% endblock option %}
+
+{% block admincontent %}
+<div class="title">
+    <h2 class="section--title" style="text-align: center">Appointment Clearance</h2>
+  
+  </div>
+  <table id="thtable" class="table">
+        
+    <tr>
+  
+      <th>User</th>
+      <!-- <th>Department</th> -->
+      <th>Description</th>
+      <th>Date</th>
+      <th>GH/DH</th>
+      <th>Tech-Director</th>
+      <th>Associate Director</th>
+      <th>Director</th>
+  
+  
+    </tr>
+  
+  <tbody>
+    {% for obj in objs %}
+  
+    <tr>
+      <th >{{obj.r_user}}</th>
+     
+      <td>{{obj.description|truncatechars:30}} <a href="{% url 'showfull' obj.id %}">Read More</a></td>
+  
+      <td>{{obj.date}}</td>
+      <td>{{obj.dh_gh_clr}}</td>
+      <td>{{obj.tech_dir_clr}}</td>
+      <td>{{obj.ass_dir_clr}}</td>
+      <td>{{obj.dir_clr}}</td>
+     
+    
+  
+    </tr>
+    {% endfor %}
+  
+  </tbody>
+  </table>
+  
+
+{% endblock admincontent %}
+

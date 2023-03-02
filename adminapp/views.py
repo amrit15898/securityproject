@@ -98,7 +98,11 @@ def update_user(request,id):
 def add_user(request):
     if request.user.is_staff == True:
         departments = Department.objects.all()
-        context = {"departments": departments}
+        oic_user = User.objects.filter(position="oic")
+        context = {}
+
+        context["ld_users"] = oic_user
+        
         if request.method=="POST":
             char = list("abcdefghijklmonpqrstuvwxyz")
             length = 9
@@ -107,13 +111,18 @@ def add_user(request):
                 rpassword+=random.choice(char)
             print("password is"+rpassword)
             position = request.POST.get("position")
+            pis = request.POST.get("pis")
+
             name = request.POST.get("name")
             password = request.POST.get("password")
             employee_id = request.POST.get("userid")
+            so_ld = request.POST.get("sdoic")
             adhaar_no = request.POST.get("adhaar_no")
             file = request.FILES.get("img")
             print(file)
             obj = User.objects.filter(employee_id=employee_id).first()
+            so_ld = User.objects.get(id = so_ld)
+
             if not name:
                 messages.info(request, "Employee Name should not be blank.")
                 return redirect("/adminpanel/addffadfsfdsf")
@@ -132,9 +141,9 @@ def add_user(request):
 
             check_adhaar = User.objects.filter(adhaar_no=adhaar_no).first()
             if check_adhaar:
-                messages.info(request,"this adhaar no alread register")
+                messages.info(request,"this adhaar no already register")
                 return redirect("/adminpanel/addffadfsfdsf")
-            obj = User(position=position, name=name, employee_id=employee_id, image=file, adhaar_no=adhaar_no)
+            obj = User(position=position, name=name, employee_id=employee_id,pis=pis, image=file, adhaar_no=adhaar_no, so_ld = so_ld)
 
             obj.set_password(password)
             obj.save()
@@ -192,17 +201,18 @@ def update_department(request, id):
 
 def login_front_page(request):
     if request.method=="POST":
-        employee_id = request.POST.get("id")
+        pis = request.POST.get("pis")
+        print(pis)
         password = request.POST.get("password")
-        if employee_id == "":
+        if pis == "":
             messages.warning(request, "Please enter User ID.") 
         if password == "":
             messages.warning(request, "Please enter Password.")
-        obj = User.objects.filter(employee_id=employee_id).first()
+        obj = User.objects.filter(pis=pis).first()
         if not obj:
             messages.info(request, "This employee ID does not exist.")
             return redirect("/")    
-        user = authenticate(request, employee_id=employee_id, password = password)
+        user = authenticate(request, pis=pis, password = password)
         if user is not None:
             try:
                 login(request, user)
@@ -214,6 +224,9 @@ def login_front_page(request):
                     return redirect("/home/postapntent")
                 if request.user.position == postions[5][1]:
                     return redirect("/home/sesdfpnel")
+
+                if request.user.position == postions[6][1]:
+                    return redirect("/home/oicpanel")
                 
                 if request.user.department_access == True:
                     return redirect("/home/dpanellsf")
@@ -300,12 +313,10 @@ def check_template(request):
 def forgot_message_request(request):
     objs = {}
     try:
-        objs = ForgetMessageRequest.objects.all()
-        
+        objs = ForgetMessageRequest.objects.all() 
     except Exception as e:
         messages.error(request, "Something went wrong.")
     context = {"objs": objs}
-    
     return render(request, "forgotrequest.html", context)
 
 def change_password(request, id):
@@ -326,13 +337,13 @@ def change_password(request, id):
 def full_profile(request):
     return render(request, "profile.html")
 
+
 def change_employee_password(request):
     try:
         if request.method =="POST":
             currentpass = request.POST.get("currentpass")
             newpassword = request.POST.get("newpassword")
             confirmpassword = request.POST.get("confirmpassword")
-
             obj = authenticate(employee_id= request.user.employee_id , password = currentpass)
             if obj:
             
@@ -348,6 +359,9 @@ def change_employee_password(request):
                 return redirect("/adminpanel/changemppas")
     except Exception as e:
         print(e)
-
-
     return render(request, "chngemppass.html")
+
+def login_option(request):
+    return render(request,"loginway.html")
+
+    

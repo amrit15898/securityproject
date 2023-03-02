@@ -19,7 +19,8 @@ urlpatterns = [
     path("sfohfdoafca/<id>", show_cancel_reason, name="showcancel" ),
     path("showwhistssot/<emp_id>", show_employee_history, name="showhistory"),
     path("hsowfulluser/<int:id>", show_full_user_detail, name="showuser"),
-    path("dpanellsf", department_panel, name="dpanel")
-
-
+    path("dpanellsf", department_panel, name="dpanel"),
+    path("hwpanel" , hw_panel, name="hwpanel"),
+    path("oicpanel", oic_panel, name="oicpanel"),
+    path("pvtemp", pvt_employee_reqeust, name="pvtemp") 
 ]

@@ -43,21 +43,7 @@ input[type=password], select {
 
 
 {% endblock option %}
-{% block admincontent %}
-<form action="" method="POST">
-    {% csrf_token %}
 
-    <select id="departmen" name="days">
-      <option selected value="selectposition">All data</option>
-                   
-
-                    <option value="last7days">Last 7 Days</option>
-                    <option value="today">Today</option>
-
-                  
-    </select>
-    <input type="submit" class="add" style="height:35px; background-color: rgb(5, 130, 247);" value="Submit">
-</form>
 
 <div class="table">
     <table>

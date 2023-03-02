@@ -7,86 +7,90 @@ from datetime import timedelta
 from datetime import datetime, date
 from django.http import HttpResponseRedirect
 from django.contrib import messages
+import pandas as pd
 from django.contrib.auth.decorators import login_required
 todaydate = date.today().day
 @login_required
 def post_appointment(request):
-    if request.user.position == "Employee":
-        gh_dh = {}
-        tech_dir = {}
-        departments = {}
-        context = {}
-        try:
-            gh_dh = User.objects.filter(position = "GH/DH")
-            tech_dir = User.objects.filter(position = "Tech Director")
-            departments = Department.objects.all()
-            context["gh_dh"] = gh_dh
-            context["tech_dir"] = tech_dir
-            context["departments"] = departments   
+    gh_dh = {}
+    tech_dir = {}
+    departments = {}
+    context = {}
+    try:
+        gh_dh = User.objects.filter(position = "GH/DH")
+        tech_dir = User.objects.filter(position = "Tech Director")
+        oic = User.objects.filter(position = "oic")
+
+        departments = Department.objects.all()
+        context["gh_dh"] = gh_dh
+        context["tech_dir"] = tech_dir
+        context["departments"] = departments   
+        context["ld"] = oic
         # try:
         #     gh_dh = User.objects.using("new").filter(position = "GH/DH")
         #     tech_dir = User.objects.using("new").filter(position = "Tech Director")
         
         # except Exception as e:
         #     print(e)   
-            if request.method=="POST":
-                organization = request.POST.get("organization")
-                gh_dh = request.POST.get("gh_dh")
-                tdir = request.POST.get("tdir")
-                date = request.POST.get("date")  
-                description = request.POST.get("description")
-                items = request.POST.get("items")
+        if request.method=="POST":
+            organization = request.POST.get("organization")
+            gh_dh = request.POST.get("gh_dh")
+            tdir = request.POST.get("tdir")
+            oic = request.POST.get('ld')
+            date = request.POST.get("date")  
+            description = request.POST.get("description")
+            items = request.POST.get("items")
+            level = request.POST.get("level")
+                # department = request.POST.get("department")
+            dh_gh_clr = request.POST.get("dh_gh_clr")
+            tech_dir_clr = request.POST.get("tech_dir_clr")
+            ass_dir_clr = request.POST.get("ass_dir_clr")
+            dir_clr = request.POST.get("dir_clr")  
+            if gh_dh == "SelectGH":
+                messages.warning(request, "Please select GH.")
+                return redirect("/home/postapntent")  
+            if tdir == "SelectTD":
+                messages.warning(request, "Please select Tech-Director.")
+                return redirect("/home/postapntent")
+             # if department == "SelectDep":
+                #     messages.warning(request, "Please select Department.")
+                #     return redirect("/home/postapntent")
 
-                department = request.POST.get("department")
-                dh_gh_clr = request.POST.get("dh_gh_clr")
-                tech_dir_clr = request.POST.get("tech_dir_clr")
-                ass_dir_clr = request.POST.get("ass_dir_clr")
-                dir_clr = request.POST.get("dir_clr")
-                
-                if gh_dh == "SelectGH":
-                    messages.warning(request, "Please select GH.")
-                    return redirect("/home/postapntent")
-                
-                if tdir == "SelectTD":
-                    messages.warning(request, "Please select Tech-Director.")
-                    return redirect("/home/postapntent")
+            final_gh_dh = User.objects.get(id=gh_dh)
+            final_tech_dir = User.objects.get(id=tdir)
+            # print("********************************", oic)
+            oic  = User.objects.get(id=oic)
 
-                if department == "SelectDep":
-                    messages.warning(request, "Please select Department.")
-                    return redirect("/home/postapntent")
-
-                final_gh_dh = User.objects.get(id=gh_dh)
-                final_tech_dir = User.objects.get(id=tdir)
-                d = date.split("T")
-
-                pd = " ".join(d)
-                print(pd)
-                for obj in Appointment.objects.all():
-                    if str(obj.date.date()) == str(d[0]):
-                        print(obj.date)
-                        fmt = '%Y-%m-%d %H:%M'
-                        d1 = datetime.strptime(str(obj.date)[0:16], fmt)
-                        d2 = datetime.strptime(pd, fmt)
+            d = date.split("T")
+            print("8888888888", d)
+            pd = " ".join(d)
+            print(pd)
+            for obj in Appointment.objects.all():
+                if str(obj.date.date()) == str(d[0]):
+                    print(obj.date)
+                    fmt = '%Y-%m-%d %H:%M'
+                    d1 = datetime.strptime(str(obj.date)[0:16], fmt)
+                    d2 = datetime.strptime(pd, fmt)
 
                     
-                        minutes_diff = (d2- d1).total_seconds() / 60.0
-                        if minutes_diff<30:
+                    minutes_diff = (d2- d1).total_seconds() / 60.0
+                    if minutes_diff<30:
 
-                            messages.warning(request, "Please select another time slot, this slot is already booked.")
-                            return redirect("/home/postapntent")
+                        messages.warning(request, "Please select another time slot, this slot is already booked.")
+                        return redirect("/home/postapntent")
 
-                dep = Department.objects.get(id=department)
-                obj = Appointment(organization_name=organization, gh_dh= final_gh_dh, tech_dir =final_tech_dir, description=description,items =items,  department=dep, date=date)
-                obj.r_user = request.user    
-                obj.save()
-                # obj.save(using="new")
+                # dep = Department.objects.get(id=department)
+            obj = Appointment(organization_name=organization, gh_dh= final_gh_dh, tech_dir =final_tech_dir,ld=oic, description=description,items =items, clearance_level=level,   date=date)
+            obj.r_user = request.user    
+            obj.save()
+                # obj.save(using="new")      
+    except Exception as e:
+        print(e)
             
-        except Exception as e:
-            print(e)
-            
-        return render(request, "clearance.html", context)
+    return render(request, "clearance.html", context)
     
-    return redirect('/')
+
+    
 
 
 def update_appointment(request, id):
@@ -150,13 +154,13 @@ def show_request(request):
             try:
                 if request.user.position == postions[3][1]:
                     objs = Appointment.objects.filter(gh_dh__name=request.user,
-                                                                    date__gte = datetime.now()).exclude(dh_gh_clr = "Not Approved")       
+                                                                    date__gte = datetime.now())
                 elif request.user.position == postions[2][1]:
-                    objs = Appointment.objects.filter(tech_dir__name = request.user, date__gte = datetime.now(), dh_gh_clr = "Approved").exclude(tech_dir_clr = "Not approved")
+                    objs = Appointment.objects.filter(tech_dir__name = request.user, date__gte = datetime.now())
                 elif request.user.position == postions[0][1]:
                     objs = Appointment.objects.filter(date__gte = datetime.now())
                 elif request.user.position == postions[1][1]:
-                    objs = Appointment.objects.filter(date__gte = datetime.now(), tech_dir_clr ="Approved").exclude(ass_dir_clr  = "Not Approved")
+                    objs = Appointment.objects.filter(date__gte = datetime.now())
             except Exception as e:
                 pass  
 
@@ -184,15 +188,24 @@ def show_request(request):
                 position = request.user.position
                 if (position == postions[3][1]):
                     obj1.dh_gh_clr = "Approved"
+                    if (obj1.clearance_level == "brown"):
+                        obj1.final_clearance = True
                         # obj2.dh_gh_clr = "Approved"
                 if position == postions[2][1]:
                     obj1.tech_dir_clr = "Approved"
+                    if (obj1.clearance_level == "green") or (obj1.clearance_level=="green"):
+                        obj1.final_clearance = True
+
                         # obj2.tech_dir_clr = "Approved"
                 
                 if position == postions[0][1]:
-                        obj1.dir_clr = "Approved" 
+                    obj1.dir_clr = "Approved" 
+                    if (obj1.clearance_level == "green") or (obj1.clearance_level=="brown") or (obj1.clearance_level == "yellow") or(obj1.clearance_level =="red"):
+                        obj1.final_clearance = True
+
+                    obj1.final_clearance == True
                 if position == postions[1][1]:
-                    obj1.ass_dir_clr = "Approved"            
+                    obj1.ass_dir_clr = "Approved" 
                 obj1.save()
             
             if 'napproved' in request.POST:
@@ -213,19 +226,19 @@ def show_request(request):
                     # obj2.tech_dir_clr = "Not Approved"
                     # obj1.save()
                     return redirect(f"/home/cfhadf-regfsa/{value}")               
-                if position == postions[0][1]:
+                if position == postions[1][1]:
                     print("Associate director")
-                    obj1.dir_clr = "Not Approved"
+                    obj1.ass_dir_clr = "Not Approved"
                     obj1.save()
                     # obj2.dir_clr = "Not Approved"
                     # obj2.save()
-                    return redirect(f"/home/cfhadf-regfsa/{value}")         
-                if position == postions[1][1]:
+                    return redirect(f"/home/cfhadf-regfsa/{value}")            
+                if position == postions[0][1]:
                     print("director")
-                    obj1.ass_dir_clr = "Not Approved"
+                    obj1.dir_clr = "Not Approved"
                     obj1.save()
                     # obj2.ass_dir_clr = "Not Approved"
-                    # obj2.save()
+                    # obj2.save(
                     return redirect("/home/shsfsdfow-readfafquest")
             if "forward" in request.POST:
                 value = request.POST.get("forward")          
@@ -235,10 +248,19 @@ def show_request(request):
                 obj1.save()
                 # obj2.send_security = True
                 # obj2.save()
+            if "sendoic" in request.POST:
+                print("**************************** yes function called **********************8")
+                value = request.POST.get("sendoic")
+                obj1 = Appointment.objects.get(id=value)
+                print(obj1)
+                obj1.send_oic = True
+                obj1.save()
             return render(request, "ghdh2.html",context)
         except Exception as e:
             messages.warning(request, "Something went wrong.")
         return render(request, "ghdh2.html",context)
+    
+
     return redirect("/")
 @login_required
 def employee_request(request):
@@ -262,9 +284,9 @@ def show_full_request(request,id):
 
 @login_required
 def security_officer(request):
-    
     try:
-        objs = Appointment.objects.filter(date__date__day = todaydate, dir_clr = "Approved" )
+        objs = Appointment.objects.filter(ld = request.user.so_ld)
+        print(objs)
         context = {"objs": objs}
     except Exception as e:
         print(e)
@@ -301,8 +323,8 @@ def cancel_request(request, id):
 def cleare_clearance_list(request):
     objs = {}
     try:
-        objs = Appointment.objects.using("default").filter(gh_dh__name= request.user, dir_clr="Approved")
-        # objs = Appointment.objects.using("new").filter(gh_dh__name= request.user, dir_clr="Approved")
+        objs = Appointment.objects.using("default").filter(gh_dh__name = request.user, dir_clr="Approved")
+        # objs = Appointment.objects.using("new").filter(gh_dh__name = request.user, dir_clr="Approved")
     except Exception as e:
         pass
     context = {"objs": objs}  
@@ -315,7 +337,7 @@ def forgot_password(request):
         try:
             user = User.objects.get(employee_id=uidd)
         except Exception as e:
-            messages.error(request, "ID does not match. Please check again.")
+            messages.error(request, "ID does not match. Please check again")
             return HttpResponseRedirect(request.path_info)
         obj = ForgetMessageRequest(employee_id = user)
         obj.save()
@@ -333,7 +355,6 @@ def reson_unopproved(request, id):
             obj.reason_cancelation = reason
             obj.save()
             return redirect("/home/shsfsdfow-readfafquest")
-
     except Exception as e:
         pass
     return render(request, "cancelreason.html")
@@ -352,8 +373,6 @@ def cancel_employee_request(request):
     context["objs"] = objs 
     context["assdir"] = User.objects.filter(position = "Associate Director").first()
     context["dir"] = User.objects.filter(position = "Director").first()
-
-
     return render(request, "unapproved.html", context)
 
 
@@ -374,39 +393,130 @@ def show_employee_history(request, emp_id):
         context = {"objs": objs}
     except Exception as e:
         print(e)
-
     return render(request, "emp_history.html", context)
 
 
 def show_full_user_detail(request, id):
     user = User.objects.get(id=id)
     context ={"user":user}
-
     return render(request, "showfulluser.html",context)
 
-
 def department_panel(request):
+    return render(request, "departmentpanel.html")
+    
+def hw_panel(request):
+    objs = Appointment.objects.all()
+    context = {"objs": objs}
+    return render(request,"hwmgpanel.html",context)
+
+def oic_panel(request):
     appointments = {}
+    appointments = Appointment.objects.filter(send_oic = True, ld = request.user)
     if request.method == "POST":
         days = request.POST.get("days")
         today = timezone.now().date()
         if days == "last7days":
             start_date = today - timedelta(days=today.weekday())
             end_date = start_date + timedelta(days=6)   
-            appointments = Appointment.objects.filter(date__date__range=[start_date, end_date])& Appointment.objects.filter(department= request.user.department)
+            appointments = Appointment.objects.filter(date__date__range=[start_date, end_date])& Appointment.objects.filter(ld= request.user) & Appointment.objects.filter(send_oic = True)
         elif  days == "today":
-            appointments = Appointment.objects.filter(date__date = today)
+            appointments = Appointment.objects.filter(date__date = today, send_oic = True, ld = request.user)
         else:
-            appointments = Appointment.objects.filter(department = request.user.department)
+            appointments = Appointment.objects.filter(ld = request.user, send_oic = True)    
+    context = {"objs": appointments}
+    if "forward" in request.POST:
+        value = request.POST.get("forward")          
+        obj1 = Appointment.objects.get(id=value)         
+        obj1.send_security = True
+        obj1.save()
+    if "download" in request.POST:
+        objs = Appointment.objects.filter(send_oic = True, ld = request.user)
+        df = pd.DataFrame(list(objs.values()))
+        df['date'] = df['date'].dt.tz_localize(None)
+        print(df)
+        download_file = df.to_excel('output.xlsx', index=False)
+        obj =  DownloadFile(d_file = download_file)
+        obj.save()
+    return render(request, "oicpanel.html",context)
 
-    context = {"appointments": appointments}
-    return render(request, "departmentpanel.html", context)
     
 
+def pvt_employee_reqeust(request):
+    gh_dh = {}
+    tech_dir = {}
+    departments = {}
+    context = {}
+    try:
+        gh_dh = User.objects.filter(position = "GH/DH")
+        tech_dir = User.objects.filter(position = "Tech Director")
+        oic = User.objects.filter(position = "oic")
+        departments = Department.objects.all()
+        context["gh_dh"] = gh_dh
+        context["tech_dir"] = tech_dir
+        context["departments"] = departments   
+        context["ld"] = oic
+        # try:
+        #     gh_dh = User.objects.using("new").filter(position = "GH/DH")
+        #     tech_dir = User.objects.using("new").filter(position = "Tech Director")
+        # except Exception as e:
+        #     print(e)   
+        if request.method=="POST":
+            name = request.POST.get("name")
+            age = request.POST.get("age")
+            height = request.POST.get("height")
+            organization = request.POST.get("organization")
+            gh_dh = request.POST.get("gh_dh")
+            tdir = request.POST.get("tdir")
+            oic = request.POST.get('ld')
+            date = request.POST.get("date")  
+            description = request.POST.get("description")
+            items = request.POST.get("items")
+            level = request.POST.get("level")
+                # department = request.POST.get("department")
+            dh_gh_clr = request.POST.get("dh_gh_clr")
+            tech_dir_clr = request.POST.get("tech_dir_clr")
+            ass_dir_clr = request.POST.get("ass_dir_clr")
+            dir_clr = request.POST.get("dir_clr")    
+            if gh_dh == "SelectGH":
+                messages.warning(request, "Please select GH.")
+                return redirect("/home/postapntent")
+                
+            if tdir == "SelectTD":
+                messages.warning(request, "Please select Tech-Director.")
+                return redirect("/home/postapntent")
+                # if department == "SelectDep":
+                #     messages.warning(request, "Please select Department.")
+                #     return redirect("/home/postapntent")
+
+            final_gh_dh = User.objects.get(id=gh_dh)
+            final_tech_dir = User.objects.get(id=tdir)
+            oic  = User.objects.get(id=oic)
+            d = date.split("T")
+        
+            pd = " ".join(d)
+            print(pd)
+            for obj in Appointment.objects.all():
+                if str(obj.date.date()) == str(d[0]):
+                    print(obj.date)
+                    fmt = '%Y-%m-%d %H:%M'
+                    d1 = datetime.strptime(str(obj.date)[0:16], fmt)
+                    d2 = datetime.strptime(pd, fmt)
+                    minutes_diff = (d2- d1).total_seconds() / 60.0
+                    if minutes_diff<30:
+                        messages.warning(request, "Please select another time slot, this slot is already booked.")
+                        return redirect("/home/postapntent")
+                # dep = Department.objects.get(id=department)
+            obj = Appointment(organization_name=organization,name=name, age=age, height =height,  gh_dh= final_gh_dh, tech_dir =final_tech_dir,ld=oic, description=description,items =items, clearance_level=level,   date=date)
+            obj.r_user = request.user    
+            obj.posted_by = request.user
+            obj.pvt_request = True
+
+            obj.save()
+                # obj.save(using="new")      
+    except Exception as e:
+        print(e)
+
+    return render(request, "pvtemprequest.html",context)
 
 
 
-
-
-
-    
