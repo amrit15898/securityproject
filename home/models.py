@@ -74,6 +74,11 @@ class Appointment(models.Model):
     final_clearance = models.BooleanField(default=False)
     send_oic = models.BooleanField(default=False)
     perm_id = models.UUIDField(null=True, blank=True)
+    close_clearance = models.BooleanField(default=False)
+    close_clearance_reason = models.TextField(null=True, blank=True)
+    
+
+
 
 
 @receiver(pre_save, sender=Appointment)

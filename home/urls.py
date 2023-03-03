@@ -22,5 +22,6 @@ urlpatterns = [
     path("dpanellsf", department_panel, name="dpanel"),
     path("hwpanel" , hw_panel, name="hwpanel"),
     path("oicpanel", oic_panel, name="oicpanel"),
-    path("pvtemp", pvt_employee_reqeust, name="pvtemp") 
+    path("pvtemp", pvt_employee_reqeust, name="pvtemp") ,
+    path("cloaseadfcleareas/<id>", close_clearance_reason, name="closereason")
 ]

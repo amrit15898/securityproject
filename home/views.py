@@ -193,7 +193,7 @@ def show_request(request):
                         # obj2.dh_gh_clr = "Approved"
                 if position == postions[2][1]:
                     obj1.tech_dir_clr = "Approved"
-                    if (obj1.clearance_level == "green") or (obj1.clearance_level=="green"):
+                    if (obj1.clearance_level == "green"):
                         obj1.final_clearance = True
 
                         # obj2.tech_dir_clr = "Approved"
@@ -205,6 +205,8 @@ def show_request(request):
 
                     obj1.final_clearance == True
                 if position == postions[1][1]:
+                    if (obj1.clearance_level == "green") or (obj1.clearance_level == "brown") or (obj1.clearance_level == "yellow"):
+                        obj1.final_clearance = True 
                     obj1.ass_dir_clr = "Approved" 
                 obj1.save()
             
@@ -398,6 +400,21 @@ def show_employee_history(request, emp_id):
 
 def show_full_user_detail(request, id):
     user = User.objects.get(id=id)
+    print(user)
+    today = timezone.now().date()
+    if request.method == "POST":
+        days = request.POST.get("days")
+        if days == "7days":
+            start_date = today - timedelta(days=today.weekday())
+            end_date = start_date + timedelta(days=6)       
+            appointments = Appointment.objects.filter(date__date__range=[start_date, end_date], r_user = user)
+
+            print(appointments)
+        else:
+            appointments = Appointment.objects.filter(r_user=user)
+            print(appointments)
+
+    
     context ={"user":user}
     return render(request, "showfulluser.html",context)
 
@@ -492,7 +509,6 @@ def pvt_employee_reqeust(request):
             final_tech_dir = User.objects.get(id=tdir)
             oic  = User.objects.get(id=oic)
             d = date.split("T")
-        
             pd = " ".join(d)
             print(pd)
             for obj in Appointment.objects.all():
@@ -510,13 +526,28 @@ def pvt_employee_reqeust(request):
             obj.r_user = request.user    
             obj.posted_by = request.user
             obj.pvt_request = True
-
             obj.save()
                 # obj.save(using="new")      
     except Exception as e:
         print(e)
-
     return render(request, "pvtemprequest.html",context)
+
+
+
+def close_clearance_reason(request,id):
+    obj = Appointment.objects.get(id=id)
+    if request.method == "POST":
+        close_clearance_reason = request.POST.get("close")
+        obj.close_clearance_reason = close_clearance_reason
+        obj.save()
+    return render(request,"closeclr.html")
+
+def download_data(request, id):
+    pass
+
+       
+
+
 
 
 

@@ -118,11 +118,17 @@ def add_user(request):
             employee_id = request.POST.get("userid")
             so_ld = request.POST.get("sdoic")
             adhaar_no = request.POST.get("adhaar_no")
+            print(so_ld)
             file = request.FILES.get("img")
             print(file)
             obj = User.objects.filter(employee_id=employee_id).first()
-            so_ld = User.objects.get(id = so_ld)
-
+            if not so_ld == " ":
+            
+                try:
+                    so_ld = User.objects.get(id = so_ld)
+                except Exception as e:
+                    print(e)
+         
             if not name:
                 messages.info(request, "Employee Name should not be blank.")
                 return redirect("/adminpanel/addffadfsfdsf")
@@ -143,7 +149,14 @@ def add_user(request):
             if check_adhaar:
                 messages.info(request,"this adhaar no already register")
                 return redirect("/adminpanel/addffadfsfdsf")
-            obj = User(position=position, name=name, employee_id=employee_id,pis=pis, image=file, adhaar_no=adhaar_no, so_ld = so_ld)
+            obj = User(position=position, name=name, employee_id=employee_id,pis=pis, image=file, adhaar_no=adhaar_no)
+            try:
+                if not so_ld == "":
+                    obj.so_ld = so_ld
+
+            except Exception as e:
+                print(e)
+
 
             obj.set_password(password)
             obj.save()

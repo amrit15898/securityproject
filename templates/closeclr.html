@@ -1,0 +1,109 @@
+{% extends 'rolefoundation.html' %}
+{% block style %}
+input[type=text], select {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+input[type=datetime-local], select {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+textarea, select {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+input[type=password], select {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+input[type=submit] {
+ 
+}
+
+input[type=submit]:hover {
+  background-color: #45a049;
+}
+
+
+{% endblock style %}
+
+{% block option %}
+
+  
+  {% if request.user.position == "GH/DH" %}
+
+  {% endif %}
+
+  <li>
+    <a href="/home/shsfsdfow-readfafquest">
+      
+        <span >Dashboard</span>
+      </a>
+    </li>
+  <li>
+    <a href="{% url 'fullprofile' %}">
+      
+        <span >Profile</span>
+      </a>
+    </li>
+    <li>
+      <a href="{% url 'chngpassword' %}">
+        
+          <span >Change Password</span>
+        </a>
+      </li>
+    <li>
+      <a href="{% url 'logout' %}">
+        
+          <span >Logout</span>
+        </a>
+      </li>
+{% endblock option %}
+{% block admincontent %}
+<h1 style="text-align: center; margin-top:10px;">Reason For Disapproval</h1>
+<div>
+  {% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+  <form action="" method="POST">
+    {% csrf_token %}
+   
+
+
+    
+    <label for="lname">Close Reason</label>
+    <textarea type="text" class="longfield" name="close" placeholder=""></textarea>
+  
+    <input type="submit" class="add" style="float:left;" value="Submit">
+  </form>
+  
+  {% comment %} <a href="{% url 'employeerequest' %}" style=" background-color:  rgb(71, 71, 95); width:130px; float:right;"  class="add">Show request</a> {% endcomment %}
+
+</div>
+
+{% endblock admincontent %}

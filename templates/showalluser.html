@@ -10,7 +10,7 @@
             <tr>
                 <th>Name</th>
                 <th>Designation</th>
-                <th>Employee ID</th>            
+                <th>PIS</th>            
                 <th>Action</th>
             </tr>
         </thead>
@@ -19,7 +19,7 @@
             <tr>
                 <td>{{user.name}}</td>
                 <td>{{user.position}}</td>
-                <td>{{user.employee_id}}</td>
+                <td>{{user.pis}}</td>
              
                 <td class="pending" ><a href="{% url 'deleteuser' user.id %}" class="add" style="color: white; background-color:rgb(204, 59, 59); width:fit-content; margin-right:5px; margin-bottom:10px; height:35px;">Delete</a><a href="{% url 'updateuser' user.id %}" class="add" style="color: white; background-color:rgb(40, 148, 40); width:fit-content; height:35px;" >Update</a></td>
                 <td><span><i class="ri-edit-line edit"></i><i class="ri-delete-bin-line delete"></i></span></td>

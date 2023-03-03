@@ -243,7 +243,19 @@ table, th, td {
        </div>
   
 </div>
+<form action="" method ="POST">
+ {% csrf_token %}
+  <select id="departmen" name="days">
+    <option selected value="selectposition">All data</option>
+                 
 
+                  <option value="7days">Last 7 Days</option>
+                  <option value="today">Today</option>
+
+                
+  </select>
+  <button type="input">Download</button>
+</form>
 
 
 {% endblock admincontent %}
