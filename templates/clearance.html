@@ -116,7 +116,11 @@ input[type=submit]:hover {
     <label for="">Organzation Name</label>
 
     <input type="text" name="organization">
+    
+    <label for="">Duration</label>
 
+    <input type="text" name="duration">
+    
     <label for="country">GH DH</label>
     <select id="country" name="gh_dh">
       <option selected value="SelectGH">Select Users</option>
@@ -125,6 +129,23 @@ input[type=submit]:hover {
       {% endfor %}
                    
     </select>
+    <label for="country">Transportation Required</label>
+    <select id="country" name="transportation">
+      
+      <option selected value="SelectGH">Select</option>
+      <option value="yes">Yes</option>
+      <option value="no">No</option>
+    
+                   
+    </select>
+    <label for="country">Accommodation Required</label>
+    <select id="country" name="accommodation">
+      <option selected value="SelectGH">Select</option>
+      <option value="yes">Yes</option>
+      <option value="no">No</option>                   
+    </select>
+
+
     <label for="country">Tech Dir</label>
     <select id="country" name="tdir">
       <option selected value="SelectTD">Select Users</option>
@@ -135,7 +156,7 @@ input[type=submit]:hover {
     </select>
     <label for="country" >Clearance Level</label>
     <select id="level" name="level">
-      <option selected value="SelectDep">Select Department</option>
+      <option selected value="SelectDep">Select Clearance Level</option>
             <option value="red">Red</option>
             <option value="yellow">Yellow</option>
             <option value="green">Green</option>

@@ -47,7 +47,7 @@ table, th, td {
         <span class="sidebar--item">Cancel Request</span>
     </a>
   </li>
-  <li>
+  <!-- <li>
     <a href="{% url 'fullprofile' %}" >
       
         <span class="sidebar--item">Profile</span>
@@ -64,7 +64,7 @@ table, th, td {
       
         <span >Logout</span>
       </a>
-    </li>
+    </li> -->
 {% endif %}
 {% if request.user.position == "GH/DH" or request.user.position == "Tech Director" or request.user.position == "Director" %}
 <li>
@@ -73,7 +73,7 @@ table, th, td {
         <span >Dashboard</span>
       </a>
     </li>
-    <li>
+    <!-- <li>
       <a href="{% url 'fullprofile' %}">
         
           <span >Profile</span>
@@ -90,7 +90,7 @@ table, th, td {
         
           <span >Logout</span>
         </a>
-      </li>
+      </li> -->
 {% endif %}
 
 {% if request.user.position == "Associate Director" %}
@@ -100,7 +100,7 @@ table, th, td {
         <span >Dashboard</span>
       </a>
     </li>
-    <li>
+    <!-- <li>
       <a href="{% url 'fullprofile' %}">
         
           <span >Profile</span>
@@ -117,7 +117,7 @@ table, th, td {
         
           <span >Logout</span>
         </a>
-      </li>
+      </li> -->
 
 {% endif %}
 
@@ -128,7 +128,7 @@ table, th, td {
       <span >Dashboard</span>
     </a>
   </li>
-<li>
+<!-- <li>
   <a href="{% url 'fullprofile' %}" >
     
       <span >Profile</span>
@@ -145,7 +145,7 @@ table, th, td {
       
         <span >Logout</span>
       </a>
-    </li>
+    </li> -->
 {% endif %}
 
 {% if request.user.is_staff == True %}
@@ -181,11 +181,11 @@ table, th, td {
           <span class="sidebar--item">Forgot Password Requests</span>
       </a>
   </li>
-  <li>
+ <!-- <li>
       <a href="{% url 'fullprofile' %}">
        
           <span class="sidebar--item">Profile</span>
-      </a>
+      </a> 
   </li>
   <li>
     <a href="{% url 'chngpassword' %}">
@@ -198,11 +198,29 @@ table, th, td {
         
         <span class="sidebar--item">Logout</span>
     </a>
-</li>
-</ul>
+</li> -->
 
 {% endif %}
 
+<li>
+  <a href="{% url 'fullprofile' %}">
+   
+      <span class="sidebar--item">Profile</span>
+  </a> 
+</li>
+<li>
+<a href="{% url 'chngpassword' %}">
+    
+    <span class="sidebar--item">Change Password</span>
+</a>
+</li>
+<li>
+<a href="{% url 'logout' %}">
+    
+    <span class="sidebar--item">Logout</span>
+</a>
+</li> 
+</ul>
 {% endblock option %}
 {% block admincontent %}
 <div class="container">

@@ -67,7 +67,7 @@
     {% for obj in objs %}
   
     <tr>
-      <th ><a href="{% url 'showuser' obj.r_user.id %}">{{obj.r_user}}</a></th>
+      <th ><a href="{% url 'showuser' obj.r_user.id %}">{{obj.r_user}}</a></th> 
       
       <td>{{obj.description|truncatechars:30}} <a href="{% url 'showfull' obj.id %}">Read More</a></td>
   
@@ -82,6 +82,10 @@
           <button value="{{obj.id}}" name="forward">Send So</button>
         </form>
       </td>
+      <td><form action="" method="post">
+        {% csrf_token %}
+        <button value="{{obj.id}}" name="cancelreq">Cancel request</button>
+      </form></td>
       
       
     </tr>

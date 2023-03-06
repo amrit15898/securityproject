@@ -38,9 +38,14 @@ def post_appointment(request):
             tdir = request.POST.get("tdir")
             oic = request.POST.get('ld')
             date = request.POST.get("date")  
+            duration= request.POST.get("duration")
             description = request.POST.get("description")
             items = request.POST.get("items")
             level = request.POST.get("level")
+            accommdation = request.POST.get("accommodation")
+            transportation = request.POST.get("transportation")
+            print(accommdation)
+            print(transportation)
                 # department = request.POST.get("department")
             dh_gh_clr = request.POST.get("dh_gh_clr")
             tech_dir_clr = request.POST.get("tech_dir_clr")
@@ -78,14 +83,21 @@ def post_appointment(request):
 
                         messages.warning(request, "Please select another time slot, this slot is already booked.")
                         return redirect("/home/postapntent")
-
+            
                 # dep = Department.objects.get(id=department)
-            obj = Appointment(organization_name=organization, gh_dh= final_gh_dh, tech_dir =final_tech_dir,ld=oic, description=description,items =items, clearance_level=level,   date=date)
+            obj = Appointment(organization_name=organization, gh_dh= final_gh_dh, tech_dir =final_tech_dir,ld=oic, description=description,items =items, duration= duration, clearance_level=level,   date=date)
+            if accommdation == "yes":
+                obj.accommodation_requirement = True
+            
+            if transportation == "yes":
+                obj.transporation_requirement = True
             obj.r_user = request.user    
             obj.save()
+            messages.success(request, "clearance request post successfully")
                 # obj.save(using="new")      
     except Exception as e:
         print(e)
+        messages.warning(request, "something went wrong")
             
     return render(request, "clearance.html", context)
     
@@ -286,12 +298,14 @@ def show_full_request(request,id):
 
 @login_required
 def security_officer(request):
+    objs = {}
     try:
-        objs = Appointment.objects.filter(ld = request.user.so_ld)
+        objs = Appointment.objects.filter(ld = request.user.so_ld, send_so= True)
         print(objs)
-        context = {"objs": objs}
+
     except Exception as e:
         print(e)
+    context = {"objs": objs}
     return render(request, "security.html", context)
 @login_required
 def full_security_detail(request,id):
@@ -408,11 +422,18 @@ def show_full_user_detail(request, id):
             start_date = today - timedelta(days=today.weekday())
             end_date = start_date + timedelta(days=6)       
             appointments = Appointment.objects.filter(date__date__range=[start_date, end_date], r_user = user)
-
             print(appointments)
         else:
             appointments = Appointment.objects.filter(r_user=user)
             print(appointments)
+
+    
+        # objs = Appointment.objects.filter(send_oic = True, ld = request.user)
+    if "download" in request.POST:
+        df = pd.DataFrame(list(appointments.values()))
+        df['date'] = df['date'].dt.tz_localize(None)
+        print(df)
+        download_file = df.to_excel(f'static/userdata/{uuid.uuid4()}.xlsx', index=False)    
 
     
     context ={"user":user}
@@ -434,7 +455,7 @@ def oic_panel(request):
         today = timezone.now().date()
         if days == "last7days":
             start_date = today - timedelta(days=today.weekday())
-            end_date = start_date + timedelta(days=6)   
+            end_date = start_date + timedelta(days=30)   
             appointments = Appointment.objects.filter(date__date__range=[start_date, end_date])& Appointment.objects.filter(ld= request.user) & Appointment.objects.filter(send_oic = True)
         elif  days == "today":
             appointments = Appointment.objects.filter(date__date = today, send_oic = True, ld = request.user)
@@ -447,16 +468,25 @@ def oic_panel(request):
         obj1.send_security = True
         obj1.save()
     if "download" in request.POST:
-        objs = Appointment.objects.filter(send_oic = True, ld = request.user)
+        start_date = today - timedelta(days=today.weekday())
+        end_date = start_date + timedelta(days=6)       
+        objs = Appointment.objects.filter(date__date__range=[start_date, end_date], send_oic = True, ld = request.user)
+        print(appointments)
+        # objs = Appointment.objects.filter(send_oic = True, ld = request.user)
         df = pd.DataFrame(list(objs.values()))
         df['date'] = df['date'].dt.tz_localize(None)
         print(df)
-        download_file = df.to_excel('output.xlsx', index=False)
+        download_file = df.to_excel(f'static/excel/{uuid.uuid4()}.xlsx', index=False)
         obj =  DownloadFile(d_file = download_file)
         obj.save()
-    return render(request, "oicpanel.html",context)
 
-    
+    if "cancelreq" in request.POST:
+        value = request.POST.get("cancelreq")
+        # obj = Appointment.objects.get(id=value)
+        # obj.close_clearance = True
+        # obj.save()
+        return redirect(f"cloaseadfcleareas/{value}")
+    return render(request, "oicpanel.html",context)
 
 def pvt_employee_reqeust(request):
     gh_dh = {}
@@ -485,6 +515,8 @@ def pvt_employee_reqeust(request):
             gh_dh = request.POST.get("gh_dh")
             tdir = request.POST.get("tdir")
             oic = request.POST.get('ld')
+            duration = request.POST.get("duration")
+
             date = request.POST.get("date")  
             description = request.POST.get("description")
             items = request.POST.get("items")
@@ -538,7 +570,9 @@ def close_clearance_reason(request,id):
     obj = Appointment.objects.get(id=id)
     if request.method == "POST":
         close_clearance_reason = request.POST.get("close")
+        print(close_clearance_reason)
         obj.close_clearance_reason = close_clearance_reason
+        obj.close_clearance = True
         obj.save()
     return render(request,"closeclr.html")
 

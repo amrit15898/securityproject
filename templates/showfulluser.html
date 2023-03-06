@@ -128,7 +128,7 @@ table, th, td {
       <span >Dashboard</span>
     </a>
   </li>
-<li>
+<!-- <li>
   <a href="{% url 'fullprofile' %}" >
     
       <span >Profile</span>
@@ -145,7 +145,7 @@ table, th, td {
       
         <span >Logout</span>
       </a>
-    </li>
+    </li> -->
 {% endif %}
 
 {% if request.user.is_staff == True %}
@@ -181,7 +181,7 @@ table, th, td {
           <span class="sidebar--item">Forgot Password Requests</span>
       </a>
   </li>
-  <li>
+  <!-- <li>
       <a href="{% url 'fullprofile' %}">
        
           <span class="sidebar--item">Profile</span>
@@ -198,10 +198,36 @@ table, th, td {
         
         <span class="sidebar--item">Logout</span>
     </a>
-</li>
+</li> -->
 </ul>
 
 {% endif %}
+<ul>
+  <li>
+    <a href="/home/oicpanel">
+     
+        <span class="sidebar--item">Dashboard</span>
+    </a>
+</li>
+  <li>
+    <a href="{% url 'fullprofile' %}">
+     
+        <span class="sidebar--item">Profile</span>
+    </a>
+</li>
+<li>
+  <a href="{% url 'chngpassword' %}">
+      
+      <span class="sidebar--item">Change Password</span>
+  </a>
+</li>
+<li>
+  <a href="{% url 'logout' %}">
+      
+      <span class="sidebar--item">Logout</span>
+  </a>
+</li>
+</ul>
 
 {% endblock option %}
 {% block admincontent %}
@@ -245,7 +271,7 @@ table, th, td {
 </div>
 <form action="" method ="POST">
  {% csrf_token %}
-  <select id="departmen" name="days">
+  <!-- <select id="departmen" name="days">
     <option selected value="selectposition">All data</option>
                  
 
@@ -253,8 +279,8 @@ table, th, td {
                   <option value="today">Today</option>
 
                 
-  </select>
-  <button type="input">Download</button>
+  </select> -->
+  <button type="input" name="download">Download</button>
 </form>
 
 

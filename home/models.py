@@ -58,6 +58,8 @@ class Appointment(models.Model):
     clearance_level = models.CharField(max_length= 200, choices=clearance_level)
     accommodation_requirement= models.BooleanField(default=False)
     date = models.DateTimeField(auto_now_add=False)
+    transporation_requirement = models.BooleanField(default=False)
+    
     description = models.TextField()
     # department = models.ForeignKey(Department ,on_delete=models.CASCADE)
     dh_gh_clr = models.CharField(max_length=50, choices=status , null=True, blank=True, default="Pending")
