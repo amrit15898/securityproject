@@ -44,7 +44,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     # REQUIRED_FIELDS = ['department', 'position']
 status = (("Approved", "Approved"),("Not Approved", "Not Approved"), ("Pending", "Pending"))
 clearance_level = (("red", "red"), ("green", "green"), ("yellow", "yellow"), ("brown", "brown"))
-
+visit_domain = (("visited", "visited"), ("not visited", "not visited"), ("pending", "pending"))
 class Appointment(models.Model):
     posted_by = models.ForeignKey(User, on_delete=models.CASCADE,null=True, blank=True, related_name="postted_byy")
     pvt_request = models.BooleanField(default=False)
@@ -59,7 +59,6 @@ class Appointment(models.Model):
     accommodation_requirement= models.BooleanField(default=False)
     date = models.DateTimeField(auto_now_add=False)
     transporation_requirement = models.BooleanField(default=False)
-    
     description = models.TextField()
     # department = models.ForeignKey(Department ,on_delete=models.CASCADE)
     dh_gh_clr = models.CharField(max_length=50, choices=status , null=True, blank=True, default="Pending")
@@ -78,10 +77,7 @@ class Appointment(models.Model):
     perm_id = models.UUIDField(null=True, blank=True)
     close_clearance = models.BooleanField(default=False)
     close_clearance_reason = models.TextField(null=True, blank=True)
-    
-
-
-
+    visited_staus = models.CharField(max_length=200, choices= visit_domain ,default="pending")
 
 @receiver(pre_save, sender=Appointment)
 def create_perm_id(sender, instance, **kwargs):
@@ -101,9 +97,8 @@ class DownloadFile(models.Model):
     d_file = models.FileField(upload_to="download_files")
     
 
-
-
-
+class Lab(models.Model):
+    name = models.CharField(max_length=200)
 
     
 

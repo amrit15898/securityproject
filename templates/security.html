@@ -44,7 +44,10 @@
         <th>Description</th>
         <th>Date</th>
         <th>Details</th>
-        <th>Cancel</th>
+        <!-- <th>Cancel</th> -->
+        <th>Permanent Id</th>
+        <th>Action</th>
+
     
  
   
@@ -61,7 +64,19 @@
 
         <td>{{obj.date}}</td>
         <td> <a href="{% url 'fulldetail' obj.id %}" style="width: fit-content;" class="add">Show Details</a></td>
-        <td> <a href="{% url 'cancelrequest' obj.id %}" style="margin-left:20px; width: fit-content;" class="add">Cancel</a></td>
+        <td>{{obj.perm_id}}</td>
+        <!-- <td> <a href="{% url 'cancelrequest' obj.id %}" style="margin-left:20px; width: fit-content;" class="add">Cancel</a></td> -->
+        <td>
+          <form action="" method="post">
+            {% csrf_token %}
+            <button class="add" name = "visited" value="{{obj.id}}">Visted</button>
+
+
+
+            <button class="add" name="notvisited" value="{{obj.id}}">Not Visited</button>
+
+          </form>
+        </td>
      
 
     </tr>

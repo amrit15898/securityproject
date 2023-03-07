@@ -119,7 +119,7 @@
                             
                           </div></th>
                           {% else %}
-                         <th> <button>action performed</button></th>
+                         <th> <button class="add">action performed</button></th>
                           
                           
                           
@@ -133,8 +133,11 @@
                           </th>
                           {% endif %}
                         {% endcomment %}
-                    <th><form action="" method="post">
-                      {% csrf_token %}<button clas="add" name="sendoic" value="{{obj.id}}">Send Oic</button></form></th>        
+                 {% if obj.final_clearance == True %}
+
+                 <th><form action="" method="post">
+                  {% csrf_token %}<button class="add" name="sendoic" value="{{obj.id}}">Send Oic</button></form></th>        
+                 {% endif %}
                
                         </tr>
                         {% endfor %}

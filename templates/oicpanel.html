@@ -79,12 +79,12 @@
       <td>
         <form action="" method="post">
           {% csrf_token %}
-          <button value="{{obj.id}}" name="forward">Send So</button>
+          <button value="{{obj.id}}" name="forward" class="add">Send So</button>
         </form>
       </td>
       <td><form action="" method="post">
         {% csrf_token %}
-        <button value="{{obj.id}}" name="cancelreq">Cancel request</button>
+        <button value="{{obj.id}}" name="cancelreq" class="add">Cancel request</button>
       </form></td>
       
       
@@ -95,7 +95,7 @@
   </table>
   <form action="" method="post">
     {% csrf_token %}
-    <button name="download">Download</button>
+    <button name="download" class="add">Download</button>
   </form>
   
 {% endblock admincontent %}

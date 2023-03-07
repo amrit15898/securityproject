@@ -59,13 +59,11 @@ def post_appointment(request):
                 return redirect("/home/postapntent")
              # if department == "SelectDep":
                 #     messages.warning(request, "Please select Department.")
-                #     return redirect("/home/postapntent")
-
+              #     return redirect("/home/postapntent")
             final_gh_dh = User.objects.get(id=gh_dh)
             final_tech_dir = User.objects.get(id=tdir)
             # print("********************************", oic)
             oic  = User.objects.get(id=oic)
-
             d = date.split("T")
             print("8888888888", d)
             pd = " ".join(d)
@@ -75,20 +73,15 @@ def post_appointment(request):
                     print(obj.date)
                     fmt = '%Y-%m-%d %H:%M'
                     d1 = datetime.strptime(str(obj.date)[0:16], fmt)
-                    d2 = datetime.strptime(pd, fmt)
-
-                    
+                    d2 = datetime.strptime(pd, fmt)                    
                     minutes_diff = (d2- d1).total_seconds() / 60.0
                     if minutes_diff<30:
-
                         messages.warning(request, "Please select another time slot, this slot is already booked.")
                         return redirect("/home/postapntent")
-            
                 # dep = Department.objects.get(id=department)
             obj = Appointment(organization_name=organization, gh_dh= final_gh_dh, tech_dir =final_tech_dir,ld=oic, description=description,items =items, duration= duration, clearance_level=level,   date=date)
             if accommdation == "yes":
                 obj.accommodation_requirement = True
-            
             if transportation == "yes":
                 obj.transporation_requirement = True
             obj.r_user = request.user    
@@ -101,9 +94,6 @@ def post_appointment(request):
             
     return render(request, "clearance.html", context)
     
-
-    
-
 
 def update_appointment(request, id):
     try:
@@ -300,12 +290,26 @@ def show_full_request(request,id):
 def security_officer(request):
     objs = {}
     try:
-        objs = Appointment.objects.filter(ld = request.user.so_ld, send_so= True)
+        objs = Appointment.objects.filter(ld = request.user.so_ld, send_security= True)
         print(objs)
 
     except Exception as e:
         print(e)
     context = {"objs": objs}
+    if "visited" in request.POST:
+        value = request.POST.get("visited")
+        print("the value is ",value)
+        obj = Appointment.objects.get(id=value)
+        obj.visited_staus = "visited"
+        obj.save()
+    if "notvisited" in request.POST:
+        value = request.POST.get("notvisited")
+        print("the value is ",value)
+        obj = Appointment.objects.get(id=value)
+        obj.visited_staus = "not visited"
+
+        obj.save()
+
     return render(request, "security.html", context)
 @login_required
 def full_security_detail(request,id):
@@ -443,6 +447,8 @@ def department_panel(request):
     return render(request, "departmentpanel.html")
     
 def hw_panel(request):
+    objs = {}
+
     objs = Appointment.objects.all()
     context = {"objs": objs}
     return render(request,"hwmgpanel.html",context)
