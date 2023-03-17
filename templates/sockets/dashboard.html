@@ -1,0 +1,94 @@
+{% extends "sockets/base.html" %}
+
+
+{% block ws_content %}
+{% load static %}
+{% load tz %}
+<main class="col-md-9 col-lg-12 px-md-4 add-pointer-btn " >
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 ">
+      <h1 class="h3">Websocket Status</h1>
+      <div class="btn-toolbar mb-2 mb-md-0">
+     </div>
+    </div>
+  
+  </main>
+<div class="col-md-6 ">
+    {% if ws_status.is_run %}
+  
+    <div class="rounded bg-light my-2" >
+        <p class="p-3 text-capitalize ps-4 ws-text">Username : <span class="ms-2">{{wss_auth_data.username}}</span></p>
+    </div>
+
+    <div class="rounded bg-light my-2" >
+        <p class="p-3  ps-4">Connect on : <span class="ms-2">{% localtime on %} {{wss_auth_data.connect_on|date:'d-m-Y'}}  {{wss_auth_data.connect_on|time:"g:iA"|lower}} ({{wss_auth_data.connect_on|timesince}} ago) {% endlocaltime %}
+        </span></p>
+    </div>
+
+
+    <div class="rounded bg-light my-2" >
+        <p class="p-3 text-capitalize ps-4">Packet ID : <span class="ms-2">{{wss_auth_data.packet_id}}</span></p>
+    </div>
+
+
+    <div class="rounded bg-light my-2" >
+        <p class="p-3 text-capitalize ps-4">session id : <span class="ms-2">{{wss_auth_data.session_id}}</span></p>
+    </div>
+
+
+
+    <!-- packet add -->
+   <button type="button" class="btn btn-purple" data-bs-toggle="modal" data-bs-target="#staticBackdro">
+    Add Packet Id
+  </button>
+ 
+  <div class="modal fade" id="staticBackdro" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+      <div class="modal-header">
+          <h1 class="modal-title fs-5 text-capitalize" id="staticBackdropLabel">Add Packet Id</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <form action="" method="post">
+        <div class="modal-body">
+            <div class="mb-3">
+                <label for="ws-packet" class="form-label">Packet Id</label>
+                <input type="text" name="username" class="form-control" id="ws-packet" value="{{wss_auth_data.packet_id}}"  aria-describedby="userHelp" required>
+              </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancle</button>
+            <button type="submit" class="btn btn-primary">Add</a>
+        </div>
+     </form>
+
+    
+      </div>
+  </div>
+  </div>
+  <!-- end add packet -->
+  {% else %}
+  {% comment %} {% if wss_auth_data.log_message %}
+  <div class="rounded bg-light my-2" >
+    <p class="p-3 ps-4 ">Natsat message <span class="text-danger">{{wss_auth_data.log_message}}</span></p>
+</div>
+{% endif %} {% endcomment %}
+  <div class="rounded bg-light my-2" >
+    <p class="p-3 ps-4 text-danger">Websocket is not connected. </p>
+</div>
+
+<!-- <div class="rounded bg-light my-2" >
+    <p class="p-3 ps-4 ">Connection logout at{% localtime on %} {{last_conn.connect_on|date:'d-m-Y'}}  {{last_conn.connect_on|time:"g:iA"|lower}} ({{last_conn.connect_on|timesince}} ago) {% endlocaltime %} </span></p>
+</div> -->
+
+
+<a href="/wss/connection/" class="btn btn-purple" >
+    Connect Now
+</a>
+
+{% endif %}
+
+
+</div>
+
+ {% endblock %}

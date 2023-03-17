@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>DGRE | WSS Dashboard</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+ {% load static %}
+  <!-- Favicons -->
+  <link href="{% static 'assets/img/favicon.png' %}" rel="icon">
+   <!-- Vendor CSS Files -->
+  <link href="{% static 'assets/vendor/bootstrap/css/bootstrap.min.css'%}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/boxicons/css/boxicons.min.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/css/style.css'%}" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/style.css'%}">
+  <link rel="stylesheet" href="{% static 'css/toastr.css'%}">
+  <script src="{% static 'js/toastr.js'%}"></script>
+  <link rel="stylesheet" href="{% static 'socket/style.css'%}"> 
+  <script src="{% static 'datatable/jquery-3.5.1.js' %}"></script>
+
+   <style>
+p{
+    color: #214486;
+}
+
+  .btn-purple{
+    background-color:#214486;
+    color:white;
+  }
+
+  .btn-purple:hover{
+    background-color:#3e5d97;
+    color:white;
+  }
+
+  .wss-status{
+    background: #214486;
+      padding: 13px 39px;
+      color: #fff;
+      border-radius: 25px;
+      position: absolute;
+      bottom: 15px;
+      margin-left: -10px;
+  }
+   </style>
+
+  </head>
+
+<body>
+
+{% include 'sockets/navbar.html' %}
+
+ {% include "sockets/sidebar.html" %}
+
+  <main id="main" class="main">
+
+
+    <section class="section dashboard">
+      <div class="row">
+
+        {% block ws_content %}
+
+        {% endblock %}
+       
+
+      </div>
+    </section>
+
+  </main>
+
+
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+  <script src="{% static 'assets/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'assets/js/main.js' %}"></script>
+
+
+  {% comment %} connection check {% endcomment %}
+
+<script>
+  const full_host = location.protocol + '//' + location.host;
+  $.ajax({
+      type: 'GET',
+      url: full_host+"/wss/log-check/",
+      success:function(data){
+      console.log(data)
+       document.getElementById("natsat-auth").innerHTML = data['message'];
+      }
+  });
+  
+  </script>
+
+  <script>
+
+// notification
+
+
+function push_notification(body){
+  
+    Notification.requestPermission().then(permission =>{
+      if (Notification.permission === "granted"){
+        const noti = new Notification("You received new message", {
+          body : body,
+          data: "ka ha"
+        })
+      }
+
+      noti.addEventListener("error", e =>{
+        alert("erro")
+      })
+    })
+
+}
+
+
+
+
+{% comment %}  notification {% endcomment %}
+    $(document).ready(function(){
+      const full_host = location.protocol + '//' + location.host;
+         $.ajax({
+            type: 'GET',
+            url: full_host+"/notification/get/",
+            success:function(data){
+
+             data.forEach(function (item, index) {
+                document.getElementById("notifications").insertAdjacentHTML("beforeend",
+                '<li><hr class="dropdown-divider"></li><li class="notification-item"><div><p>'+item.info+'</p><p class="text-info">'+item.date+' '+item.time+'</p></div></li>');
+    
+            });
+            }
+        });
+        {% comment %} counter {% endcomment %}
+
+           $.ajax({
+            type: 'GET',
+            url: full_host+"/notification/notification-counter/",
+            success:function(data){
+              document.getElementById("notify").innerHTML= parseInt(data.noti);
+            }
+        });
+
+     })
+
+  
+       // notification handler
+
+function notification_handler(message_body){
+  var noti = document.getElementById("notify").innerHTML;
+  document.getElementById("notify").innerHTML= parseInt(noti)+1;
+
+document.getElementById("notifications").insertAdjacentHTML("afterbegin",
+           '<li><hr class="dropdown-divider"></li><li class="notification-item"><div><p>'+message_body+'</p><pclass="text-info">recently</p></div></li>');
+}
+
+
+
+// message receiver
+
+     function Messages_receiver(){
+    var message_rec = new WebSocket("ws://127.0.0.0.1:8000/socket-receive/notification_group/")
+
+  message_rec.onopen = function(){
+      console.log("receiver connected")
+  }
+
+  message_rec.onmessage= function(event){
+    push_notification(event.data)
+    notification_handler(event.data)
+  }
+  message_rec.onclose = function(event){
+      console.log("connection closed", event)
+      console.log("not connect")
+      {% comment %} notification_handler("natsat server close") {% endcomment %}
+  }
+
+}
+Messages_receiver()
+
+
+  </script>
+</body>
+</html>

@@ -1,0 +1,2 @@
+﻿message type,received on,data,aws date,aws time,station id,sensor code,packet data
+73,2023-01-25T08:37:34.571822+00:00,"{""msg_type"": 73, ""string_data"": ""#@7319072209005555501data querytest1@#"", ""packet_id"": 25}",190722,0900,55555,01,data querytest1@#

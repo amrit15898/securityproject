@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+
+<div class="col-md-9 col-lg-12 px-md-4 add-pointer-btn">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 ">
+      <h1 class="h2">Send Command Messages</h1>
+ </div>
+
+ {% if wss_fail %}
+ <div class="alert alert-warning alert-dismissible fade show" role="alert">
+  <strong>Websocket connection closed</strong> please connect and try again
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+
+{% endif %}
+ <div class="col-md-12 px-md-4 shadow-lg p-3 mb-5 bg-body-tertiary rounded">
+ 
+
+
+    <form  method="post" id="form1">
+        {% csrf_token %}
+  
+        <div class="row my-4">
+          <div class="col">
+              <label  class="form-label"> Message Start</label>
+              <input type="text" class="form-control" value="#@"  readonly>
+            
+          </div>
+          <div class="col">
+              <label  class="form-label">Message Code</label>
+            <input type="text"  class="form-control" value="61"  readonly>
+     
+          </div>
+      </div>
+
+          <div class="row my-4">
+           
+              <div class="col">
+                  <label  class="form-label">Terminal Id</label>
+                <input type="text" maxlength="5" minlength="5" pattern="\d*" title="please enter 5 digits of number" class="form-control" placeholder="00000" name="terminal_id" value="{{terminal_id}}"  required>
+         
+              </div>
+
+              <div class="col">
+                <label  class="form-label"> Command Code</label>
+                <input type="text" maxlength="2" minlength="2" pattern="\d*" title="please enter 2 digits of number" class="form-control" placeholder="00" name="command_code" value="{{command_code}}"  required>
+             
+            </div>
+          </div>
+        
+  
+
+            <div class="row my-4">
+                <div class="col">
+                    <label  class="form-label"> Query Message</label>
+                   <textarea name="query_message"  id="" cols="30" rows="4" class="form-control">{{query_message}}</textarea>
+                </div>
+
+              <div class="col">
+                  <label  class="form-label"> Message End</label>
+                  <input type="text" class="form-control" value="@#"  readonly>
+              </div>
+          </div>
+    
+    
+            <div class="row my-4">
+                <div class="col-5">
+                    <button type="submit" class="btn btn-purple w-25">Send</button>
+                    <button type="reset" class="btn btn-info w-25 text-white ms-1">Reset</button>
+                </div>
+          </div>
+    </form>
+
+ </div>
+
+
+{% endblock %}

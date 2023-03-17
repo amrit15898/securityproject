@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+
+<div class="col-md-9 col-lg-12 px-md-4 add-pointer-btn">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 ">
+      <h1 class="h2">Avalanche Axis Update</h1>
+ </div>
+
+
+ {% if wss_status == False and request.method == "POST"%}
+ <div class="alert alert-warning alert-dismissible fade show" role="alert">
+  <strong>Websocket connection closed</strong> please connect and try again
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+
+{% endif %}
+
+
+{% if send %}
+<div class="d-flex justify-content-center" >
+  <div class=" w-50 d-flex justify-content-center">
+    <p class="text-success py-2 px-4 border border-success rounded"> <i class="bi bi-check2-all fs-4"></i> Message send successfully</p>
+    </div>
+</div>
+{% elif not_send %}
+<div class="d-flex justify-content-center" >
+  <div class=" w-50 d-flex justify-content-center">
+    <p class="text-danger py-2 px-4 border border-warning rounded"> Message send fail because of wss can't connect to DEAL </p>
+    </div>
+</div>
+{% endif %}
+
+ <div class="col-md-12 px-md-4 shadow-lg p-3 mb-5 bg-body-tertiary rounded">
+
+
+    <form  method="post" id="form1">
+        {% csrf_token %}
+  
+        <div class="row my-4">
+          <div class="col">
+              <label  class="form-label"> Message Start</label>
+              <input type="text" class="form-control" value="#@"  readonly>
+            
+          </div>
+          <div class="col">
+              <label  class="form-label">Message Code</label>
+            <input type="text"  class="form-control" value="94"  readonly>
+     
+          </div>
+      </div>
+
+          <div class="row my-4">
+           
+              <div class="col">
+                  <label  class="form-label">Grid Id</label>
+                <input type="text" maxlength="4" minlength="4" pattern="\d*" onchange="grid_validator()" title="please enter 5 digits of number" class="form-control" placeholder="00000" name="grid_id"  id="grid_id"   required>
+                <div id="grid-invalid" class="form-text d-none text-danger">Invalid grid id</div>
+                <div id="grid-valid" class="form-text d-none text-success">Grid id validate successfully </div>
+              </div>
+
+              <div class="col">
+                <label  class="form-label">Action Code</label>
+                <select class="form-select" aria-label="Default select example" name="action-code" id="num-of-forecast-day" onchange="num_of_days()"  required>
+                    <option value="" selected disabled> select action</option>
+                    <option value="01" class="text-capitalize">Add new axis</option>
+                    <option value="02" class="text-capitalize">Edit existing axis</option>
+                    <option value="03" class="text-capitalize">Delete existing axis</option>
+
+                  </select>
+            </div>
+
+          </div>
+        
+  
+
+            <div class="row my-4">
+
+                <div class="col">
+                    <label  class="form-label"> Avalanche axis id</label>
+                    <input type="text" maxlength="3" minlength="3" pattern="\d{3}" title="please enter 3 digits of number" class="form-control" placeholder="000" name="axis-id"   required>
+
+                </div>
+
+                <div class="col">
+                    <label  class="form-label">Avalanche Axis Name</label>
+                   <textarea name="outlook"  id="" cols="30" rows="1" maxlength="100" class="form-control" required>{{query_message}}</textarea>
+                </div>
+          </div>
+
+          <div class="row my-4">
+            <div class="col-6">
+              <label  class="form-label"> Message End</label>
+              <input type="text" class="form-control" value="@#"  readonly>
+          </div>
+      </div>
+    
+    
+            <div class="row my-4">
+                <div class="col-5">
+                    <button type="submit" id="submit-btn" class="btn btn-purple w-25">Send</button>
+                    <button type="reset" class="btn btn-info w-25 text-white ms-1">Reset</button>
+                </div>
+          </div>
+    </form>
+
+ </div>
+
+ <script>
+
+    function grid_validator(){
+        var grid = $("#grid_id").val();
+        const full_host = location.protocol + '//' + location.host;
+        var myKeyVals = {}
+        myKeyVals["grid_id"] = grid;
+        var actionData = $.ajax({
+        type: 'POST',
+        url: full_host+"/notification/avalanche-grid-validate/",
+        data: myKeyVals,
+        dataType: "json",
+            success: function(resultData) { 
+              $("#grid-invalid").addClass("d-none")
+              $("#grid-valid").removeClass("d-none")
+              document.getElementById("submit-btn").type = "submit";
+             },
+             error: function(e) {
+              $("#grid-invalid").removeClass("d-none")
+              $("#grid-valid").addClass("d-none")
+              document.getElementById("submit-btn").type = "button";
+            },
+             
+      });
+      }
+ </script>
+
+{% endblock %}

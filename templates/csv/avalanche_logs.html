@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block content %}
+ 
+{% include "datatable.html" %}
+<main class="bg-white pb-4 rounded">
+
+<div class="col-md-9 col-lg-12 px-md-4 add-pointer-btn">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 ">
+      <h1 class="h2">Avalanche Message log</h1>
+    </div>
+  </div>
+
+
+
+   <div class="col-md-9 col-lg-12 px-md-4 mt-4  point-table">
+
+<table id="example" class="table table-striped table-content" style="width:100%">
+        <thead>
+            <tr>
+                <th>Message</th>
+               
+            </tr>
+        </thead>
+        <tbody>
+        {% for i in logs_message %}
+            <tr>
+                <td>{{i}}</td>
+            </tr>
+    
+      {% endfor %}
+        </tbody>
+    </table>
+   </div>
+
+
+</main>
+
+{% if invalid %}
+<script>
+    $(window).on('load', function() {
+        $('#staticBackdrop{{username}}').modal('show');
+    });
+</script>
+{% endif %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/toastr.css'%}">
+  <script src="{% static 'js/toastr.js'%}"></script>
+<script>
+$(document).ready(function () {
+    $('#example').DataTable( {
+        "oLanguage": {
+            "sEmptyTable":     "No logs"
+        }
+    });
+});
+</script>
+
+ {% endblock %}

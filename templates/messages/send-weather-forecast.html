@@ -1,0 +1,278 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="col-md-9 col-lg-12 px-md-4 add-pointer-btn">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 ">
+      <h1 class="h2">Send Weather Forecast Messages</h1>
+ </div>
+
+ {% if sent %}
+ <div class="alert alert-success" role="alert">
+   weather message send successfully
+</div>
+ {% endif  %}
+
+ {% if message_status_fail %}
+ <div class="alert alert-warning" role="alert">
+  message not send please check the wss connection
+</div>
+ {% endif %}
+
+ <div class="col-md-12 px-md-4 shadow-lg p-3 mb-5 bg-body-tertiary rounded">
+  <div class="form-check form-check-inline">
+    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" onclick="radion_one()" value="option1" checked>
+    <label class="form-check-label" for="inlineRadio1">Send mannuly</label>
+  </div>
+  <div class="form-check form-check-inline">
+    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" onclick="radion_two()" value="option2">
+    <label class="form-check-label" for="inlineRadio2">Send file</label>
+  </div>
+    <form  method="post" id="form1" action="/weather/send-weather-forecast/">
+        {% csrf_token %}
+  
+        <div class="row my-4">
+          <div class="col">
+              <label  class="form-label"> Message Start</label>
+              <input type="text" class="form-control" value="#@"  readonly>
+            
+          </div>
+          <div class="col">
+              <label  class="form-label">Message Code</label>
+            <input type="text"  class="form-control" value="92"  readonly>
+     
+          </div>
+      </div>
+
+          <div class="row my-4">
+              <div class="col">
+                  <label  class="form-label">Forecast Start Date</label>
+                <input type="date" class="form-control"  name="start-date" value="{{start_date}}"  required>
+              </div>
+
+              <div class="col">
+                <label  class="form-label">Grid Id</label>
+                <input type="text" name="grid-id" id="grid_id"  class="form-control" onchange="grid_validator()"  maxlength="4" minlength="4" pattern="\d*" title="please enter 4 digits of number" value='{{grid_id}}' required>
+                <div id="grid-invalid" class="form-text d-none text-danger">Grid id not found</div>
+              <div id="grid-valid" class="form-text d-none text-success">Grid id validate successfully </div>
+              </div>
+          </div>
+
+
+          <div class="row my-4">
+            <div class="col">
+                <label  class="form-label">No. of Forecast Day</label>
+                <select class="form-select" aria-label="Default select example" name="num-of-forecast-day" id="num-of-forecast-day" onchange="num_of_days()"  required>
+                  <option value="" selected disabled> select nu of day</option>
+                  <option value="1" class="text-capitalize">1</option>
+                  <option value="2" class="text-capitalize">2</option>
+                  <option value="3" class="text-capitalize">3</option>
+                  <option value="4" class="text-capitalize">4</option>
+                  <option value="5" class="text-capitalize">5</option>
+                  <option value="6" class="text-capitalize">6</option>
+                </select>
+         
+            </div>
+
+            <div class="col">
+              <label  class="form-label">Weather Forecast Area</label>
+              <input type="text" name="forecast-area" id="area_id" maxlength="3" minlength="3" pattern="\d*" class="form-control" onchange="area_validator()" value='{{forecast_area}}' required>
+              <div id="area-invalid" class="form-text d-none text-danger">Area not found</div>
+              <div id="area-valid" class="form-text d-none text-success">Area validate successfully </div>
+            </div>
+        </div>
+        
+  
+          <div class="row ">
+              <div class="col-6 d-none my-1" id="col-1">
+                <label  class="form-label">Day 1 Forecast Code</label>
+              <select class="form-select" aria-label="Default select example" name="day-1" id="day-1" >
+                  <option value="" selected disabled> select forecast code</option>
+                  {% for q in weather_codes %}
+                  <option value="{{q.code}}" class="text-capitalize">{{q.title}}</option>
+                  {% endfor %}
+                </select>
+            </div>
+
+              <div class="col-6 d-none my-1" id="col-2">
+                  <label  class="form-label">Day 2 Forecast Code</label>
+                  <select class="form-select" aria-label="Default select example" name="day-2" id="day-2"  >
+                    <option value="" selected disabled> select forecast code</option>
+                    {% for q in weather_codes %}
+                    <option value="{{q.code}}" class="text-capitalize">{{q.title}}</option>
+                    {% endfor %}
+                  </select>
+              </div>
+          </div>
+
+
+
+
+          <div class="row">
+            <div class="col-6 d-none my-3" id="col-3">
+              <label  class="form-label">Day 3 Forecast Code</label>
+            <select class="form-select" aria-label="Default select example" name="day-3" id="day-3"  >
+                <option value="" selected disabled> select forecast code</option>
+                {% for q in weather_codes %}
+                <option value="{{q.code}}" class="text-capitalize">{{q.title}}</option>
+                {% endfor %}
+              </select>
+          </div>
+
+            <div class="col-6 d-none my-3" id="col-4">
+                <label  class="form-label">Day 4 Forecast Code</label>
+                <select class="form-select" aria-label="Default select example" name="day-4" id="day-4" >
+                  <option value="" selected disabled> select forecast code</option>
+                  {% for q in weather_codes %}
+                  <option value="{{q.code}}" class="text-capitalize">{{q.title}}</option>
+                  {% endfor %}
+                </select>
+            </div>
+        </div>
+  
+
+
+        <div class="row ">
+          <div class="col-6 d-none my-1" id="col-5">
+            <label  class="form-label">Day 5 Forecast Code</label>
+          <select class="form-select" aria-label="Default select example" name="day-5" id="day-5" >
+              <option value="" selected disabled> select forecast code</option>
+              {% for q in weather_codes %}
+              <option value="{{q.code}}" class="text-capitalize">{{q.title}}</option>
+              {% endfor %}
+            </select>
+        </div>
+
+          <div class="col-6 d-none my-1" id="col-6">
+              <label  class="form-label">Day 6 Forecast Code</label>
+              <select class="form-select" aria-label="Default select example" name="day-6" id="day-6"  >
+                <option value="" selected disabled> select forecast code</option>
+                {% for q in weather_codes %}
+                <option value="{{q.code}}" class="text-capitalize">{{q.title}}</option>
+                {% endfor %}
+              </select>
+          </div>
+      </div>
+
+      <div class="row my-2">
+    
+      <div class="col-6">
+        <label  class="form-label"> Message End</label>
+        <input type="text" class="form-control" value="@#"  readonly>
+    </div>
+    </div>
+    
+            <div class="row my-4">
+                <div class="col-5">
+                    <button type="submit" id="submit-btn" class="btn btn-purple w-25">Send</button>
+                    <button type="reset" class="btn btn-info w-25 text-white ms-1">Reset</button>
+                </div>
+          </div>
+    </form>
+
+    <form method="post" id="form2" action="/weather/send-weather-csv/" class="d-none p-5" enctype="multipart/form-data">
+     {% csrf_token %}
+      <div class="containerr">
+       <input type="file" name="weather-file" class="form-control" accept=".csv" required >
+    
+   </div>
+
+     <div class="row my-4">
+       <div class="col-5">
+           <button type="submit" class="btn btn-purple w-25">Send</button>
+           <!-- <button type="reset" class="btn btn-info w-25 text-white ms-1">Reset</button> -->
+           <button type="reset" class="btn btn-info w-50 text-white ms-1">Download Format <i class="bi bi-arrow-down-circle-fill"></i></button>
+       </div>
+ </div>
+</form>
+
+ </div>
+
+ <script>
+  function radion_one(){
+      document.getElementById("form2").classList.add('d-none')
+      document.getElementById("form1").classList.remove('d-none')
+  }
+
+
+  function radion_two(){
+      document.getElementById("form1").classList.add('d-none')
+      document.getElementById("form2").classList.remove('d-none')
+
+  }
+
+  function num_of_days()
+  {
+    var num_of_day = $('#num-of-forecast-day').val();
+    
+    for(var i=1; i<=7;i++){
+      $('#col-'+i).addClass('d-none');
+      $("#day-"+i).removeAttr("required");
+    }
+
+    for(var i=1; i<=num_of_day;i++){
+      $('#col-'+i).removeClass('d-none');
+      $("#day-"+i).attr("required", "true");
+    }
+  }
+
+
+  {% if csv_file %}
+  radion_two()
+  document.getElementById("inlineRadio1").setAttribute('checked', false )
+  document.getElementById("inlineRadio2").setAttribute('checked', true )
+  {% endif %}
+ 
+  const full_host = location.protocol + '//' + location.host;
+
+  function grid_validator(){
+    var grid = $("#grid_id").val();
+    var myKeyVals = {}
+    myKeyVals["grid_id"] = grid;
+    var actionData = $.ajax({
+    type: 'POST',
+    url: full_host+"/weather/grid-id-validate/",
+    data: myKeyVals,
+    dataType: "json",
+        success: function(resultData) { 
+          $("#grid-invalid").addClass("d-none")
+          $("#grid-valid").removeClass("d-none")
+          document.getElementById("submit-btn").type = "submit";
+         },
+         error: function(e) {
+          $("#grid-invalid").removeClass("d-none")
+          $("#grid-valid").addClass("d-none")
+          document.getElementById("submit-btn").type = "button";
+        },
+         
+  });
+  }
+
+
+
+
+  function area_validator(){
+    var grid = $("#area_id").val();
+    var myKeyVals = {}
+    myKeyVals["area_id"] = grid;
+    var actionData = $.ajax({
+    type: 'POST',
+    url: full_host+"/weather/grid-area-validate/",
+    data: myKeyVals,
+    dataType: "json",
+        success: function(resultData) { 
+          $("#area-invalid").addClass("d-none")
+          $("#area-valid").removeClass("d-none")
+          document.getElementById("submit-btn").type = "submit";
+         },
+         error: function(e) {
+          $("#area-invalid").removeClass("d-none")
+          $("#area-valid").addClass("d-none")
+          document.getElementById("submit-btn").type = "button";
+        }, 
+  });
+  }
+
+
+</script>
+
+{% endblock %}

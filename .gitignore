@@ -1,0 +1,9 @@
+*.log
+*.pot
+*.pyc
+__pycache__
+.idea
+media/mapdata/gis_osm_roads_free_1.geojson
+venv
+env
+my_env

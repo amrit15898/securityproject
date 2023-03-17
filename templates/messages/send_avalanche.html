@@ -1,0 +1,272 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+<div class="col-md-9 col-lg-12 px-md-4  rounded">
+    <div class="d-flex justify-content-between ">
+      <h1 class="h2">Send Avalanche to DEAL</h1>
+    </div>
+
+  </div>
+
+ 
+  {% if sent %}
+  <div class="d-flex justify-content-center" >
+    <div class=" w-50 d-flex justify-content-center">
+      <p class="text-success py-2 px-4 border border-success rounded"> <i class="bi bi-check2-all fs-4"></i> Message send successfully</p>
+      </div>
+  </div>
+
+  {% elif ws_not_connect %}
+  <div class="d-flex justify-content-center" >
+    <div class=" w-50 d-flex justify-content-center">
+      <p class="text-danger py-2 px-4 border border-warning rounded"> Message not send because of Websocket not connected.</p>
+      </div>
+  </div>
+  {% endif %}
+
+
+    <div class="col-md-9 col-lg-12 px-md-4 mt-2 shadow-lg   bg-body-tertiary px-4 py-4 rounded">
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" onclick="radion_one()" value="option1" checked>
+        <label class="form-check-label" for="inlineRadio1">Send mannuly</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" onclick="radion_two()" value="option2">
+        <label class="form-check-label" for="inlineRadio2">Send By CSV</label>
+        
+      </div>
+        <form method="post" id="form1">
+      <h4 class="text-decoration-underline mt-3">Message 1</h4>
+
+        {% csrf_token %}
+
+        <div class="row my-4">
+          <div class="col">
+              <label  class="form-label">Message Start</label>
+            <input type="text" class="form-control"  value='#@' readonly>
+          </div>
+          <div class="col">
+            <label for="last_name" class="form-label">Message Type</label>
+            <input type="text"  class="form-control"  value='91' readonly>
+
+          </div>
+      </div>
+
+      
+        <div class="row my-4">
+          <div class="col">
+            <label for="last_name" class="form-label">Start date</label>
+            <input type="date" name="start_date" class="form-control" id="last_name" value='{{ form.start_date.value|default_if_none:"" }}' aria-describedby="lastHelp" required>
+              {% if not_valid %}
+               <div id="lastHelp" class="form-text">{{form.start_date.errors}}</div>
+            {% endif %}
+          </div>
+            <div class="col">
+                <label  class="form-label">Grid Id</label>
+              <input type="text" class="form-control" name="grid_id" id="grid_id" onchange="grid_validator()" required>
+              <div id="grid-invalid" class="form-text d-none text-danger">Invalid grid id</div>
+              <div id="grid-valid" class="form-text d-none text-success">Grid id validate successfully </div>
+            </div>
+        </div>
+      
+
+        <div class="row my-4">
+            <div class="col">
+                <label  class="form-label">No of Axis in grid</label>
+                <input type="number" class="form-control"  min="1" max="15" onchange="grid_generator()" title="please enter 1-15" id="axis-in-grid" name="num_axis"  required>
+
+              <div id="axis-help" class="form-text d-none text-danger">Invalid number! please enter b/w 1-15</div>
+            </div>
+
+          <div class="col">
+            <button type="button" class="btn btn-purple btn-axis-add" onclick="grid_generator()">Add Axis</button>
+        </div>
+        
+        </div>
+{% comment %}  {% endcomment %}
+<div id="axid-elements">
+</div>
+       
+{% comment %}  {% endcomment %}
+          <div class="row my-4">
+            <div class="col-6">
+                <label  class="form-label">End Message</label>
+              <input type="text" class="form-control" value='@#' readonly>
+      
+            </div>
+     
+         <h4 class="mt-3 text-decoration-underline">Message 2</h4>
+
+         <div class="row my-4">
+          <div class="col">
+              <label  class="form-label">Message Start</label>
+            <input type="text" class="form-control"  value='#@' readonly>
+          </div>
+          <div class="col">
+            <label for="last_name" class="form-label">Message Type</label>
+            <input type="text"  class="form-control"  value='98' readonly>
+          </div>
+      </div>
+
+
+      <div class="row my-1">
+        <div class="col">
+            <label  class="form-label">Outlook</label>
+          <textarea name="outlook"  cols="10" rows="5" class="form-control" maxlength="124" required></textarea>
+        </div>
+        <div class="col">
+          <label for="last_name" class="form-label">End Message</label>
+          <input type="text" class="form-control" value="@#"  required>
+        </div>
+        </div>
+
+        <button type="submit" class="btn btn-purple mt-3" id="submit-btn">Send</button>
+      </form>
+      </div>
+
+
+      <form method="post"  id="form2" class="d-none p-5" action="/message/avalanche-csv-file/" enctype="multipart/form-data">
+        {% csrf_token %}
+        {%if invalid %}
+        <div class="alert alert-danger" role="alert">
+          Invalid file format please upload csv file.
+       </div>
+        {% endif %}
+         <div class="containerr">
+          <input type="file" class="form-control" name="file" id="file"  required >
+      </div>
+   
+        <div class="row my-4">
+          <div class="col-5">
+              <button type="submit" class="btn btn-purple w-25" >Send</button>
+              <a class="btn btn-info w-50 text-white ms-1" download href="/media/samplefile/upload_csv_file_outlook.csv">Download Format <i class="bi bi-arrow-down-circle-fill"></i></a>
+          </div>
+    </div>
+   </form>
+   
+
+<script>
+  function grid_generator(){
+     var axis = document.getElementById("axis-in-grid").value;
+     document.querySelector('#axid-elements').innerHTML=''
+     if(axis>15 || axis==0){
+      document.getElementById("axis-help").classList.remove('d-none')
+      document.querySelector('#axid-elements').innerHTML=''
+      document.getElementById("submit-btn").type = "button";
+      return false
+     }else{
+      document.getElementById("axis-help").classList.add('d-none')
+      document.getElementById("submit-btn").type = "submit";
+     }
+     for(var i=0; i<axis; i++){
+      var count = parseInt(i)+1
+      var axis_id = "axis"+String(parseInt(i)+1)
+      var code_id = "code"+String(parseInt(i)+1)
+      document.querySelector('#axid-elements').insertAdjacentHTML(
+    'beforeend',
+    `<div class="row my-4">
+          <div class="col">
+              <label  class="form-label">Avalanche axis id `+count+`</label>
+            <input type="number" class="form-control" name="avalanche-axis-id" placeholder="000" id=`+axis_id+` onchange="validator(`+axis_id+`)" required>
+            <div id="e`+axis_id+`" class="form-text d-none text-danger">Invalid number! please entet 3 digit number</div>
+          </div>
+      
+        <div class="col">
+          <label  class="form-label">Avalanche Forecast Code `+count+`</label>
+        <input type="number" class="form-control" name="forecast_codes" placeholder="0" id=`+code_id+` onchange="code_validator(`+code_id+`)" required>
+        <div id="e`+code_id+`" class="form-text d-none text-danger">Invalid value! please enter b/w 1-5.</div>
+      </div>
+
+    </div>
+ 
+    `      
+  )
+     }
+  }
+
+</script>
+
+<script>
+  function validator(a){
+    var text = a.value;
+   
+    const regex = new RegExp('^[0-9]{3}$');
+
+    if(regex.test(text) === true){
+      $('#e'+a.id).addClass("d-none")
+       document.getElementById("submit-btn").type = "submit";
+      }
+      else{
+        $('#e'+a.id).removeClass("d-none")
+        document.getElementById("submit-btn").type = "button";
+      } 
+    
+  }
+
+  function code_validator(a){
+    var text = a.value;
+    console.log(text)
+    const regex = new RegExp('^[1-5]{1}$');
+
+    if(regex.test(text) === true){
+      $('#e'+a.id).addClass("d-none")
+       document.getElementById("submit-btn").type = "submit";
+      }
+      else{
+        $('#e'+a.id).removeClass("d-none")
+        document.getElementById("submit-btn").type = "button";
+      } 
+  }
+
+
+    function grid_validator(){
+      var grid = $("#grid_id").val();
+      const full_host = location.protocol + '//' + location.host;
+      var myKeyVals = {}
+      myKeyVals["grid_id"] = grid;
+      var actionData = $.ajax({
+      type: 'POST',
+      url: full_host+"/notification/avalanche-grid-validate/",
+      data: myKeyVals,
+      dataType: "json",
+          success: function(resultData) { 
+            $("#grid-invalid").addClass("d-none")
+            $("#grid-valid").removeClass("d-none")
+            document.getElementById("submit-btn").type = "submit";
+           },
+           error: function(e) {
+            $("#grid-invalid").removeClass("d-none")
+            $("#grid-valid").addClass("d-none")
+            document.getElementById("submit-btn").type = "button";
+          },
+           
+    });
+    }
+
+
+
+
+    function radion_one(){
+      document.getElementById("form2").classList.add('d-none')
+      document.getElementById("form1").classList.remove('d-none')
+  }
+
+
+  function radion_two(){
+      document.getElementById("form1").classList.add('d-none')
+      document.getElementById("form2").classList.remove('d-none')
+
+  }
+
+  {% if file_upload %}
+  radion_two()
+  document.getElementById("inlineRadio1").setAttribute('checked', false )
+  document.getElementById("inlineRadio2").setAttribute('checked', true )
+  {% endif %}
+
+</script>
+
+
+{% endblock %}

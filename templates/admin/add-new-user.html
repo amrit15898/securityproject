@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block content %}
+
+<main class="bg-white pb-4 rounded add-user-form">
+
+<div class="col-md-9 col-lg-12 px-md-4">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 ">
+      <h1 class="h2">Add User</h1>
+      <div class="btn-toolbar mb-2 mb-md-0">
+        <a href="/view-all-users/" class="btn btn-primary" >View all users</a>
+      </div>
+    </div>
+  </div>
+
+<div class="col-md-9 col-lg-12 px-md-4 mt-4">
+  <form method="post">
+  {% csrf_token %}
+
+  <div class="mb-3">
+    <label for="firstname" class="form-label">First Name</label>
+    <input type="text" name="first_name" class="form-control" id="firstname" value='{{ form.first_name.value|default_if_none:"" }}' aria-describedby="firstHelp" required>
+    {% if not_valid %}
+       <div id="firstHelp" class="form-text text-danger">{{form.first_name.errors}}</div>
+    {% endif %}
+  </div>
+
+  <div class="mb-3">
+    <label for="last_name" class="form-label">Last name</label>
+    <input type="text" name="last_name" class="form-control" id="last_name" value='{{ form.last_name.value|default_if_none:"" }}' aria-describedby="lastHelp" required>
+      {% if not_valid %}
+       <div id="lastHelp" class="form-text text-danger">{{form.last_name.errors}}</div>
+    {% endif %}
+  </div>
+
+  <div class="mb-3">
+    <label for="exampleInputEmail1" class="form-label">Username</label>
+    <input type="text" name="username" class="form-control" id="exampleInputEmail1" value='{{ form.username.value|default_if_none:"" }}' aria-describedby="userHelp" required>
+      {% if not_valid %}
+       <div id="userHelp" class="form-text text-danger">{{form.username.errors.as_text}}</div>
+    {% endif %}
+  </div>
+
+  <div class="mb-3">
+    <label for="exampleInputPassword1" class="form-label">Password</label>
+    <input type="password" name="password" min="5" class="form-control" value='{{ form.password.value|default_if_none:"" }}'  id="exampleInputPassword1" required>
+  </div>
+
+ <div class="mb-3">
+    <label for="exampleInputPassword2" class="form-label">Confirm password</label>
+    <input type="password" min="5" name="confirm_password" class="form-control" value='{{ form.confirm_password.value|default_if_none:"" }}'  id="exampleInputPassword2" required>
+    {% if not_valid %}
+       <div  class="form-text text-danger">{{form.confirm_password.errors.as_text}}</div>
+    {% endif %}
+  </div>
+
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+</div>
+
+</main>
+{% endblock %}

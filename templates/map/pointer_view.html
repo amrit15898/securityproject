@@ -1,0 +1,213 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+{% include "datatable.html" %}
+
+<main class="col-md-9 col-lg-12 px-md-4 add-pointer-btn">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 ">
+      <h1 class="h2">Pointers</h1>
+      <div class="btn-toolbar mb-2 mb-md-0">
+       
+        <a href="/add-pointer/" class="btn btn-primary" >Add pointer</a>
+      </div>
+    </div>
+  
+  </main>
+ 
+   <main class="col-md-9 col-lg-12 px-md-4 mt-4 point-table">
+
+<table id="example" class="table table-striped table-content" style="width:100%">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Longitude</th>
+                <th>Latitude</th>
+                <th>Point Type</th>
+                <th class="action-inner">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for i in pointer_data %}
+            <tr>
+                <td class="text-capitalize">{{i.title}}</td>
+                <td>{{i.longitude}}</td>
+                <td>{{i.latitude}}</td>
+                <td>{{i.point_type}}</td>
+                <td class="btn-table-inner">
+                    
+                   <!-- delete modal button -->
+                    <button type="button" class="btn btn-danger btn-sm delete-in-btn" data-bs-toggle="modal" data-bs-target="#staticBackdro{{i.id}}">
+                      Delete
+                    </button>
+                    <!--delete  Modal -->
+                    <div class="modal fade" id="staticBackdro{{i.id}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5 text-capitalize" id="staticBackdropLabel"> Confirm delete</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                           Do you want to delete {{i.title}}
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                            <a href="/pointer/{{i.id}}" class="btn btn-primary">Yes</a>
+                        </div>
+                        </div>
+                    </div>
+                    </div>
+
+                    <!-- update modal button -->
+                    <button type="button" class="btn btn-primary btn-sm update-in-btn" data-bs-toggle="modal" data-bs-target="#staticBackdrop{{i.id}}">
+                      Updates
+                    </button>
+                    <!--update  Modal -->
+                    <div class="modal fade" id="staticBackdrop{{i.id}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5 text-capitalize" id="staticBackdropLabel"> {{i.title}} update</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                       <form method="post" action="/pointer/update/{{i.id}}/">
+                       {% csrf_token %}
+                        <div class="modal-body">
+                            
+                          <div class="mb-3">
+                                <label for="title" class="form-label">Title</label>
+                                <input type="text" class="form-control" id="title" value="{{i.title}}" name="title" aria-describedby="emailHelp" required>
+
+                                {% if not_add %}
+                                <span class="text-danger">{{form.title.errors.as_text}} </span>
+                                {% endif %}
+                            </div>
+                            <div class="mb-3">
+                                <label for="exampleInputPassword1" class="form-label">Longitude</label>
+                                <input type="number" class="form-control" value="{{i.longitude}}" name="longitude"  step="0.000000000000000001" id="exampleInputPassword1" required>
+                                {% if not_add %}
+                                <span class="text-danger">{{form.longitude.errors.as_text}} </span>
+                                {% endif %}
+                            </div>
+
+
+                                <div class="mb-3">
+                                <label for="Latitude" class="form-label">Latitude</label>
+                                <input type="number" class="form-control" value="{{i.latitude}}" name="latitude" step="0.000000000000000001" id="Latitude" required>
+                                {% if not_add %}
+                                <span class="text-danger">{{form.latitude.errors.as_text}} </span>
+                                {% endif %}
+                            </div>
+
+                                <div class="mb-3">
+                                <label  class="form-label" >Select Point Type</label>
+                                {% comment %} <select class="form-select" name="point_type" required>
+                                    {% for j in type_list %}
+                                    <option value="{{j}}" {% if j == i.point_type %} selected {% endif %}>{{j}}</option>
+                                    {% endfor %}
+                                </select> {% endcomment %}
+                                <select class="form-select" name="point_type" required>
+                                    <option value="">Choose an option</option>
+                                    {% if i.point_type == "marker" %}  
+                                      <option value="marker" selected>marker</option>
+                                    {% else %}
+                                    <option value="marker">marker</option>
+                                    {% endif %}
+                                    {% if i.point_type == "label" %}  
+                                      <option value="label" selected>label</option>
+                                    {% else %}
+                                        <option value="label">label</option>
+                                    {% endif %}
+                                    {% if i.point_type == "Station" %}  
+                                      <option value="Station" selected>Station</option>
+                                    {% else %}
+                                        <option value="Station">Station</option>
+                                    {% endif %}
+                                    <optgroup label="Avalanche">
+                                    {% if i.point_type == "danger-level1" %}  
+                                      <option value="danger-level1" selected>Danger Level 1</option>
+                                    {% else %}
+                                        <option value="danger-level1">Danger Level 1</option>
+                                    {% endif %}
+                                    {% if i.point_type == "danger-level2" %}  
+                                      <option value="danger-level2" selected>Danger Level 2</option>
+                                    {% else %}
+                                        <option value="danger-level2">Danger Level 2</option>
+                                    {% endif %}
+                                    {% if i.point_type == "danger-level3" %}  
+                                      <option value="danger-level3" selected>Danger Level 3</option>
+                                    {% else %}
+                                        <option value="danger-level3">Danger Level 3</option>
+                                    {% endif %}
+                                    {% if i.point_type == "danger-level4" %}  
+                                      <option value="danger-level4" selected>Danger Level 4</option>
+                                    {% else %}
+                                        <option value="danger-level4">Danger Level 4</option>
+                                    {% endif %}
+                                    {% if i.point_type == "danger-level5" %}  
+                                      <option value="danger-level5" selected>Danger Level 5</option>
+                                    {% else %}
+                                        <option value="danger-level5">Danger Level 5</option>
+                                    {% endif %}
+                                    <optgroup label="weather">
+                                    {% if i.point_type == "weather-sunny" %}  
+                                        <option value="weather-sunny" selected>Sunny</option>
+                                    {% else %}
+                                        <option value="weather-sunny">Sunny</option>
+                                    {% endif %}
+                                    {% if i.point_type == "weather-cloud" %}  
+                                        <option value="weather-cloud" selected>Cloud</option>
+                                    {% else %}
+                                        <option value="weather-cloud">Cloud</option>
+                                    {% endif %}
+                                    {% if i.point_type == "weather-rainfall" %}  
+                                        <option value="weather-rainfall" selected>Rainfall</option>
+                                    {% else %}
+                                        <option value="weather-rainfall">Rainfall</option>
+                                    {% endif %}
+                                    {% if i.point_type == "weather-snow" %}  
+                                        <option value="weather-snow" selected>Snow</option>
+                                    {% else %}
+                                        <option value="weather-snow">Snow</option>
+                                    {% endif %}
+                                      </optgroup>
+                                    </optgroup>
+                                  </select>
+
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Update</button>
+                        </div>
+                       </form>
+                        </div>
+                    </div>
+                    </div>
+
+                </td>
+            </tr>
+    
+        {% endfor %}
+        </tbody>
+        <!-- <tfoot>
+            <tr>
+               <th>Title</th>
+                <th>longitude</th>
+                <th>latitude</th>
+                <th>point_type</th>
+                <th>Action</th>
+            </tr>
+        </tfoot> -->
+    </table>
+   </main>
+
+
+<script>
+$(document).ready(function () {
+    $('#example').DataTable();
+});
+</script>
+{% endblock %}

@@ -1,0 +1,64 @@
+  <!-- ======= Sidebar ======= -->
+  <aside id="sidebar" class="sidebar">
+    {% load poll_extras %}
+
+    <ul class="sidebar-nav" id="sidebar-nav">
+
+      <li class="nav-item">
+        <a class="nav-link " href="/wss/dashboard/">
+          <i class="bi bi-grid"></i>
+          <span>Dashboard</span>
+        </a>
+      </li>
+
+      {% ws_connection_check as wss_flag %}
+      {% if wss_flag %}
+      <li class="nav-item">
+        <a href="/wss/connection/" class="nav-link collapsed"> <i class="bi bi-plus-circle-fill"></i> <span>New connection </span></a>
+      </li>
+      {% endif %}
+       <li class="nav-item">
+        <a href="/wss/history/" class="nav-link collapsed"><i class="bi bi-clock-history"></i> <span>WSS History</span></a>
+      </li>
+
+      <li class="nav-item">
+        <a href="/pointer/" class="nav-link collapsed"><i class="bi bi-grid"></i> <span>User Dashboard</span></a>
+      </li>
+
+      {% comment %} <li class="nav-item "  id="ws-logout-li">
+        <p class="nav-link collapsed" data-bs-toggle="modal" data-bs-target="#ws-logout"> <i class="bi bi-dash-circle-fill"></i><span>Wss logout</span></p>
+      </li> {% endcomment %}
+
+
+      <li class="nav-item">
+        <p class="nav-link collapsed"> <span class="wss-status">Wss <span id="natsat-auth">not connected</span></span></p>
+      </li>
+       
+ 
+    </ul>
+
+
+  </aside>
+
+
+
+
+  {% comment %} logout modal {% endcomment %}
+
+    <div class="modal fade" id="ws-logout" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+          <div class="modal-header">
+              <h1 class="modal-title fs-5 text-capitalize" id="staticBackdropLabel"> Confirm logout</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+              Do you want to logout websocket connection ?
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+              <a href="/wss/logout/" id="logout-yes" class="btn btn-primary">Yes</a>
+          </div>
+          </div>
+      </div>
+      </div>

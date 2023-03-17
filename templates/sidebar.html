@@ -1,0 +1,439 @@
+  <!-- ======= Sidebar ======= -->
+  <aside id="sidebar" class="sidebar">
+
+    <ul class="sidebar-nav" id="sidebar-nav">
+
+      <li class="nav-item">
+        <a class="nav-link " href="/">
+          <i class="bi bi-grid"></i>
+          <span>Dashboard</span>
+        </a>
+      </li>
+
+    {% if request.user.is_superuser %}
+
+    
+{% comment %} map {% endcomment %}
+<li class="nav-item">
+  <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-globe-central-south-asia" viewBox="0 0 16 16">
+      <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0ZM4.882 1.731a.482.482 0 0 0 .14.291.487.487 0 0 1-.126.78l-.291.146a.721.721 0 0 0-.188.135l-.48.48a1 1 0 0 1-1.023.242l-.02-.007a.996.996 0 0 0-.462-.04 7.03 7.03 0 0 1 2.45-2.027Zm-3 9.674.86-.216a1 1 0 0 0 .758-.97v-.184a1 1 0 0 1 .445-.832l.04-.026a1 1 0 0 0 .152-1.54L3.121 6.621a.414.414 0 0 1 .542-.624l1.09.818a.5.5 0 0 0 .523.047.5.5 0 0 1 .724.447v.455a.78.78 0 0 0 .131.433l.795 1.192a1 1 0 0 1 .116.238l.73 2.19a1 1 0 0 0 .949.683h.058a1 1 0 0 0 .949-.684l.73-2.189a1 1 0 0 1 .116-.238l.791-1.187A.454.454 0 0 1 11.743 8c.16 0 .306.084.392.218.557.875 1.63 2.282 2.365 2.282a.61.61 0 0 0 .04-.001 7.003 7.003 0 0 1-12.658.905Z"/>
+    </svg> <span class="ms-2"> Map</span><i class="bi bi-chevron-down ms-auto"></i>
+  </a>
+  <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+
+    <li>
+      <a href="/pointer/">
+        <i class="bi bi-circle"></i><span>Pointers</span>
+      </a>
+    </li>
+
+      <li>
+      <a href="/add-pointer/">
+        <i class="bi bi-circle"></i><span>Add Pointers</span>
+      </a>
+    </li>
+
+
+  </ul>
+</li>
+
+{% comment %} user {% endcomment %}
+
+    <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#components-nav3" data-bs-toggle="collapse" href="#">
+        <i class="bi bi-person"></i><span>Users</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="components-nav3" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+       
+
+          <li>
+            <a href="/add-new-user/">
+              <i class="bi bi-circle"></i><span>Add New User</span>
+            </a>
+          </li>
+
+          <li>
+            <a href="/wss-user/add/">
+              <i class="bi bi-circle"></i><span>Add WSS User</span>
+            </a>
+          </li>
+
+          <li>
+            <a href="/view-all-users/">
+              <i class="bi bi-circle"></i><span>All Users</span>
+            </a>
+          </li>
+
+          <li>
+            <a href="/wss-user/view/">
+              <i class="bi bi-circle"></i><span>All WSS Users</span>
+            </a>
+          </li>
+         
+        </ul>
+      </li>   
+      {% comment %} end user  {% endcomment %}
+
+
+
+       
+
+    {% endif %}
+
+
+
+    {% comment %} message {% endcomment %}
+
+    <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#components-nav2" data-bs-toggle="collapse" href="#">
+        <i class="bi bi-chat-left-text"></i><span>NATSAT-M</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="components-nav2" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+         
+          <li>
+            <a href="/message/hourly-data/">
+              <i class="bi bi-circle"></i><span>Hourly Data</span>
+            </a>
+          </li>
+         
+          <li>
+            <a href="/message/query-data/">
+              <i class="bi bi-circle"></i><span>Data Query</span>
+            </a>
+          </li>
+
+        
+          <li>
+            <a href="/message/health-query/">
+              <i class="bi bi-circle"></i><span>Health Query 02</span>
+            </a>
+          </li>
+
+          <li>
+            <a href="/message/health-query-code3/">
+              <i class="bi bi-circle"></i><span>Health Query 03</span>
+            </a>
+          </li>
+
+          <li>
+            <a href="/message/data-logger/">
+              <i class="bi bi-circle"></i><span>Datalogger power</span>
+            </a>
+          </li>
+
+          <li>
+            <a href="/message/manual-data/">
+              <i class="bi bi-circle"></i><span>Manual Data</span>
+            </a>
+          </li>
+
+
+    
+         
+        </ul>
+      </li>
+{% comment %} natsat- h {% endcomment %}
+
+<li class="nav-item">
+  <a class="nav-link collapsed" data-bs-target="#components-natsath" data-bs-toggle="collapse" href="#">
+  <i class="bi bi-chat-left-text"></i><span>NATSAT-H</span><i class="bi bi-chevron-down ms-auto"></i>
+  </a>
+  <ul id="components-natsath" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+   
+
+    <li>
+      <a href="#">
+        <i class="bi bi-circle"></i><span>Observatory Data</span>
+      </a>
+    </li>
+
+
+    <li>
+      <a href="#">
+        <i class="bi bi-circle"></i><span>Snow Strom Data</span>
+      </a>
+    </li>
+
+    <li>
+      <a href="#">
+        <i class="bi bi-circle"></i><span>Snow Profile Data</span>
+      </a>
+    </li>
+
+    <li>
+      <a href="#">
+        <i class="bi bi-circle"></i><span>Avalanche Occureence</span>
+      </a>
+    </li>
+
+
+   
+  </ul>
+</li>
+      
+      {% comment %} avalanche message {% endcomment %}
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#components-avalanche" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-snow2"></i><span>Avalanche Forecast</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="components-avalanche" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+         
+          <li>
+            <a href="/message/send-avalanche/">
+              <i class="bi bi-circle"></i><span>Send Avalanche</span>
+            </a>
+          </li>
+
+          <li>
+            <a href="/message/avalanche-axis-update/">
+              <i class="bi bi-circle"></i><span>Axis update</span>
+            </a>
+          </li>
+         
+          <li>
+            <a href="/message/avalanche-code-update/">
+              <i class="bi bi-circle"></i><span>Code update</span>
+            </a>
+          </li>
+
+          <li>
+            <a href="/message/show-avalanche-messages/">
+              <i class="bi bi-circle"></i><span>View Avalanche</span>
+            </a>
+          </li>
+
+          <li>
+            <a href="/message/show-avalanche-axis-update/">
+              <i class="bi bi-circle"></i><span>View Axis Update</span>
+            </a>
+          </li>
+
+          <li>
+            <a href="/message/show-avalanche-code-update/">
+              <i class="bi bi-circle"></i><span>View Code Update</span>
+            </a>
+          </li>
+        
+        
+        </ul>
+      </li>
+
+      {% if request.user.is_superuser %}
+     
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#components-nav-axis" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-app"></i><span class="ms-2"> Avalanche Axis</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="components-nav-axis" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+
+          <li>
+            <a href="/view-avalanche-axis-code/">
+              <i class="bi bi-circle"></i><span>Show All Axis</span>
+            </a>
+          </li>
+
+          <li>
+            <a href="/add-avalanche-axis/">
+              <i class="bi bi-circle"></i><span>Add Axis Code</span>
+            </a>
+          </li>
+        </ul>
+      </li>
+
+
+      {% comment %}  {% endcomment %}
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#components-nav-weather-grid" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-hurricane"></i><span class="ms-2">Weather Grid/Code</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="components-nav-weather-grid" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+
+          <li>
+            <a href="/weather/add-grid/">
+              <i class="bi bi-circle"></i><span>Add Grid</span>
+            </a>
+
+          </li>
+
+          <li>
+            <a href="/weather/add-code/">
+              <i class="bi bi-circle"></i><span>Add Code</span>
+            </a>
+          </li>
+
+          <li>
+            <a href="/weather/view-grids/">
+              <i class="bi bi-circle"></i><span>Show All Grids</span>
+            </a>
+          </li>
+
+          <li>
+            <a href="/weather/view-code/">
+              <i class="bi bi-circle"></i><span>Show All Codes</span>
+            </a>
+          </li>
+
+        </ul>
+      </li>
+
+
+      {% endif %}
+
+     
+
+   {% comment %} weather message {% endcomment %}
+
+   <li class="nav-item">
+    <a class="nav-link collapsed" data-bs-target="#components-weather" data-bs-toggle="collapse" href="#">
+      <i class="bi bi-cloud-moon-fill"></i><span>Weather Forecast</span><i class="bi bi-chevron-down ms-auto"></i>
+    </a>
+    <ul id="components-weather" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+     
+      <li>
+        <a href="/weather/send-weather-forecast/">
+          <i class="bi bi-circle"></i><span>Send Weather</span>
+        </a>
+      </li>
+
+      <li>
+        <a href="/weather/area-update/">
+          <i class="bi bi-circle"></i><span>Area update</span>
+        </a>
+      </li>
+     
+      <li>
+        <a href="/weather/code-update/">
+          <i class="bi bi-circle"></i><span>Code update</span>
+        </a>
+      </li>
+
+      <li>
+        <a href="/weather/show-send-weather-messages/">
+          <i class="bi bi-circle"></i><span>View weathers</span>
+        </a>
+      </li>
+  
+      <li>
+        <a href="/weather/view-area-update/">
+          <i class="bi bi-circle"></i><span>View Area Update</span>
+        </a>
+      </li>
+
+      <li>
+        <a href="/weather/view-code-update/">
+          <i class="bi bi-circle"></i><span>View Code Update</span>
+        </a>
+      </li>
+    
+    </ul>
+  </li>
+{% comment %} send message {% endcomment %}
+
+    <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#components-nav5" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-send"></i><span>Mini Message</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="components-nav5" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                 
+          <li>
+            <a href="/message/send-critical-alert">
+              <i class="bi bi-circle"></i><span>Critical Alert</span>
+            </a>
+          </li>
+
+           <li>
+            <a href="/message/send-query/">
+              <i class="bi bi-circle"></i><span>Query Message</span>
+            </a>
+          </li>
+         
+
+        </ul>
+      </li>
+
+
+      {% comment %} show send message {% endcomment %}
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#components-nav6" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-eye"></i><span>View Mini Message</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="components-nav6" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+         
+           <li>
+            <a href="/message/show-send-query-message/">
+              <i class="bi bi-circle"></i><span>View Query Message</span>
+            </a>
+          </li>
+         
+          <li>
+            <a href="/message/show-critical-alert/">
+              <i class="bi bi-circle"></i><span>View Critical Alert</span>
+            </a>
+          </li>
+        
+        </ul>
+      </li>
+
+      {% comment %} station {% endcomment %}
+{% if request.user.is_superuser %}
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#components-nav66" data-bs-toggle="collapse" href="#">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-house-add" viewBox="0 0 16 16">
+            <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h4a.5.5 0 1 0 0-1h-4a.5.5 0 0 1-.5-.5V7.207l5-5 6.646 6.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.707 1.5Z"/>
+            <path d="M16 12.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Zm-3.5-2a.5.5 0 0 0-.5.5v1h-1a.5.5 0 0 0 0 1h1v1a.5.5 0 1 0 1 0v-1h1a.5.5 0 1 0 0-1h-1v-1a.5.5 0 0 0-.5-.5Z"/>
+          </svg><span class="ms-2">Station</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="components-nav66" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+         
+           <li>
+            <a href="/station/add-station/">
+              <i class="bi bi-circle"></i><span>Add Station</span>
+            </a>
+          </li>
+
+          <li>
+            <a href="/station/sensor-equation/">
+              <i class="bi bi-circle"></i><span>view Equation</span>
+            </a>
+          </li>
+
+          <li>
+            <a href="/station/show-all/">
+              <i class="bi bi-circle"></i><span>View All Station</span>
+            </a>
+          </li>
+    
+        </ul>
+      </li>
+    
+      {% endif  %}
+      {% comment %} here {% endcomment %}
+
+      <li class="nav-item">
+        <a href="/message/show-message-code-details/" class="nav-link collapsed"><i class="bi bi-code-square"></i> <span>View Message Code</span></a>
+      </li>
+
+      <li class="nav-item">
+        <a href="/message/show-aws-message-code-details/" class="nav-link collapsed"><i class="bi bi-code-slash"></i><span>AWS Message Code</span></a>
+      </li>
+
+      <li class="nav-item">
+        <a href="/message/show-backups/" class="nav-link collapsed"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-database-check" viewBox="0 0 16 16">
+          <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm1.679-4.493-1.335 2.226a.75.75 0 0 1-1.174.144l-.774-.773a.5.5 0 0 1 .708-.708l.547.548 1.17-1.951a.5.5 0 1 1 .858.514Z"/>
+          <path d="M12.096 6.223A4.92 4.92 0 0 0 13 5.698V7c0 .289-.213.654-.753 1.007a4.493 4.493 0 0 1 1.753.25V4c0-1.007-.875-1.755-1.904-2.223C11.022 1.289 9.573 1 8 1s-3.022.289-4.096.777C2.875 2.245 2 2.993 2 4v9c0 1.007.875 1.755 1.904 2.223C4.978 15.71 6.427 16 8 16c.536 0 1.058-.034 1.555-.097a4.525 4.525 0 0 1-.813-.927C8.5 14.992 8.252 15 8 15c-1.464 0-2.766-.27-3.682-.687C3.356 13.875 3 13.373 3 13v-1.302c.271.202.58.378.904.525C4.978 12.71 6.427 13 8 13h.027a4.552 4.552 0 0 1 0-1H8c-1.464 0-2.766-.27-3.682-.687C3.356 10.875 3 10.373 3 10V8.698c.271.202.58.378.904.525C4.978 9.71 6.427 10 8 10c.262 0 .52-.008.774-.024a4.525 4.525 0 0 1 1.102-1.132C9.298 8.944 8.666 9 8 9c-1.464 0-2.766-.27-3.682-.687C3.356 7.875 3 7.373 3 7V5.698c.271.202.58.378.904.525C4.978 6.711 6.427 7 8 7s3.022-.289 4.096-.777ZM3 4c0-.374.356-.875 1.318-1.313C5.234 2.271 6.536 2 8 2s2.766.27 3.682.687C12.644 3.125 13 3.627 13 4c0 .374-.356.875-1.318 1.313C10.766 5.729 9.464 6 8 6s-2.766-.27-3.682-.687C3.356 4.875 3 4.373 3 4Z"/>
+        </svg> <span class="ms-1">Message Details</span></a>
+      </li>
+
+     <li class="nav-item">
+        <a href="/wss/dashboard/" class="nav-link collapsed"><i class="bi bi-view-list"></i> <span>wss Dashboard</span></a>
+      </li>
+
+
+    </ul>
+
+
+  </aside>

@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="col-md-9 col-lg-12 px-md-4 add-pointer-btn">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 ">
+      <h1 class="h2">Site Special Critical Alert Message</h1>
+ </div>
+
+ <div class="col-md-12 px-md-4 shadow-lg p-3 mb-5 bg-body-tertiary rounded">
+  
+    <form  method="post" >
+        {% csrf_token %}
+  
+        <div class="row my-4">
+          <div class="col">
+              <label  class="form-label"> Message Start</label>
+              <input type="text" class="form-control" value="#@"  readonly>
+            
+          </div>
+          <div class="col">
+              <label  class="form-label">Message Code</label>
+            <input type="text"  class="form-control" value="93"  readonly>
+     
+          </div>
+      </div>
+
+          <div class="row my-4">
+           
+              <div class="col">
+                  <label  class="form-label">Start Date</label>
+                <input type="date"  class="form-control" name="start_date" value="{{start_date}}"  required>
+              </div>
+
+              <div class="col">
+                <label  class="form-label">Grid Id</label>
+                <input type="text" maxlength="4" minlength="4" pattern="\d*" title="please enter 4 digits of number"  class="form-control" name="grid_id" value="{{grid_id}}"  required>
+            </div>
+          </div>
+        
+  
+          <div class="row my-4">
+              <div class="col">
+                  <label  class="form-label"> No. of day for which alert is valid</label>
+                  <input type="text" maxlength="2" minlength="2" pattern="\d*" title="please enter 4 digits of number"  class="form-control" name="alert_valid" value="{{alert_valid}}"  required>
+              </div>
+
+              <div class="col">
+                  <label  class="form-label">Avalanche Axis Id</label>
+                  <input type="text"  maxlength="3" minlength="3" pattern="\d*" title="please enter 3 digits of number" class="form-control" name="avalanche_axis_id" value="{{avalanche_axis_id}}" required>
+              </div>
+          </div>
+  
+
+            <div class="row my-4">
+                <div class="col">
+                    <label  class="form-label">Alert Message</label>
+                    <textarea name="alert_message" class="form-control" cols="30" rows="3" maxlength="100" required></textarea>
+                </div>
+
+              <div class="col-6">
+                  <label  class="form-label"> Message End</label>
+                  <input type="text" class="form-control" value="@#"   readonly>
+              </div>
+          </div>
+    
+    
+            <div class="row my-4">
+                <div class="col-5">
+                    <button type="submit" class="btn btn-purple w-25">Send</button>
+                    <button type="reset" class="btn btn-info w-25 text-white ms-1">Reset</button>
+                </div>
+          </div>
+    </form>
+
+
+ </div>
+
+
+{% endblock %}

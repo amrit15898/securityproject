@@ -1,0 +1,55 @@
+{% extends "sockets/base.html" %}
+
+
+{% block ws_content %}
+{% load static %}
+
+
+
+<main class="pb-4 rounded add-user-form">
+
+    <div class="col-md-9 col-lg-12 px-md-4">
+        <div class="d-flex justify-content-center flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 ">
+          <h1 class="h2 text-capitalize">New websocket connection</h1>
+
+        </div>
+      </div>
+
+      {% if not_connected %}
+        <div class="alert alert-danger alert-dismissible fade show w-50" role="alert" style="margin-left:26%">
+         websocket connection failed
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+        {% endif %}
+    
+    <div class="col-md-9 col-lg-12 px-md-4 mt-4">
+   
+      <form method="post" action="/wss/connection/">
+      
+       {% csrf_token %}    
+      <div class="mb-3">
+        <label for="ws-username" class="form-label">Username</label>
+        <input type="text" name="username" class="form-control" id="ws-username"  aria-describedby="firstHelp" value='{{ ws_form.username.value|default_if_none:"" }}' required>
+        <span class="text-danger">{{ws_form.username.errors}}</span>
+      </div>
+    
+      <div class="mb-3">
+        <label for="ws-password" class="form-label">password</label>
+        <input type="password" name="password" class="form-control" id="ws-password" aria-describedby="lastHelp" value='{{ ws_form.password.value|default_if_none:"" }}' required>
+        <span class="text-danger">{{ws_form.password.errors}}</span>
+      </div>
+    
+      <div class="mb-3">
+        <label for="ws-packet" class="form-label">Packet Id</label>
+        <input type="text" name="packet_id" class="form-control" id="ws-packet"  aria-describedby="userHelp" value='{{ ws_form.packet_id.value|default_if_none:"" }}' required>
+        <span class="form-text">For multiple id enter the comma seprate (4,12)</span>
+       <p class="text-danger">{{ws_form.packet_id.errors.as_text}}</p>
+      </div>
+
+    
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+    </div>
+    
+    </main>
+ {% endblock %}

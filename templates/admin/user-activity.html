@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block content %}
+ 
+{% include "datatable.html" %}
+<main class="bg-white pb-4 rounded">
+
+<div class="col-md-9 col-lg-12 px-md-4 add-pointer-btn">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 ">
+      <h1 class="h2">User Activity</h1>
+      <div class="btn-toolbar mb-2 mb-md-0">
+        <a href="/wss-user/add/" class="btn btn-primary" >Add new user</a>
+      </div>
+    </div>
+  </div>
+
+
+
+   <div class="col-md-9 col-lg-12 px-md-4 mt-4  point-table">
+
+<table id="example" class="table table-striped table-content" style="width:100%">
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Create On</th>
+                <th class="action-inner">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for i in users %}
+            <tr>
+                <td>{{i.username}}</td>
+                <td>{{i.create_on}}</td>
+                <td>
+                 action
+
+                </td>
+            </tr>
+    
+      {% endfor %}
+        </tbody>
+    </table>
+   </div>
+
+
+</main>
+
+<script>
+$(document).ready(function () {
+    $('#example').DataTable();
+});
+</script>
+
+
+ {% endblock %}

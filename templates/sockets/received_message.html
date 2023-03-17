@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% include "datatable.html" %}
+
+<main class="col-md-12 px-md-4 received-message-inner">
+
+<main class="col-12 px-md-4">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 received-message-heading">
+      <h1 class="h2">Pointers</h1>
+      <div class="btn-toolbar mb-2 mb-md-0">
+       
+        <a href="/add-pointer/" class="btn btn-primary" >Add pointer</a>
+      </div>
+    </div>
+  
+  </main>
+
+
+  <div class="col px-md-4 mt-4">
+    <table id="example" class="table table-striped massege-table-inner" style="width:100%">
+        <thead>
+            <tr>
+                <th class="">Date</th>
+                <th class="">Messages</th>
+             
+            </tr>
+        </thead>
+        <tbody class="massege-table-inner2">
+        {% for i in received_message_list %}
+            <tr>
+                <td>{{i.message_on|date:'d-m-Y H:i'}}</td>
+                <td>{{i.message_description.text}}
+                 {% if i.message_description.message %} 
+                            <span class="text-primary text-decoration-underline" data-bs-toggle="modal" data-bs-target="#staticBackdro{{i.id}}">
+                      view more
+                    </span>
+                    <!--delete  Modal -->
+                    <div class="modal fade" id="staticBackdro{{i.id}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5 text-capitalize" id="staticBackdropLabel"> Your message</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                          {{i.message_description.message}}
+                        </div>
+                        <div class="modal-footer">
+                           <button class="btn btn-sm btn-primary">Decode</button>
+                        </div>
+                        </div>
+                    </div>
+                    </div>
+                 {% endif %}</td>
+            </tr>
+    
+      {% endfor %}
+        </tbody>
+      
+    </table>
+   </div>
+
+</main>
+
+<script>
+$(document).ready(function () {
+    $('#example').DataTable();
+});
+</script>
+{% endblock %}

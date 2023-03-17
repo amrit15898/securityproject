@@ -1,0 +1,315 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+ {% load static %}
+
+ <style>
+  .dropbtn {
+    background-color: #012970;
+    color: white;
+    padding: 11px 16px;
+    font-size: 16px;
+    border: none;
+    border-radius:4px;
+  }
+  
+  .dropdown {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    padding:10px;
+  }
+  
+  .dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+  }
+
+  .Avalanche:hover .inner-Avalanche{
+    display:block !important;
+  }
+  .inner-Avalanche{
+    display:None;
+  }
+  .weather:hover .weather-india{
+      display:block !important;        
+  }
+
+  .weather-india{
+    display:None;
+  }
+  
+  .dropdown-content a:hover {background-color: #012970;}
+  
+  .dropdown:hover .dropdown-content {display: block;}
+  
+  .dropdown:hover .dropbtn {background-color: #012970;}
+  </style>
+
+    <link rel="stylesheet" href="{% static 'css/ol.css' %}">
+
+    <main class="col-md-9  col-lg-12 px-md-4">
+     
+      <form id="layers-switcher" method="post" action="/">
+        {% csrf_token %}
+        <div class="dropdown">
+          <button class="dropbtn" type="button"><i class="bi bi-layers-fill"></i></button>
+          <div class="dropdown-content">
+            <input type="checkbox" id="html" name="switcher" value="marker">
+            <label for="html">Marker</label><br>
+            <input type="checkbox" id="css" name="switcher" value="label">
+            <label for="css">Lable</label><br>
+            <input type="checkbox" id="javascript" name="switcher" value="station">
+            <label for="javascript">Station</label><br>
+            <div class="Avalanche">Avalanche
+              <div class="inner-Avalanche">
+                <input type="checkbox" id="danger-level1" name="switcher" value="danger-level1">
+                <label for="danger-level1">Danger Level 1</label><br>
+                <input type="checkbox" id="danger-level2" name="switcher" value="danger-level2">
+                <label for="danger-level2">Danger Level 2</label><br>
+                <input type="checkbox" id="danger-level3" name="switcher" value="danger-level3">
+                <label for="danger-level3">Danger Level 3</label><br>
+                <input type="checkbox" id="danger-level4" name="switcher" value="danger-level4">
+                <label for="danger-level4">Danger Level 4</label><br>
+                <input type="checkbox" id="danger-level5" name="switcher" value="danger-level5">
+                <label for="danger-level5">Danger Level 5</label><br>
+              </div>
+              <div class="weather">weather
+                <div class="weather-india">
+                  <input type="checkbox" id="weather-sunny" name="switcher" value="weather-sunny">
+                  <label for="weather-sunny">Sunny</label><br>
+                  <input type="checkbox" id="weather-cloud" name="switcher" value="weather-cloud">
+                  <label for="weather-cloud">Cloud</label><br>
+                  <input type="checkbox" id="weather-rainfall" name="switcher" value="weather-rainfall">
+                  <label for="weather-rainfall">Rainfall</label><br>
+                  <input type="checkbox" id="weather-snow" name="weather-snow" value="weather-snow">
+                  <label for="weather-snow">Snow</label><br>
+                </div>
+              </div>
+            </div>
+  
+          </div>
+        </div>
+        <button id="submit-button" class="btn btn-primary">submit</button>
+      </form>
+
+
+      {% comment %}  {% endcomment %}
+    <div id="mouse-position"></div>
+  
+
+         <div id="map" class="map"></div>
+            <div id="popup" class="ol-popup">
+      <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+      <div id="popup-content"></div>
+    </div>
+
+{% comment %} marker labels {% endcomment %}
+    <div id ="labels">
+    </div>
+    
+    <div id="label">
+
+    </div>
+    </main>
+
+
+
+
+<script src="{% static 'js/ol.js' %}"></script>
+<script>
+  $('input:radio').change(
+    function(){
+      $("#submit-button").click()
+    });
+</script>
+<script>
+
+
+    var mousePositionControl = new ol.control.MousePosition({
+        coordinateFormat: ol.coordinate.createStringXY(4),
+        projection: 'EPSG:4326',
+        // comment the following two lines to have the mouse position
+        // be placed within the map.
+        className: 'custom-mouse-position',
+        target: document.getElementById('mouse-position'),
+        undefinedHTML: '&nbsp;'
+      });
+
+ /**
+       * Elements that make up the popup.
+       */
+      var container = document.getElementById('popup');
+      var content = document.getElementById('popup-content');
+      var closer = document.getElementById('popup-closer');
+   /**
+       * Create an overlay to anchor the popup to the map.
+       */
+      var overlay = new ol.Overlay({
+        element: container,
+        autoPan: true,
+        autoPanAnimation: {
+          duration: 250
+        }
+      });
+
+
+      /**
+       * Add a click handler to hide the popup.
+       * @return {boolean} Don't follow the href.
+       */
+      closer.onclick = function() {
+        overlay.setPosition(undefined);
+        closer.blur();
+        return false;
+      };
+
+
+
+
+var map = new ol.Map({
+   controls: ol.control.defaults({
+          attributionOptions: {
+            collapsible: false
+          }
+        }).extend([mousePositionControl]),
+    target: 'map',
+    layers: [
+      new ol.layer.Tile({
+        source: new ol.source.OSM()
+      }),
+      new ol.layer.Tile({
+        source: new ol.source.TileWMS({
+          url: 'http://127.0.0.1:8080/geoserver/wms',
+          params: {'LAYERS': 'osm_north', 'TILED': true},
+          serverType: 'geoserver',
+          // Countries have transparency, so do not fade tiles:
+          transition: 0
+        })
+      })
+    ],
+    view: new ol.View({
+      center: ol.proj.fromLonLat([77.23380625195568, 28.613689236427845]),
+      zoom: 5,
+      minZoom: 5
+    }),
+     overlays: [overlay],
+  });
+
+map.on("click",function (e){
+  var lonlat = ol.proj.transform(e.coordinate, 'EPSG:3857', 'EPSG:4326');
+  var lon = lonlat[0];
+  var lat = lonlat[1];
+ 
+})
+
+
+
+ var projectionSelect = document.getElementById('projection');
+      projectionSelect.addEventListener('change', function(event) {
+        mousePositionControl.setProjection(event.target.value);
+      });
+
+      var precisionInput = document.getElementById('precision');
+      precisionInput.addEventListener('change', function(event) {
+        var format = ol.coordinate.createStringXY(event.target.valueAsNumber);
+        mousePositionControl.setCoordinateFormat(format);
+      });
+
+
+
+
+
+
+/**
+ * Add a click handler to the map to render the popup.
+ */
+map.on('singleclick', function(evt) {
+  var coordinate = evt.coordinate;
+  var hdms = ol.coordinate.toStringHDMS(ol.proj.transform(
+      coordinate, 'EPSG:3857', 'EPSG:4326'));
+
+      var lonlat = ol.proj.transform(evt.coordinate, 'EPSG:3857', 'EPSG:4326');
+      var lon = lonlat[0];
+      var lat = lonlat[1];
+      content.innerHTML = '<p>Longitude and Latitude :</p><code>' + lon +"  " + lat+
+      '</code>';
+  overlay.setPosition(coordinate);
+});
+
+
+
+</script>
+
+
+
+<!--marker -->
+
+<script>
+  {% for i in markers %}
+
+var layer = new ol.layer.Vector({
+  source: new ol.source.Vector({
+      features: [
+          new ol.Feature({
+              geometry: new ol.geom.Point(ol.proj.fromLonLat([{{i.longitude}}, {{i.latitude}}]))
+          })
+      ]
+  }),
+  style: new ol.style.Style(
+    {
+      image: new ol.style.Icon({
+        src :"{% static 'images/marker-icon.png' %}"
+      })
+    }
+  )
+});
+map.addLayer(layer);
+console.log("here")
+let para{{forloop.counter}} = document.createElement("p");
+
+para{{forloop.counter}}.innerHTML ="{{i.title}}"
+var att{{forloop.counter}} = document.createAttribute("id")
+att{{forloop.counter}}.value ="{{forloop.counter}}"
+para{{forloop.counter}}.setAttributeNode(att{{forloop.counter}})
+
+
+var attt{{forloop.counter}} = document.createAttribute("class")
+attt{{forloop.counter}}.value ="overlays"
+para{{forloop.counter}}.setAttributeNode(attt{{forloop.counter}})
+
+
+document.getElementById("labels").appendChild(para{{forloop.counter}})
+
+// label
+var pos = ol.proj.fromLonLat([{{i.longitude}}, {{i.latitude}}]);
+
+var vienna = new ol.Overlay({
+  position: pos,
+  element: document.getElementById('{{forloop.counter}}')
+});
+map.addOverlay(vienna);
+
+{% endfor %}
+</script>
+
+
+
+
+
+
+
+
+
+{% endblock %}

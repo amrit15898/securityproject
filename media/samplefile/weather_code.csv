@@ -1,0 +1,6 @@
+﻿Forecast ,Code,Relation in Character,Intensity,Area,Legend
+Fair Weather to Partly Cloudy,02,F-PC,NIL,,Partly Cloudy
+Partly Cloudy to Cloudy Weather,03,PC-C,NIL,,Cloudy weather
+Cloudy Weather,04,C,NIL,,Cloudy weather
+Cloudy Weather with Very Light ppt at Isolated Places,05,VL-I,<=2.4mm,<25%,Cloudy Weather with
+Cloudy Weather with Very Light ppt at Few Places,06,VL-F,<=2.4mm,25% to 50%,Cloudy Weather with

@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="bg-white pb-4 rounded ">
+
+    <div class="col-md-9 col-lg-12 px-md-4">
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 ">
+          <h1 class="h2">Add Weather Forecast Grid</h1>
+        </div>
+      </div>
+
+      {% if added %}
+      <div class="alert alert-success" role="alert">
+         Grid id added successfully
+      </div>
+      {% endif %}
+
+      {% comment %} form {% endcomment %}
+<div class="col-md-12 px-md-4 shadow-lg p-3 mb-5 bg-body-tertiary rounded">
+      
+  <div class="form-check form-check-inline">
+    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" onclick="radion_one()" value="option1" checked>
+    <label class="form-check-label" for="inlineRadio1">Add Mannuly</label>
+  </div>
+  <div class="form-check form-check-inline">
+    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" onclick="radion_two()" value="option2">
+    <label class="form-check-label" for="inlineRadio2">Insert CSV</label>
+  </div>
+
+  <form method="post" id="form1" action="/weather/add-grid/">
+  {% csrf_token %}
+
+  <div class="row my-4">
+    <div class="col">
+        <label for="axis" class="form-label">Name</label>
+        <input type="text" name="name" class="form-control border border-secondary-subtle" id="axis" value='{{ form.name.value|default_if_none:"" }}' required>
+        <div id="firstHelp" class="form-text text-danger">{{form.name.errors}}</div>
+      </div>
+    
+      <div class="col">
+        <label for="axis-code" class="form-label">Sect Id (float number)</label>
+        <input type="text" name="sect_id" class="form-control border border-secondary-subtle"  id="sect-id" value='{{ form.sect_id.value|default_if_none:"" }}' required>
+        <div id="firstHelp" class="form-text text-danger">{{form.sect_id.errors}}</div>
+      </div>
+  </div>
+
+  <div class="row my-4">
+    <div class="col">
+        <label for="aor" class="form-label">Forecast Area</label>
+        <input type="number" name="forecast_area" class="form-control border border-secondary-subtle" id="aor" value='{{ form.forecast_area.value|default_if_none:"" }}'  required>
+        <div class="form-text text-danger">{{form.forecast_area.errors}}</div>
+       
+      </div>
+    
+      <div class="col">
+        <label for="grid_id" class="form-label">Grid ID</label>
+        <input type="text" class="form-control border border-secondary-subtle" name="grid_id" id="grid_id" value="{{form2.grid_id.value}}" required>
+        <div id="grid-error" class="form-text">Enter 4 digit number with comma seprate(4513,0045,0245)</div>
+        <div class="form-text text-danger text-break">{{form2.grid_id.errors.as_text}}</div>
+      </div>
+  </div>
+
+
+  <div class="row my-4">
+    <div class="col-5">
+        <button type="submit" class="btn btn-purple w-25">Add</button>
+        <button type="reset" class="btn btn-info w-25 text-white ms-1">Reset</button>
+    </div>
+</div>
+</form>
+
+
+<form method="post"   id="form2" class="d-none p-5" action="/weather/add-grid-by-csv/" enctype="multipart/form-data">
+  {% csrf_token %}
+   <div class="containerr">
+    <input type="file" class="form-control" name="file" id="file"  accept=".csv" required >
+</div>
+
+  <div class="row my-4">
+    <div class="col-5">
+        <button type="submit" class="btn btn-purple w-25" >Send</button>
+        <a href="/media/samplefile/grid_list.csv" class="btn btn-info w-50 text-white ms-1" download>Download Format <i class="bi bi-arrow-down-circle-fill"></i></a>
+    </div>
+</div>
+</form>
+</div>
+
+</div>
+
+<script>
+
+    function radion_one(){
+      document.getElementById("form2").classList.add('d-none')
+      document.getElementById("form1").classList.remove('d-none')
+  }
+  
+  
+  function radion_two(){
+      document.getElementById("form1").classList.add('d-none')
+      document.getElementById("form2").classList.remove('d-none')
+  
+  }
+  
+  {% if insert_csv %}
+  radion_two()
+  document.getElementById("inlineRadio1").setAttribute('checked', false )
+  document.getElementById("inlineRadio2").setAttribute('checked', true )
+  {% endif %}
+  </script>
+{% endblock %}

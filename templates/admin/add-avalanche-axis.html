@@ -1,0 +1,306 @@
+{% extends "base.html" %}
+{% block content %}
+
+<main class="bg-white pb-4 rounded ">
+
+<div class="col-md-9 col-lg-12 px-md-4">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 ">
+      {% if updating %}
+      <h1 class="h2">Updating Avalanche Axis ({{axis.avalanche_axis}})</h1>
+      {% else %}
+      <h1 class="h2">Add Avalanche Axis</h1>
+      {% endif %}
+    </div>
+  </div>
+
+<div class="col-md-12 px-md-4 shadow-lg p-3 mb-5 bg-body-tertiary rounded">
+  {% if updating %}
+  <form method="post" action="/update-avalanche-axis/{{axis.id}}/">
+    {% csrf_token %}
+  
+    <div class="row my-4">
+      <div class="col">
+          <label for="axis" class="form-label">Avalanche Axis</label>
+          <input type="text" name="avalanche_axis" class="form-control border border-secondary-subtle" id="axis" value='{{ axis.avalanche_axis }}' required>
+          <div id="firstHelp" class="form-text text-danger">{{form.avalanche_axis.errors}}</div>
+        </div>
+      
+        <div class="col">
+          <label for="axis-code" class="form-label">Avalanche Axis Code</label>
+          <input type="text" name="avalanche_axis_code" class="form-control border border-secondary-subtle" id="axis-code" value='{{ axis.avalanche_axis_code }}' required>
+          <div id="firstHelp" class="form-text text-danger">{{form.avalanche_axis_code.errors}}</div>
+        </div>
+    </div>
+  
+    <div class="row my-4">
+      <div class="col">
+          <label for="aor" class="form-label">AOR</label>
+          <input type="text" name="aor" class="form-control border border-secondary-subtle" id="aor" value='{{ axis.aor }}'  required>
+          <div class="form-text text-danger">{{form.aor.errors}}</div>
+        </div>
+
+        <div class="col">
+          <label for="Axis_code_AFG" class="form-label">Axis code AFG</label>
+          <input type="text" name="axis_code_afg" class="form-control border border-secondary-subtle" value='{{ axis.axis_code_afg }}' id="Axis_code_AFG" required>
+          <div class="form-text text-danger">{{form.axis_code_afg.errors}}</div>
+        </div>
+
+    </div>
+  
+  
+    <div class="row my-4">
+      <div class="col-5">
+          <button type="submit" class="btn btn-purple w-25">Add</button>
+          <button type="reset" class="btn btn-info w-25 text-white ms-1">Reset</button>
+      </div>
+  </div>
+  </form>
+
+  {% else %}
+
+  <div class="form-check form-check-inline">
+    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" onclick="radion_one()" value="option1" checked>
+    <label class="form-check-label" for="inlineRadio1">Add Mannuly</label>
+  </div>
+  <div class="form-check form-check-inline">
+    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" onclick="radion_two()" value="option2">
+    <label class="form-check-label" for="inlineRadio2">Insert CSV</label>
+  </div>
+
+  <form method="post" id="form1" action="/add-avalanche-axis/">
+  {% csrf_token %}
+
+  <div class="row my-4">
+    <div class="col">
+        <label for="axis" class="form-label">Avalanche Axis</label>
+        <input type="text" name="avalanche_axis" class="form-control border border-secondary-subtle" id="axis" value='{{ form.avalanche_axis.value|default_if_none:"" }}' required>
+        <div id="firstHelp" class="form-text text-danger">{{form.avalanche_axis.errors}}</div>
+      </div>
+    
+      <div class="col">
+        <label for="axis-code" class="form-label">Avalanche Axis Code</label>
+        <input type="text" name="avalanche_axis_code" class="form-control border border-secondary-subtle" id="axis-code" value='{{ form.avalanche_axis_code.value|default_if_none:"" }}' required>
+        <div id="firstHelp" class="form-text text-danger">{{form.avalanche_axis_code.errors}}</div>
+      </div>
+  </div>
+
+  <div class="row my-4">
+    <div class="col">
+        <label for="aor" class="form-label">AOR</label>
+        <input type="text" name="aor" class="form-control border border-secondary-subtle" id="aor" value='{{ form.aor.value|default_if_none:"" }}'  required>
+        <div class="form-text text-danger">{{form.aor.errors}}</div>
+       
+      </div>
+    
+      <div class="col">
+        <label for="grid_id" class="form-label">Grid ID</label>
+        <input type="text" class="form-control border border-secondary-subtle " id="grid_id" name="grids" value='{{ form.grids.value|default_if_none:"" }}' required>
+        <div id="grid-error" class="form-text">Enter 4 digit number with comma seprate(4513,0045,0245)</div>
+        <div class="form-text text-danger">{{form.grids.errors.as_text}}</div>
+
+     <!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="staticBackdropLabel">Add Grid Id</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <input type="text"  maxlength="4" minlength="4" pattern="\d*" class="form-control border border-secondary-subtle" id="grid-id">
+            <div id="grid-error" class="form-text d-none text-danger">Invalid input! please entet 4 digit number</div>
+            <div id="grid-error2" class="form-text d-none text-danger">Grid id already exists</div>
+            <div id="grid-list" class="mt-2 d-flex mx-1" >          
+
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Save</button>
+          <button type="button" class="btn btn-primary" onclick="AddGrids()">Add</button>
+        </div>
+      </div>
+    </div>
+  </div>
+      </div>
+  </div>
+
+
+  <div class="row my-4">
+    <div class="col-md-6">
+        <label for="Axis_code_AFG" class="form-label">Axis code AFG</label>
+        <input type="text" name="axis_code_afg" class="form-control border border-secondary-subtle" value='{{ form.axis_code_afg.value|default_if_none:"" }}' id="Axis_code_AFG" required>
+        <div class="form-text text-danger">{{form.axis_code_afg.errors}}</div>
+       
+      </div>
+
+  </div>
+
+  <div class="row my-4">
+    <div class="col-5">
+        <button type="submit" class="btn btn-purple w-25">Add</button>
+        <button type="reset" class="btn btn-info w-25 text-white ms-1">Reset</button>
+    </div>
+</div>
+</form>
+
+
+<form method="post"   id="form2" class="d-none p-5" action="/add-avalanche-axis-csv/" enctype="multipart/form-data">
+  {% csrf_token %}
+  {% if data == False %}
+  <div class="alert alert-danger" role="alert">
+    Invalid format please check
+  </div>
+  {% comment %} {% else %}
+  <div class="alert alert-success" role="alert">
+     Axis added successfully
+  </div> {% endcomment %}
+  {% endif %}
+   <div class="containerr">
+    <input type="file" class="form-control" name="file" id="file"  accept=".csv" required >
+</div>
+
+  <div class="row my-4">
+    <div class="col-5">
+        <button type="submit" class="btn btn-purple w-25" >Send</button>
+        <a href="/media/samplefile/Avalanche _Axis_code.csv" class="btn btn-info w-50 text-white ms-1" download>Download Format <i class="bi bi-arrow-down-circle-fill"></i></a>
+    </div>
+</div>
+</form>
+
+{% endif %}
+</div>
+</main>
+
+<script>
+  {% if form.grids.value %}
+    const grid_list = [{{form.grids.value}}];
+    var arrayLength = grid_list.length;
+    document.getElementById("grid-list").innerHTML=""
+    grid_str=""
+    for (var i = 0; i < arrayLength; i++) {
+      console.log(i)
+        myFunction(grid_list[i])
+    }
+
+  {% else %}
+    const grid_list = [];
+{% endif %}
+    var grid_str = ""
+    function myFunction(value) {
+        document.getElementById("grid-list").innerHTML+=`
+        <div class="d-flex bg-success rounded justify-content-between mx-1" style="width: 100px;">
+              <span class="text-white ps-3 pt-2">`+value+`</span> 
+              <button type="button" class="btn" onclick=" remove_grid(`+value+`)"><i class="bi bi-x-lg text-white"></i></button>
+          </div>
+        `
+        if(grid_str === ""){
+          grid_str = grid_str + String(value)
+        }
+        else{
+          grid_str = grid_str +","+ String(value)
+
+        }
+        
+        document.getElementById("grid-array").value =grid_list;
+        document.getElementById("grid_id").value=grid_str;
+    }
+
+
+
+    function AddGrids(){
+        var grid_id = $("#grid-id").val();
+        if(grid_list.includes(grid_id)){
+          $('#grid-error2').removeClass("d-none")
+          return false;
+        }
+        else{
+          $('#grid-error2').addClass("d-none")
+        }
+        const regex = new RegExp('^[0-9]{4}$');
+        if(regex.test(grid_id) === true){
+          grid_list.push(grid_id)
+          myFunction(grid_id)
+          $("#grid-id").val("")
+          $('#grid-error').addClass("d-none")
+        }else{
+          
+          $('#grid-error').removeClass("d-none")
+        }
+       
+    }
+
+    Array.prototype.remove = function() {
+    var what, a = arguments, L = a.length, ax;
+    while (L && this.length) {
+        what = a[--L];
+        while ((ax = this.indexOf(what)) !== -1) {
+            this.splice(ax, 1);
+        }
+    }
+    return this;
+};
+    function remove_grid(a){
+      console.log(typeof a)
+      grid_list.remove(String(a));
+    
+      document.getElementById("grid-list").innerHTML=""
+      grid_str=""
+      var arrayLength = grid_list.length;
+      for (var i = 0; i < arrayLength; i++) {
+
+          myFunction(grid_list[i])
+      }
+    }
+
+
+
+</script>
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/toastr.css'%}">
+<script src="{% static 'js/toastr.js'%}"></script>
+
+
+{% if added %}
+<script>
+  toastr.options.timeOut = 2500; // 1.5s
+  toastr.options = {
+  "closeButton": false,
+  "debug": false,
+  "newestOnTop": false,
+  "progressBar": false,
+  "positionClass": "toast-bottom-right",
+  "preventDuplicates": false,
+  "showDuration": "300",
+  "hideDuration": "1000",
+  "timeOut": "5000",
+  "extendedTimeOut": "1000",
+  "showEasing": "swing",
+  "hideEasing": "linear",
+  "showMethod": "fadeIn",
+  "hideMethod": "fadeOut"
+  }
+  toastr.success("Axis Added  successfully");
+</script>
+{% endif  %}
+
+<script>
+  function radion_one(){
+    document.getElementById("form2").classList.add('d-none')
+    document.getElementById("form1").classList.remove('d-none')
+}
+
+
+function radion_two(){
+    document.getElementById("form1").classList.add('d-none')
+    document.getElementById("form2").classList.remove('d-none')
+
+}
+
+{% if insert_csv %}
+radion_two()
+document.getElementById("inlineRadio1").setAttribute('checked', false )
+document.getElementById("inlineRadio2").setAttribute('checked', true )
+{% endif %}
+</script>
+
+{% endblock %}

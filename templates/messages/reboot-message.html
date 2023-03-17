@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+
+<div class="col-md-9 col-lg-12 px-md-4 add-pointer-btn">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 ">
+      <h1 class="h2">Send Reboot Messages</h1>
+ </div>
+
+
+
+ <div class="col-md-12 px-md-4 shadow-lg p-3 mb-5 bg-body-tertiary rounded">
+ 
+
+
+    <form  method="post" id="form1">
+        {% csrf_token %}
+  
+        <div class="row my-4">
+          <div class="col">
+              <label  class="form-label"> Message Start</label>
+              <input type="text" class="form-control" value="#@"  readonly>
+            
+          </div>
+          <div class="col">
+              <label  class="form-label">Message Code</label>
+            <input type="text"  class="form-control" value="62"  readonly>
+     
+          </div>
+      </div>
+
+          <div class="row my-4">
+           
+              <div class="col">
+                  <label  class="form-label">Terminal Id</label>
+                <input type="text" maxlength="5" minlength="5" pattern="\d*" title="please enter 5 digits of number" class="form-control" placeholder="00000" name="terminal_id" value="{{terminal_id}}"  required>
+         
+              </div>
+
+              <div class="col">
+                <label  class="form-label"> Reboot Code</label>
+                {% comment %} <input type="text" maxlength="2" minlength="2" pattern="\d*" title="please enter 2 digits of number" class="form-control" placeholder="00" name="reboot-code" value="{{reboot_code}}"  required> {% endcomment %}
+             <select name="reboot-code" class="form-select" id="" required>
+                <option value="01">Reboot Data Logger</option>
+                <option value="02">Reboot Specific Sensor</option>
+             </select>
+            </div>
+          </div>
+        
+  
+
+            <div class="row my-4">
+           
+              <div class="col-6">
+                  <label  class="form-label"> Message End</label>
+                  <input type="text" class="form-control" value="@#"  readonly>
+              </div>
+          </div>
+    
+    
+            <div class="row my-4">
+                <div class="col-5">
+                    <button type="submit" class="btn btn-purple w-25">Send</button>
+                    <button type="reset" class="btn btn-info w-25 text-white ms-1">Reset</button>
+                </div>
+          </div>
+    </form>
+
+ </div>
+
+
+
+{% endblock %}

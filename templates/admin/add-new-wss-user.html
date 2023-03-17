@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block content %}
+
+<main class="bg-white pb-4 rounded add-user-form">
+
+<div class="col-md-9 col-lg-12 px-md-4">
+    <div class="d-flex justify-content-center flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 ">
+      <h1 class="h2">Add New WSS User</h1>
+      
+    </div>
+  </div>
+
+<div class="col-md-9 col-lg-12 px-md-4 mt-5">
+  <form method="post">
+  {% csrf_token %}
+
+
+  <div class="mb-3">
+    <label for="exampleInputEmail1" class="form-label">Username</label>
+    <input type="text" name="username" class="form-control" id="exampleInputEmail1" value='{{ form.username.value|default_if_none:"" }}' aria-describedby="userHelp" required>
+      {% if not_valid %}
+       <div id="userHelp" class="form-text text-danger">{{form.username.errors.as_text}}</div>
+    {% endif %}
+  </div>
+
+  <div class="mb-3">
+    <label for="exampleInputPassword1" class="form-label">Password</label>
+    <input type="password" name="password" min="5" class="form-control" value='{{ form.password.value|default_if_none:"" }}'  id="exampleInputPassword1" required>
+  </div>
+
+ <div class="mb-3">
+    <label for="exampleInputPassword2" class="form-label">Confirm password</label>
+    <input type="password" min="5" name="confirm_password" class="form-control" value='{{ form.confirm_password.value|default_if_none:"" }}'  id="exampleInputPassword2" required>
+    {% if not_valid %}
+       <div  class="form-text text-danger">{{form.confirm_password.errors.as_text}}</div>
+    {% endif %}
+  </div>
+
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+</div>
+
+</main>
+{% if user_added %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/toastr.css'%}">
+<script src="{% static 'js/toastr.js'%}"></script>
+
+  <script>
+        toastr.options.timeOut = 2000; // 1.5s
+        toastr.options = {
+        "closeButton": false,
+        "debug": false,
+        "newestOnTop": false,
+        "progressBar": false,
+        "positionClass": "toast-bottom-right",
+        "preventDuplicates": false,
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "5000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+        }
+        toastr.success("WSS User added successfully");
+    </script>
+{% endif %}
+{% endblock %}

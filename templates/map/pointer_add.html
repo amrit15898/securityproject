@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+    <main class="col-md-9  col-lg-12 add-map-pointer">
+      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3">
+        <h1 class="h2">Add pointer on your map</h1>
+        <div class="btn-toolbar mb-2 mb-md-0">
+        <a href="/pointer/" class="btn btn-primary" >view pointers</a>
+
+        </div>
+      </div>
+
+    </div>
+    </main>
+
+
+<main class="col-5 offset-4 mt-4 add-map-inner">
+
+{% if added  %}
+<div class="alert alert-success" role="alert">
+  <strong>Added successfully</strong>
+    <button type="button" class="btn-close float-end" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endif %}
+    <form method="post">
+        {% csrf_token %}
+      <div class="mb-3">
+        <label for="title" class="form-label">Title</label>
+        <input type="text" class="form-control" id="title" name="title" value='{{ form.title.value|default_if_none:"" }}' aria-describedby="emailHelp" required>
+
+          {% if not_add %}
+          <span class="text-danger">{{form.title.errors.as_text}} </span>
+          {% endif %}
+      </div>
+      <div class="mb-3">
+        <label for="exampleInputPassword1" class="form-label">Longitude</label>
+        <input type="number" class="form-control" name="longitude" value='{{ form.longitude.value|default_if_none:"" }}'  step="0.000000000000000001" id="exampleInputPassword1" required>
+          {% if not_add %}
+          <span class="text-danger">{{form.longitude.errors.as_text}} </span>
+          {% endif %}
+      </div>
+
+
+        <div class="mb-3">
+        <label for="Latitude" class="form-label">Latitude</label>
+        <input type="number" class="form-control" name="latitude" value='{{ form.latitude.value|default_if_none:"" }}' step="0.000000000000000001" id="Latitude" required>
+          {% if not_add %}
+          <span class="text-danger">{{form.latitude.errors.as_text}} </span>
+          {% endif %}
+      </div>
+
+        <div class="mb-3">
+        <label  class="form-label" >Select Point Type</label>
+        <select class="form-select" name="point_type" required>
+          <option value="">Choose an option</option>
+          {% if form.point_type.value == "marker" %}  
+            <option value="marker" selected>marker</option>
+          {% else %}
+          <option value="marker">marker</option>
+          {% endif %}
+          {% if form.point_type.value == "label" %}  
+            <option value="label" selected>label</option>
+          {% else %}
+              <option value="label">label</option>
+          {% endif %}
+          {% if form.point_type.value == "Station" %}  
+            <option value="Station" selected>Station</option>
+          {% else %}
+              <option value="Station">Station</option>
+          {% endif %}
+          <optgroup label="Avalanche">
+          {% if form.point_type.value == "danger-level1" %}  
+            <option value="danger-level1" selected>Danger Level 1</option>
+          {% else %}
+              <option value="danger-level1">Danger Level 1</option>
+          {% endif %}
+          {% if form.point_type.value == "danger-level2" %}  
+            <option value="danger-level2" selected>Danger Level 2</option>
+          {% else %}
+              <option value="danger-level2">Danger Level 2</option>
+          {% endif %}
+          {% if form.point_type.value == "danger-level3" %}  
+            <option value="danger-level3" selected>Danger Level 3</option>
+          {% else %}
+              <option value="danger-level3">Danger Level 3</option>
+          {% endif %}
+          {% if form.point_type.value == "danger-level4" %}  
+            <option value="danger-level4" selected>Danger Level 4</option>
+          {% else %}
+              <option value="danger-level4">Danger Level 4</option>
+          {% endif %}
+          {% if form.point_type.value == "danger-level5" %}  
+            <option value="danger-level5" selected>Danger Level 5</option>
+          {% else %}
+              <option value="danger-level5">Danger Level 5</option>
+          {% endif %}
+          <optgroup label="weather">
+          {% if form.point_type.value == "weather-sunny" %}  
+              <option value="weather-sunny" selected>Sunny</option>
+          {% else %}
+              <option value="weather-sunny">Sunny</option>
+          {% endif %}
+          {% if form.point_type.value == "weather-cloud" %}  
+              <option value="weather-cloud" selected>Cloud</option>
+          {% else %}
+              <option value="weather-cloud">Cloud</option>
+          {% endif %}
+          {% if form.point_type.value == "weather-rainfall" %}  
+              <option value="weather-rainfall" selected>Rainfall</option>
+          {% else %}
+              <option value="weather-rainfall">Rainfall</option>
+          {% endif %}
+          {% if form.point_type.value == "weather-snow" %}  
+              <option value="weather-snow" selected>Snow</option>
+          {% else %}
+              <option value="weather-snow">Snow</option>
+          {% endif %}
+            </optgroup>
+          </optgroup>
+        </select>
+
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+
+    </form>
+</main>
+<style>
+  optgroup:hover option{
+    display: block !important;
+  }
+</style>
+{% endblock %}

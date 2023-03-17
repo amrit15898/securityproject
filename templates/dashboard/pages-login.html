@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Login | DGRE</title>
+	<meta charset="UTF-8">
+  {% load static  %}
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="{% static 'assets/vendor/bootstrap/css/bootstrap.min.css'%}" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="{% static 'login/fonts/font-awesome-4.7.0/css/font-awesome.min.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'login/vendor/animate/animate.css'%}">
+	<link rel="stylesheet" type="text/css" href="{% static 'login/vendor/css-hamburgers/hamburgers.min.css'%}">
+	<link rel="stylesheet" type="text/css" href="{% static 'login/vendor/select2/select2.min.css'%}">
+	<link rel="stylesheet" type="text/css" href="{% static 'login/css/util.css'%}">
+	<link rel="stylesheet" type="text/css" href="{% static 'login/css/main.css'%}">
+</head>
+<body>
+	
+	
+	<div class="limiter">
+		<div class="container-login100">
+			<div class="wrap-login100">
+				<div class="login100-pic js-tilt" data-tilt>
+					<img src="{% static 'images/logo.png'%}" alt="IMG">
+				</div>
+
+				<form class="login100-form validate-form" method="post" action="/login/" id="user-form">
+				<div class="chenge-form">
+      	  {% csrf_token %}
+					<span class="login100-form-title">
+						User Login
+					</span>
+          {% if invalid %}
+              <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <span class="text-danger mt-1">Invalid login credentials</span>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                  </div>
+          {% endif %}
+
+		 
+					<div class="wrap-input100 validate-input" data-validate = "username is required">
+						<label class="name-fild">User Name</label>
+						<input class="input100" type="text" value="{{username}}" name="username" placeholder="username" >
+						<span class="focus-input100"></span>
+						<span class="symbol-input100">
+							<i class="fa fa-user" aria-hidden="true"></i>
+						</span>
+					</div>
+
+					<div class="wrap-input100 validate-input" data-validate = "Password is required">
+						<label class="name-fild">Password</label>
+						<input class="input100" type="password" name="password" placeholder="Password" >
+						<span class="focus-input100"></span>
+						<span class="symbol-input100">
+							<i class="fa fa-lock" aria-hidden="true"></i>
+						</span>
+					</div>
+					
+					<div class="container-login100-form-btn">
+						<button class="login100-form-btn" type="submit">
+							Login
+						</button>
+					</div>
+				</div>
+				
+
+					<div class="text-center p-t-12">
+						<span class="txt1">
+							Wss
+						</span>
+						<a class="txt2 text-decoration-underline" href="/wss/login/">
+							 Authentication ?
+						</a>
+					</div>
+
+					<div class="text-center p-t-136">
+						<a class="txt2" href="#">
+							
+						</a>
+					</div>
+				</form>
+
+{% comment %} wss {% endcomment %}
+
+
+	<form class="login100-form  d-none wss-form" action="/wss/login/" method="post" id="wss-form">
+				<div class="chenge-form">
+      	         {% csrf_token %}
+					<span class="login100-form-title">
+						WSS Auth
+					</span>
+					{% if invalid %}
+					<div class="alert alert-danger alert-dismissible fade show" role="alert">
+						  <span class="text-danger mt-1">{{message}}</span>
+						  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+						</div>
+				{% endif %}
+
+					<div class="wrap-input100 " data-validate = "username is required">
+						<label class="name-fild">User Name</label>
+						<input class="input100" type="text" id="ws-username" name="username" value='{{username}}' placeholder="username" required>
+						<span class="text-danger d-none" id="ws-username-error" >username is required !</span>
+						<span class="text-danger">{{ws_form.username.errors}}</span>
+						<span class="focus-input100"></span>
+						<span class="symbol-input100">
+							<i class="fa fa-user" aria-hidden="true"></i>
+						</span>
+					</div>
+
+					<div class="wrap-input100 " data-validate = "Password is required">
+						<label class="name-fild">Password</label>
+						<input class="input100" type="password" id="ws-password" name="password" placeholder="Password" value='{{ ws_form.password.value|default_if_none:"" }}' required >
+						<span class="text-danger d-none"  id="ws-password-error">Password is required !</span>
+						<span class="text-danger">{{ws_form.password.errors}}</span>
+						<span class="focus-input100"></span>
+						<span class="symbol-input100">
+							<i class="fa fa-lock" aria-hidden="true"></i>
+						</span>
+					</div>
+
+					
+					<div class="container-login100-form-btn">
+						<button type="submit" class="login100-form-btn" >
+							Login
+						</button>
+					</div>
+				</div>
+				
+
+					<div class="text-center p-t-12">
+						<span class="txt1">
+							User
+						</span>
+						<a class="txt2 text-decoration-underline" href="/login/">
+							Authentication ?
+					   </a>
+					</div>
+
+					<div class="text-center p-t-136">
+						<a class="txt2" href="#">
+							
+						</a>
+					</div>
+
+			
+
+
+				</form> 
+			</div>
+		</div>
+	</div>
+
+
+	<!-- confirm modal -->
+
+	<div class="modal fade" id="ws-confirm" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+			<div class="modal-header">
+				<h1 class="modal-title fs-5 text-capitalize" id="staticBackdropLabel"> Confirm Websocket Authentication</h1>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				Websocket is already connected. Do you want to logout and  connect ?
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+				<button class="btn btn-primary" type="button"  onclick="wss_auth()">
+					Yes
+				</button>
+			</div>
+			</div>
+		</div>
+		</div>
+
+
+
+
+{% if websocket_auth %}
+<script>
+document.getElementById("wss-form").classList.remove("d-none");
+document.getElementById("user-form").classList.add("d-none");
+</script>
+{% endif %}
+
+
+<div id="toast" ><div id="desc" class=" rounded">Login Failed</div></div>
+
+{% if ws_conn_fail %}
+<script>
+document.getElementById("desc").classList.add("bg-danger");
+document.getElementById("desc").innerHTML="wss login failed";
+var x = document.getElementById("toast")
+	x.className = "show";
+setTimeout(function(){ x.className = x.className.replace("show", ""); }, 5000);
+</script>
+{% endif %}
+
+	{% load static %}
+    <link rel="stylesheet" href="{% static 'toast/toast.css'%}">
+
+   <script src="{% static 'login/main.js'%}"></script>
+	<script src="{% static 'login/vendor/jquery/jquery-3.2.1.min.js'%}"></script>
+	<script src="{% static 'login/vendor/bootstrap/js/popper.js'%}"></script>
+	<script src="{% static 'bootstrap.js'%}"></script>
+	<script src="{% static 'login/vendor/select2/select2.min.js'%}"></script>
+	<script src="{% static 'login/vendor/tilt/tilt.jquery.min.js'%}"></script>
+	<script >
+		$('.js-tilt').tilt({
+			scale: 1.1
+		})
+	</script>
+	<script src="{% static 'login/js/main.js'%}"></script>
+
+
+{% if already_connected %}
+	<script>
+		$(window).on('load', function() {
+			console.log("ok")
+			$('#ws-confirm').modal('show');
+		});
+	</script>
+{% endif %}
+</body>
+</html>

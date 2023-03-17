@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+
+<div class="col-md-9 col-lg-12 px-md-4 add-pointer-btn">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 ">
+      <h1 class="h2">Weather Code Update</h1>
+ </div>
+
+ {% if wss_fail %}
+ <div class="alert alert-warning alert-dismissible fade show" role="alert">
+  <strong>Websocket connection closed</strong> please connect and try again
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endif %}
+
+{% if message_status_fail %}
+  <div class="alert alert-warning" role="alert">
+    message not send please check the wss connection
+  </div>
+
+  {% elif message_status %}
+  <div class="alert alert-success" role="alert">
+    message send successfully
+  </div>
+  {% endif  %}
+
+ <div class="col-md-12 px-md-4 shadow-lg p-3 mb-5 bg-body-tertiary rounded">
+
+
+    <form  method="post" id="form1">
+        {% csrf_token %}
+  
+        <div class="row my-4">
+          <div class="col">
+              <label  class="form-label"> Message Start</label>
+              <input type="text" class="form-control" value="#@"  readonly>
+            
+          </div>
+          <div class="col">
+              <label  class="form-label">Message Code</label>
+            <input type="text"  class="form-control" value="97"  readonly>
+     
+          </div>
+      </div>
+
+          <div class="row my-4">
+           
+            <div class="col">
+                <label  class="form-label">Action Code</label>
+                <select class="form-select" aria-label="Default select example" name="action_code" required>
+                    <option value="" selected disabled> select action</option>
+                    <option value="01" class="text-capitalize">Add new axis</option>
+                    <option value="02" class="text-capitalize">Edit existing axis</option>
+                    <option value="03" class="text-capitalize">Delete existing axis</option>
+
+                  </select>
+                  <div class="form-text text-danger">{{form.action_code.errors}}</div>
+            </div>
+
+              <div class="col">
+                <label  class="form-label">Avalanche Code</label>
+                <input type="text" maxlength="2" minlength="2" pattern="\d*" title="please enter 2 digits of number" class="form-control" placeholder="00" name="avalanche_code"  required>
+                <div class="form-text text-danger">{{form.avalanche_code.errors}}</div>
+            </div>
+          </div>
+        
+  
+
+            <div class="row my-4">
+
+                <div class="col">
+                    <label  class="form-label"> Weather Code Details</label>
+                   <textarea name="code_details"  id="" cols="30" rows="1" maxlength="100" class="form-control"></textarea>
+                   <div class="form-text text-danger">{{form.code_details.errors}}</div>
+                </div>
+
+                <div class="col">
+                    <label  class="form-label"> Message End</label>
+                    <input type="text" class="form-control" value="@#"  readonly>
+                </div>
+          </div>
+    
+    
+            <div class="row my-4">
+                <div class="col-5">
+                    <button type="submit" class="btn btn-purple w-25">Send</button>
+                    <button type="reset" class="btn btn-info w-25 text-white ms-1">Reset</button>
+                </div>
+          </div>
+    </form>
+
+ </div>
+
+
+
+{% endblock %}

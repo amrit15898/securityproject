@@ -1,0 +1,2 @@
+﻿message type,received on,data,aws date,aws time,station id,sensor code,packet data
+72,2023-01-24T04:32:24.411507+00:00,#@7219072209005555501datapackettest1@#,190722,0900,55555,01,datapackettest1

@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+{% block content %}
+ 
+{% include "datatable.html" %}
+<main class="bg-white pb-4 rounded">
+    {% load static %}
+<div class="col-md-9 col-lg-12 px-md-4">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 ">
+      <h1 class="h2">Avalanche Axis CSV Data</h1>
+    </div>
+  </div>
+
+   <div class="col-md-9 col-lg-12 px-md-4 mt-4  point-table">
+
+   
+
+<table id="example" class="table table-striped table-content d-none" style="width:100%">
+        <thead>
+            <tr>
+                <th>Avalanche axis</th>
+                <th>Code</th>
+                <th>AOR</th>
+                <th>Grids</th>
+                <th>Afg</th>
+                <th>Message</th>
+            </tr>
+        </thead>
+        <tbody>
+  
+        </tbody>
+    </table>
+
+
+    <div class="position-absolute mt-5" id="loader" style="margin-left:27%;">
+        <div>
+            <img src="{% static 'images/loader-unscreen.gif' %}" width="200px" alt="">
+        <h5 class="ms-1">Please wait data is loading...</h5>
+        </div>
+    </div>  
+
+   </div>
+
+
+</main>
+   
+    <link rel="stylesheet" href="{% static 'css/toastr.css'%}">
+  <script src="{% static 'js/toastr.js'%}"></script>
+<script>
+ 
+ function make_datatable(){
+    $(document).ready(function () {
+        $('#example').DataTable();
+    });
+ }
+  
+  const host = location.protocol + '//' + location.host;
+  $.ajax({
+    type: 'GET',
+    url: host+"/avalanche-axis-csv-data/",
+    success:function(data){
+        console.log(data+ "err")
+        $('#loader').addClass("d-none")
+        $('#example').removeClass("d-none")
+        make_datatable()
+      data.forEach(Add_row_dt);
+    }
+});
+
+
+function grids(id,grids){
+   return  `
+    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#more`+id+`">Grids</i></button></td>
+    <div class="modal fade" id="more`+id+`" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5 text-capitalize" id="staticBackdropLabel">Grid ids</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+               <p class="text-break">`+grids+`</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+            </div>
+        </div>
+        </div>
+    `
+}
+
+
+function log_message(array){
+    console.log(value)
+    return "her"
+}
+
+function logs_show(id,message){
+    if(message.length > 0){
+        return `
+        <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#moree`+id+`">show</i></button></td>
+        <div class="modal fade" id="moree`+id+`" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5 text-capitalize" id="staticBackdropLabel">Logs Message</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                   <p class="text-break" style="white-space: pre-line">`+message+`</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+                </div>
+            </div>
+            </div>
+    
+        `
+    }
+    else{
+        return `<p class="text-success">Added successfully</p>`
+    }
+   
+}
+
+
+var t = $('#example').DataTable();
+function Add_row_dt(item) {
+    t.row.add([item.axis_title,item.axis_id,item.aor,item.grids,item.axis_code_afg,logs_show(item.id,item.message)]).draw(false);
+  }
+
+</script>
+
+
+
+
+  {% if not_update %}
+<script>
+    $(window).on('load', function() {
+        $('#update{{instance.id}}').modal('show');
+    });
+</script>
+{% endif %}
+
+
+ {% endblock %}

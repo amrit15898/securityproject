@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+    <main class="col-md-9  col-lg-10 px-md-4">
+
+      <div class="messages mt-3">
+
+      {% if success_message %}
+      <div class="alert alert-success alert-dismissible fade show w-50" role="alert">
+      Your message send successfully
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+      {% endif %}
+
+      {% if not_valid %}
+      <div class="alert alert-warning alert-dismissible fade show w-50" role="alert">
+       Invalid file format or something you went wrong
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+      {% endif %}
+
+        <div class="card text-message ">
+            <div class="modal-header">
+                <p class="modal-title ms-2 mt-3">{% if success_message %}Recently send {% else %} Last message {% endif %}</p>
+               <span class="float-end mt-3 me-2">{{last_message.message_on|date:'Y-m-d H:i'}}</span>
+             </div>
+            <hr>
+
+            <div class="card-body overflow-auto  pt-3">
+              {% for key, values in last_message.message_description.items %}
+            
+              {% if key == "text" %}
+              <p>{{values}}</p>
+              {% elif key == "message" %}
+                 {% for k, v in values.items %}
+                 <p>{{v}}</p>
+                 {% endfor %}
+              {% endif %}
+          
+              {% endfor %}
+            
+            {% if last_message.file %}
+             <a href="{{last_message.file.url}}" class="float-end">download file</a>
+            {% endif %}
+            </div>
+          </div>
+      </div>
+    
+
+    
+
+      <div class="d-flex  mb-3  ms-md-5 fixed-bottom send-message-box">
+        
+          <form action="http://127.0.0.1:8000/send-message/" method="post"  enctype="multipart/form-data" class="d-flex">
+            {% csrf_token %}
+            <textarea class="message_box ms-0"  name="message" id="message" cols="90" rows="2" placeholder="write your message here..."></textarea>
+       
+       
+            <div class="file background pt-2 text-primary">
+              <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" class="bi bi-paperclip" viewBox="0 0 16 16">
+                  <path d="M4.5 3a2.5 2.5 0 0 1 5 0v9a1.5 1.5 0 0 1-3 0V5a.5.5 0 0 1 1 0v7a.5.5 0 0 0 1 0V3a1.5 1.5 0 1 0-3 0v9a2.5 2.5 0 0 0 5 0V5a.5.5 0 0 1 1 0v7a3.5 3.5 0 1 1-7 0V3z"/>
+                </svg>
+                <input type="file" class="file-input" name="message_file"  id="message_file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
+          </div>
+            <button type="submit" id="submit-btn" class="ms-3 background border border-0 text-success " style="background-color: F6F9FF;"><svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" class="bi bi-send" viewBox="0 0 16 16">
+            <path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576 6.636 10.07Zm6.787-8.201L1.591 6.602l4.339 2.76 7.494-7.493Z"/>
+          </svg></button>
+
+          
+           </form>
+      </div>
+
+      <span class="file-selected-message" id="file-selected-message"></span>
+
+    </main>
+
+
+
+<script>
+$("#message_file").change(function(){
+  var filename = $('input[type=file]').val().split('\\').pop();
+  
+  var extension = filename.split(".")[1]
+ 
+
+  if(extension === "xlsx" || extension === "xls" || extension === "csv"){
+       document.getElementById("file-selected-message").innerHTML = filename + " file is selected";
+  }
+  else{
+    document.getElementById("file-selected-message").innerHTML = "Please insert (xlsx,xls,csv) ";
+    document.getElementById("submit-btn").type = "button";
+    document.getElementById("file-selected-message").classList.add("text-danger");
+
+  }
+
+});
+
+</script>
+
+
+{% endblock %}

@@ -1,0 +1,432 @@
+@font-face {
+  font-family: 'Gilroy';
+  src: url('../fonts/Gilroy-SemiBold.woff') format('woff'),
+      url('../fonts/Gilroy-SemiBold.ttf') format('truetype'),
+      url('../fonts/Gilroy-SemiBold.svg#Gilroy-SemiBold') format('svg');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Gilroy';
+  src: url('../fonts/Gilroy-Medium.woff') format('woff'),
+      url('../fonts/Gilroy-Medium.ttf') format('truetype'),
+      url('../fonts/Gilroy-Medium.svg#Gilroy-Medium') format('svg');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Poppins';
+  src: url('../fonts/Poppins-Regular.woff') format('woff'),
+      url('../fonts/Poppins-Regular.ttf') format('truetype'),
+      url('../fonts/Poppins-Regular.svg#Poppins-Regular') format('svg');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Poppins';
+  src: url('../fonts/Poppins-SemiBold.woff') format('woff'),
+      url('../fonts/Poppins-SemiBold.ttf') format('truetype'),
+      url('../fonts/Poppins-SemiBold.svg#Poppins-SemiBold') format('svg');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Poppins';
+  src: url('../fonts/Poppins-Black.woff') format('woff'),
+      url('../fonts/Poppins-Black.ttf') format('truetype'),
+      url('../fonts/Poppins-Black.svg#Poppins-Black') format('svg');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Gilroy';
+  src: url('../fonts/Gilroy-Bold.woff') format('woff'),
+      url('../fonts/Gilroy-Bold.ttf') format('truetype'),
+      url('../fonts/Gilroy-Bold.svg#Gilroy-Bold') format('svg');
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Poppins';
+  src: url('../fonts/Poppins-Medium.woff') format('woff'),
+      url('../fonts/Poppins-Medium.ttf') format('truetype'),
+      url('../fonts/Poppins-Medium.svg#Poppins-Medium') format('svg');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Poppins';
+  src: url('../fonts/Poppins-Bold.woff') format('woff'),
+      url('../fonts/Poppins-Bold.ttf') format('truetype'),
+      url('../fonts/Poppins-Bold.svg#Poppins-Bold') format('svg');
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Gilroy';
+  src: url('../fonts/Gilroy-Light.woff') format('woff'),
+      url('../fonts/Gilroy-Light.ttf') format('truetype'),
+      url('../fonts/Gilroy-Light.svg#Gilroy-Light') format('svg');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Gilroy';
+  src: url('../fonts/Gilroy-Regular.woff') format('woff'),
+      url('../fonts/Gilroy-Regular.ttf') format('truetype'),
+      url('../fonts/Gilroy-Regular.svg#Gilroy-Regular') format('svg');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root{
+  --font1: 'Gilroy';
+  --font2: 'Poppins';
+  --blue: #214486;
+  --darkblue: #34326f;
+  --red: #c1292a;
+  --liteblue: #008dd2;
+  --liteblack: #2b2a29;
+}
+h1,h2,h3,h4,h5{
+  font-family: var(--font1);
+}
+body{
+  font-family: var(--font2);
+  background-color: transparent;
+}
+.map {
+    height: 600px;
+    width: 80%;    
+  }
+
+
+  #vienna {
+    text-decoration: none;
+    color: white;
+    font-size: 11pt;
+    font-weight: bold;
+    text-shadow: black 0.1em 0.1em 0.2em;
+  }
+  .popover-content {
+    min-width: 180px;
+  }
+
+
+
+
+
+/*-------my-css------*/
+.admin-icon:after {
+  position: absolute;
+  content: "";
+  top: 9px;
+  left: -18px;
+  background-image: url('../img/icon1w.png');
+  width: 22px;
+  height: 22px;
+  z-index: 1;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.admin-icon {
+  position: relative;
+  margin-left: 30px;
+}
+.profile-icon:after {
+  position: absolute;
+  content: "";
+  top: 9px;
+  left: -18px;
+  background-image: url('../img/icon3w.png');
+  width: 22px;
+  height: 22px;
+  z-index: 1;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.profile-icon {
+  position: relative;
+  margin-left: 30px;
+}
+.logout-icon:after {
+  position: absolute;
+  content: "";
+  top: 9px;
+  left: -18px;
+  background-image: url('../img/icon2w.png');
+  width: 22px;
+  height: 22px;
+  z-index: 1;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.logout-icon {
+  position: relative;
+  margin-left: 30px;
+}
+
+
+.add-pointer-btn h1 {
+  color: #214486;
+}
+.add-pointer-btn a {
+  background: #214486;
+  border: none;
+  padding: 14px 20px;
+}
+.point-table table.dataTable.table-striped>tbody>tr.odd>* {
+  box-shadow: none;
+}
+.table-content {
+  padding-top: 35px;
+}
+.table-content th {
+  color: #214486;
+  border-top: 1px solid #214486b0;
+  padding: 22px 8px;
+}
+.table-content tr {
+  border-color: #214486b0;
+}
+.table-content tr td {
+  padding: 20px 8px;
+  color: #214486b0;
+}
+ .table-striped>tbody>tr:nth-of-type(odd)>* {
+  --bs-table-accent-bg: var(--bs-table-striped-bg);
+  color: #214486b0 !important;
+}
+.delete-in-btn {
+  background: rgb(255 0 0 / 10%);
+  width: 98px;
+  height: 40px;
+  border: none;
+  transition: all 0.3s;
+  color: #d01212;
+}
+.delete-in-btn:hover {
+  background: #a32828;
+  transition: all 0.3s;
+  color: #fff;
+}
+.update-in-btn {
+  background: rgb(33 68 134);
+  width: 98px;
+  height: 40px;
+  border: none;
+  transition: all 0.3s;
+  color: #ffffff;
+}
+.update-in-btn:hover {
+  background: #ee9858;
+  transition: all 0.3s;
+  color: #fff;
+}
+
+
+.download-in-btn {
+  background: rgb(33 68 134);
+  width: 108px;
+  height: 40px;
+  border: none;
+  transition: all 0.3s;
+  color: #ffffff;
+}
+.download-in-btn:hover {
+  background: #ee9858;
+  transition: all 0.3s;
+  color: #fff;
+}
+
+
+.packet-in-btn {
+  background: rgb(33 68 134);
+  width: 105px;
+  height: 40px;
+  border: none;
+  transition: all 0.3s;
+  color: #ffffff;
+}
+.packete-in-btn:hover {
+  background: #ee9858;
+  transition: all 0.3s;
+  color: #fff;
+}
+
+td.btn-table-inner {
+  padding: 12px 0 0 0 !important;
+}
+th.action-inner.sorting {
+  max-width: 150px;
+}
+.point-table input.form-control.form-control-sm:focus {
+  box-shadow: none;
+  border-color: #214486b0;
+}
+.point-table select.form-select.form-select-sm {
+  box-shadow: none;
+  border-color: #214486b0;
+}
+.point-table li.paginate_button.page-item.active a {
+  background: #214486;
+  border: none;
+}
+
+
+
+/*-------------add-map-pointer-----*/
+.add-map-pointer h1 {
+  color: #214486;
+}
+.add-map-pointer .btn-toolbar a {
+  background: #214486;
+  border: none;
+  padding: 12px 30px;
+}
+.add-map-inner form {
+  max-width: 500px;
+  margin: 0 auto;
+  background: #fff;
+  padding: 25px 25px;
+  border-radius: 5px;
+  box-shadow: rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px, rgba(17, 17, 26, 0.1) 0px 24px 80px;
+}
+.add-map-inner form label {
+  color: #214486;
+}
+.add-map-inner form input {
+  border-color: #214486b0 !important;
+}
+.add-map-inner form input:focus {
+  box-shadow: none;
+  border-color: #214486b0;
+}
+.add-map-inner form button.btn.btn-primary {
+  background: #214486;
+  border: none;
+  width: 120px;
+  height: 45px;
+}
+
+/*-------------all messege-----*/
+.all-notification p.card-text {
+  color: #21448696;
+}
+.all-notification .card-body a {
+  background: #214486;
+  border: none;
+  padding: 10px 35px;
+}
+
+.send-message-box {
+  margin-left: 345px !important;
+}
+.message_box {
+  border-radius: 5px;
+  border: 2px solid rgb(59, 106, 145);
+  width: 380px;
+}
+.send-message-box svg.bi.bi-paperclip {
+  color: #214486;
+}
+.send-message-box svg.bi.bi-send {
+  color: #214486;
+}
+
+.received-message-heading h1 {
+  color: #214486;
+}
+.received-message-heading .btn-toolbar a {
+  background: #214486;
+  border: none;
+  padding: 10px 22px;
+}
+.received-message-inner select.form-select, input {
+  border-color: #2144864d;
+}
+.received-message-inner select.form-select, input:focus {
+  border-color: #2144864d;
+  box-shadow: none;
+}
+.received-message-inner input {
+  border-color: #2144864d;
+}
+.received-message-inner input:focus {
+  border-color: #2144864d;
+  box-shadow: none;
+}
+.massege-table-inner th {
+  color: #214486;
+}
+table.dataTable.table-striped>tbody>tr.odd>* {
+  box-shadow: none !important;
+}
+.massege-table-inner2 tr {
+  color: #214486b0 !important;
+}
+.received-message-inner li.paginate_button.page-item.active a {
+  background: #214486 !important;
+  border: none;
+  color: #fff !important;
+}
+.received-message-inner #example_paginate ul li a {
+  color: #214486;
+}
+.received-message-inner #example_paginate ul li a:focus {
+  box-shadow: none;
+}
+
+
+
+.add-user-form h1 {
+  color: #214486 !important;
+}
+.add-user-form .btn-toolbar a {
+  background: #214486;
+  border: none;
+  padding: 10px 22px;
+}
+.add-user-form form {
+  max-width: 550px;
+  margin: 0 auto;
+  padding: 25px 25px;
+  border-radius: 5px;
+  background: #fff;
+  box-shadow: rgb(17 17 26 / 10%) 0px 8px 24px, rgb(17 17 26 / 10%) 0px 16px 56px, rgb(17 17 26 / 10%) 0px 24px 80px;
+}
+.add-user-form form  label {
+  color: #214486d1;
+}
+.add-user-form form button.btn.btn-primary {
+  background: #214486;
+  border: none;
+  width: 120px;
+  height: 45px;
+}
+.add-user-form form input {
+  border-color: #21448645 !important;
+}
+.add-user-form form input:focus {
+  border-color: #21448645 !important;
+  box-shadow: none;
+}

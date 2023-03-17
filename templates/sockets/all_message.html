@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <div class="pagetitle">
+      <h1>All Messages</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="/">Home</a></li>
+          <li class="breadcrumb-item">Messages</li>
+          <li class="breadcrumb-item active">All Messages</li>
+        </ol>
+      </nav>
+    </div>
+
+
+
+    <div class="p-md-4 mt-4 all-notification">
+    {% for i in all_ms %}
+     {% if i.message_type %}
+     <div class="col-md-8 offset-4">
+        <div class="card ">
+        <div class="card-body">
+        <h5 class="card-title"><p>{{i.message_on}}</p> {% if i.file %} <a href="{{i.file.url}}" class="float-end">download file</span> {% endif %} </h5>
+        <p class="card-text">{{i.message_description}}</p>
+        <a href="#" class="btn btn-primary mt-2">Read</a>
+       </div>
+       </div>
+     </div>
+     {% else %}
+      <div class="col-md-12">
+        <div class="card ">
+        <div class="card-body">
+        <h5 class="card-title">{{i.message_on}}</h5>
+        <p class="card-text">{{i.message_description}}</p>
+        <a href="#" class="btn btn-primary mt-2">Read</a>
+       </div>
+       </div>
+     </div>
+     {% endif %}
+     <br>
+    {% endfor %}
+    </div>
+
+
+{% endblock %}

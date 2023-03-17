@@ -1,0 +1,149 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="col-md-9 col-lg-12 px-md-4 add-pointer-btn">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 ">
+      <h1 class="h2">Weather Area Update</h1>
+ </div>
+
+ <div class="col-md-12 px-md-4 shadow-lg p-3 mb-5 bg-body-tertiary rounded">
+
+
+  {% if message_status_fail %}
+  <div class="alert alert-warning" role="alert">
+    message not send please check the wss connection
+  </div>
+  {% endif  %}
+
+  {% if message_status %}
+  <div class="alert alert-success" role="alert">
+    message send successfully
+  </div>
+  {% endif  %}
+
+    <form  method="post" id="form1">
+        {% csrf_token %}
+  
+        <div class="row my-4">
+          <div class="col">
+              <label  class="form-label"> Message Start</label>
+              <input type="text" class="form-control" value="#@"  readonly>
+            
+          </div>
+          <div class="col">
+              <label  class="form-label">Message Code</label>
+            <input type="text"  class="form-control" value="96"  readonly>
+     
+          </div>
+      </div>
+
+          <div class="row my-4">
+
+              <div class="col">
+                <label  class="form-label">Grid Id</label>
+                <input type="text" name="grid_id" id="grid_id" class="form-control"  maxlength="4" minlength="4"  onchange="grid_validator()" pattern="\d*" title="please enter 4 digits of number"  required>
+                <div id="grid-invalid" class="form-text d-none text-danger">Grid id not found</div>
+                <div id="grid-valid" class="form-text d-none text-success">Grid id validate successfully </div>
+                <div class="form-text text-danger">{{form.grid_id.errors.as_text}}</div>
+              </div>
+            <div class="col">
+              <label  class="form-label">Action Code</label>
+              <select class="form-select" aria-label="Default select example" name="action_code" id="num-of-forecast-day"  required>
+                  <option value="" selected disabled> select action</option>
+                  <option value="01" class="text-capitalize">Add new axis</option>
+                  <option value="02" class="text-capitalize">Edit existing axis</option>
+                  <option value="03" class="text-capitalize">Delete existing axis</option>
+
+                </select>
+                <div class="form-text text-danger">{{form.action_code.errors.as_text}}</div>
+          </div>
+          </div>
+
+
+          <div class="row my-4">
+                 <div class="col">
+              <label  class="form-label">Weather Area Id</label>
+              <input type="text" name="area_id" id="area_id"  maxlength="3" minlength="3" pattern="\d*" onchange="area_validator()" class="form-control"  required>
+              <div id="area-invalid" class="form-text d-none text-danger">Area not found</div>
+              <div id="area-valid" class="form-text d-none text-success">Area validate successfully </div>
+              <div class="form-text text-danger">{{form.area_id.errors.as_text}}</div>
+          </div>
+
+          <div class="col">
+            <label  class="form-label">Weather Axis Name</label>
+           <textarea name="area_name"  cols="30" rows="1" maxlength="100" class="form-control" required></textarea>
+           <div class="form-text text-danger">{{form.area_name.errors.as_text}}</div>
+        </div>
+        </div>
+
+      <div class="row my-2">
+    
+      <div class="col-6">
+        <label  class="form-label"> Message End</label>
+        <input type="text" class="form-control" value="@#"  readonly>
+    </div>
+    </div>
+    
+            <div class="row my-4">
+                <div class="col-5">
+                    <button type="submit" id="submit-btn" class="btn btn-purple w-25">Send</button>
+                    <button type="reset"  class="btn btn-info w-25 text-white ms-1">Reset</button>
+                </div>
+          </div>
+    </form>
+
+
+ </div>
+
+<script>
+
+  const full_host = location.protocol + '//' + location.host;
+
+  function grid_validator(){
+    var grid = $("#grid_id").val();
+    var myKeyVals = {}
+    myKeyVals["grid_id"] = grid;
+    var actionData = $.ajax({
+    type: 'POST',
+    url: full_host+"/weather/grid-id-validate/",
+    data: myKeyVals,
+    dataType: "json",
+        success: function(resultData) { 
+          $("#grid-invalid").addClass("d-none")
+          $("#grid-valid").removeClass("d-none")
+          document.getElementById("submit-btn").type = "submit";
+         },
+         error: function(e) {
+          $("#grid-invalid").removeClass("d-none")
+          $("#grid-valid").addClass("d-none")
+          document.getElementById("submit-btn").type = "button";
+        }, 
+  });
+  }
+
+
+
+  function area_validator(){
+    var grid = $("#area_id").val();
+    var myKeyVals = {}
+    myKeyVals["area_id"] = grid;
+    var actionData = $.ajax({
+    type: 'POST',
+    url: full_host+"/weather/grid-area-validate/",
+    data: myKeyVals,
+    dataType: "json",
+        success: function(resultData) { 
+          $("#area-invalid").addClass("d-none")
+          $("#area-valid").removeClass("d-none")
+          document.getElementById("submit-btn").type = "submit";
+         },
+         error: function(e) {
+          $("#area-invalid").removeClass("d-none")
+          $("#area-valid").addClass("d-none")
+          document.getElementById("submit-btn").type = "button";
+        }, 
+  });
+  }
+
+</script>
+{% endblock %}

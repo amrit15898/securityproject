@@ -1,0 +1,230 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% include "datatable.html" %}
+<div class="col-md-9 col-lg-12 px-md-4 " id="top-col">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 ">
+      <h1 class="h2">Weather Forecast CSV File Datas</h1>
+      <div class="btn-toolbar mb-2 mb-md-0">
+        <button class="btn  rounded ms-1 py-2 btn-purple" onclick="send_avalanche_packet()" id="send-btn">Confirm & Send</button>
+        <button  data-bs-toggle="modal" data-bs-target="#logs" class="btn btn-danger py-2 bg-danger ms-2">Show Logs</button>
+      </div>
+ </div>
+  
+</div>
+
+
+<div class="col-md-9 col-lg-12 px-md-4 mt-4 point-table" id="table-col">
+    <table id="example" class="table table-striped table-content" style="width:100%">
+        <thead>
+            <tr>
+                <th class="text-capitalize">Start Date</th>
+                <th class="text-capitalize">Grid Id</th>
+                <th class="text-capitalize">No of Days</th>
+                <th class="text-capitalize">Forecase Area</th>
+                <th>Status</th>
+                <th>Days</th>
+                <th>Packet</th>
+
+            </tr>
+        </thead>
+        <tbody>
+      
+        </tbody>
+</table>
+
+{% load static %}
+<div class="position-absolute mt-5" id="loader" style="margin-left:27%;">
+    <div>
+        <img src="{% static 'images/loader-unscreen.gif' %}" width="200px" alt="">
+    <h5 class="ms-1">Please wait data is loading...</h5>
+    </div>
+</div> 
+
+
+<div class="mt-5 d-none" id="send-loader" style="margin-left:27%; position: absolute;top: 321px;">
+  <div>
+      <img src="{% static 'images/loader-unscreen.gif' %}" width="200px" alt="">
+  <h5 class="ms-1">message sending please wait...</h5>
+  </div>
+</div> 
+
+</div>
+</div>
+
+{% comment %}  {% endcomment %}
+
+<div class="modal fade" id="logs" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-fullscreen">
+      <div class="modal-content">
+      <div class="modal-header">
+          <h1 class="modal-title fs-5 text-capitalize" id="staticBackdropLabel">Weather forecast logs messages</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="logs-message">
+         
+      </div>
+      <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+      </div>
+  </div>
+  </div>
+
+
+{% comment %}  {% endcomment %}
+<script>
+ 
+    function make_datatable(){
+       $(document).ready(function () {
+           $('#example').DataTable();
+       });
+    }
+     
+    const full_host = location.protocol + '//' + location.host;
+    var all_data;
+     $.ajax({
+       type: 'GET',
+       url: full_host+"/weather/send-read-csv/",
+       success:function(data){
+           $('#loader').addClass("d-none")
+           $('#example').removeClass("d-none")
+           make_datatable()
+         all_data =data;
+         data.forEach(Add_row_dt);
+      
+
+       }
+   });
+   function add_log_message(msg){
+    document.getElementById("logs-message").insertAdjacentHTML("afterbegin",
+    '<p class="fw-bold text-capitalize"> *) '+msg+'</p>');
+      
+   }
+
+
+   var all_data;
+   $.ajax({
+     type: 'GET',
+     url: full_host+"/weather/logs-messages/",
+     success:function(data){
+      console.log(data)   
+      data.forEach(add_log_message); 
+     }
+ });
+
+ 
+
+
+   
+   
+   function Packe_modal(id,packet){
+      return  `
+       <button class="btn btn-primary btn-sm update-in-btn" data-bs-toggle="modal" data-bs-target="#more`+id+`">packet</i></button></td>
+       <div class="modal fade" id="more`+id+`" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+           <div class="modal-dialog modal-dialog-centered modal-lg">
+               <div class="modal-content">
+               <div class="modal-header">
+                   <h1 class="modal-title fs-5 text-capitalize" id="staticBackdropLabel">Grid ids </h1>
+                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+               </div>
+               <div class="modal-body">
+                  <p class="text-break">`+packet+`</p>
+               </div>
+               <div class="modal-footer">
+                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+               </div>
+               </div>
+           </div>
+           </div>
+       `
+   }
+   
+  function forecast_days(id,day1,day2,day3,day4,day5,day6){
+    return `
+    <button class="btn btn-primary btn-sm update-in-btn" data-bs-toggle="modal" data-bs-target="#day`+id+`">Days</i></button>
+
+    <div class="modal fade" id="day`+id+`" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5 text-capitalize" id="staticBackdropLabel">Weather Forecast Days Information</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <table class="table">
+                    <thead>
+                      <tr>
+                        <th scope="col">Day 1</th>
+                        <th scope="col">Day 2</th>
+                        <th scope="col">Day 3</th>
+                        <th scope="col">Day 4</th>
+                        <th scope="col">Day 5</th>
+                        <th scope="col">Day 6</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>`+day1+`</td>
+                        <td>`+day2+`</td>
+                        <td>`+day3+`</td>
+                        <td>`+day4+`</td>
+                        <td>`+day5+`</td>
+                        <td>`+day6+`</td>
+                      </tr>
+                  
+                    </tbody>
+                  </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+            </div>
+        </div>
+        </div>
+    
+    `
+  }
+   
+   
+   var t = $('#example').DataTable();
+   function Add_row_dt(item) {
+       t.row.add([item.start_date,item.grid_id,item.num_of_day,item.forecast_area,`<div id="`+item.id+`"><i class="bi bi-exclamation-circle"></i></div>`,forecast_days(item.id,item.day_1,item.day_2,item.day_3,item.day_4,item.day_5,item.day_6),Packe_modal(item.id,item.packet)]).draw(false);
+     }
+   
+     function send_avalanche_packet(){
+        $("#send-btn").addClass("disabled");
+        $("#send-btn").addClass("btn-primary");
+        $("#send-btn").html('Sending');
+        $('#send-loader').removeClass('d-none')
+
+    
+        $.ajax({
+            url: full_host+"/weather/send-read-csv/",
+            type: 'POST',
+            data:{packets : JSON.stringify(all_data)},
+           
+            success: function(response) { 
+             $('#send-loader').addClass('d-none')
+             t.clear()
+             for(var res=0; res < response.length;res++){
+              if(response[res].status === true){
+                document.getElementById(response[res].id).innerHTML=`<i class="bi bi-check2 text-success" style="width:70px;"></i>`
+               }
+               else{
+                document.getElementById(response[res].id).innerHTML=`<i class="bi bi-x-lg text-danger"></i>`
+               }
+             }
+        
+
+            },
+            error: function (response) {
+                console.log(response)
+            }
+          });
+        $("#send-btn").html('Sended');
+      }
+
+
+   </script>
+{% endblock %}

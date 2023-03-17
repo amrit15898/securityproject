@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% include "datatable.html" %}
+<div class="col-md-9 col-lg-12 px-md-4">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 ">
+      <h1 class="h2">Avalanche message send details</h1>
+      <div class="btn-toolbar mb-2 mb-md-0">
+        <form method="get">
+            <div class="d-flex">
+                <input type="date" class="form-control" name="search-date" value="{{date}}">
+            <button class="btn  rounded ms-1 btn-purple"><i class="bi bi-search"></i></button>
+            <a href="/message/show-avalanche-messages/?search-data=all" class="ms-2 rounded text-white search-all-data-btn">All</a>
+            </div>
+        </form>
+      </div>
+ </div>
+  
+</div>
+
+
+<div class="col-md-9 col-lg-12 px-md-4 mt-4 point-table">
+    <table id="example" class="table table-striped table-content" style="width:100%">
+        <thead>
+            <tr>
+                {% if request.user.is_superuser %}
+                <th>Send At</th>
+                <th>Send By</th>
+                <th>Start date</th>
+                <th>Grid id</th>
+                <th>No axis</th>
+                <th>Axis id</th>
+                <th>Axis Code</th>
+                <th>Acknow</th>
+                <th>Packet</th>
+                {% else %}
+                <th>Send At</th>
+                <th>Start date</th>
+                <th>No axis</th>
+                <th>Axis Code</th>
+                <th>Acknow</th>
+                {% endif %}
+            </tr>
+        </thead>
+        <tbody>
+            {% if request.user.is_superuser %}
+            {% for i in messages %}
+            <tr>
+            <td>{{i.message_on|date:'d-m-Y H:i'}}</td>
+            <td>{{i.avalanche_one.sender_user}}</td>
+            <td>{{i.avalanche_one.start_date|slice:"2"}}-{{i.avalanche_one.start_date|slice:"2:4"}}-{{i.avalanche_one.start_date|slice:"4:6"}}</td>
+            <td>{{i.avalanche_one.grid_id}}</td>
+            <td>{{i.avalanche_one.num_of_axis}}</td>
+            <td>{{i.avalanche_one.axis_ids}}</td>
+            <td>{{i.avalanche_one.forecast_codes}}</td>
+            <td>
+                {% if i.avalanche_one.ack  %}
+                <i class="bi bi-check-circle-fill"></i>
+                {% elif i.ack is False  %}
+                <i class="bi bi-x-circle-fill"></i>
+                {% else  %}
+                <i class="bi bi-exclamation-circle"></i>
+                {% endif %}
+            </td>
+            <td><button class="btn btn-primary btn-sm update-in-btn" data-bs-toggle="modal" data-bs-target="#more{{i.id}}">Packet</i></button></td>   
+        </tr>
+        
+            <div class="modal fade" id="more{{i.id}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-lg">
+                    <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5 text-capitalize" id="staticBackdropLabel">Avalanche Forecast Packet Details</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Message 1</p>
+                       <p> Packet: {{i.avalanche_one.packet}}</p>
+                        <p>JSON : {{i.avalanche_one.data}}</p>
+                        <p>Message 2 </p>
+                        <p>{{i.data.string_data}}</p>
+                        <p>{{i.data}}</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                    </div>
+                </div>
+                </div>   
+
+            {% endfor %}
+            
+            {% else %}
+            {% for i in messages %}
+            <tr>
+                <td>{{i.message_on|date:'d-m-Y H:i'}}</td>
+                <td>{{i.avalanche_one.start_date|slice:"2"}}-{{i.avalanche_one.start_date|slice:"2:4"}}-{{i.avalanche_one.start_date|slice:"4:6"}}</td>
+                <td>{{i.avalanche_one.num_of_axis}}</td>
+                <td>{{i.avalanche_one.forecast_codes}}</td>
+                <td>
+                    {% if i.avalanche_one.ack  %}
+                    <i class="bi bi-check-circle-fill"></i>
+                    {% elif i.ack is False  %}
+                    <i class="bi bi-x-circle-fill"></i>
+                    {% else  %}
+                    <i class="bi bi-exclamation-circle"></i>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+            {% endif  %}
+        </tbody>
+</table>
+
+
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        $('#example').DataTable({
+            order: [[0, 'desc']],
+        });
+    });
+</script>
+{% endblock %}
